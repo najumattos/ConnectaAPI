@@ -33,7 +33,7 @@ public class AppDbContext : IdentityDbContext<Usuario>
          j => j
              .HasOne<AbordagemTerapeutica>()
              .WithMany()
-             .HasForeignKey("AbordagemTerapeuticaId") // Verifique se no banco é int ou uint
+             .HasForeignKey("AbordagemTerapeuticaId")
              .HasConstraintName("FK_PsicologoAbordagem_AbordagemTerapeutica")
              .OnDelete(DeleteBehavior.Cascade),
          j => j
