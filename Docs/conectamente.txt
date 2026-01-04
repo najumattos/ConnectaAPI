@@ -1,0 +1,9 @@
+Trello
+https://trello.com/b/Hy7gRJIW/tcc-conectamente
+
+Figma
+figma.com/design/PAvnnDC9l3wriJGXQGKUy1/Prototipo-Tcc?t=OuTBnMlqL6Njsjpc-0
+
+
+use db_conectamente;
+select * from aspnetusers;
