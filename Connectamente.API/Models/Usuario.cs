@@ -23,10 +23,9 @@ namespace Connectamente.API.Models;
 
     [Display(Name = "Data De Nascimento", Prompt = "Informe a Data De Nascimento")]
     [Required(ErrorMessage = "Informe a Data De Nascimento")]
-    public DateTime DataNascimento { get; set; }
+    public DateOnly DataNascimento { get; set; }
 
-    [Display(Prompt = "Escolha uma Foto")]
-    [Required(ErrorMessage = "Escolha uma Foto")]
+    [Display(Prompt = "Escolha uma Foto")]    
     [StringLength(300)]
     public string Foto { get; set; }
 

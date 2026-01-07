@@ -1,8 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Connectamente.API.Enums;
+using Connectamente.API.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Connectamente.API.DTOs
 {
-
+    public class RegisterCompleteDto
+    {
+        public RegisterDto DadosUsuario { get; set; }
+        // Este campo é opcional: só vem preenchido se for psicólogo
+        public PsicologoDto? DadosPsicologo { get; set; }
+    }
     public class RegisterDto
     {
         [Required]
@@ -18,9 +25,33 @@ namespace Connectamente.API.DTOs
 
         [Required]
         public string Sobrenome { get; set; }
-        public DateTime? DataNascimento { get; set; }
+
+        public DateOnly DataNascimento { get; set; }
 
         public IFormFile Foto { get; set; }
+
+        public TipoPerfil TipoPerfil { get; set; }
+    }
+    public class PsicologoDto
+    {
+        [Required]
+        public string CRP { get; set; }
+
+        [Required]
+        [StringLength(1000)]
+        public string Descricao { get; set; }
+
+        [Required]
+        public ModalidadeAtendimento ModalidadeDeAtendimento { get; set; }
+
+        [Required]
+        public ICollection<int> TiposPacienteIds { get; set; }
+
+        [Required]
+        public ICollection<int> AbordagensIds { get; set; }
+
+        [Required]
+        public ICollection<int> CondicoesIds { get; set; }
     }
 
     public class LoginDto
@@ -38,9 +69,11 @@ namespace Connectamente.API.DTOs
         public string Email { get; set; }
         public string Nome { get; set; }
         public string Sobrenome { get; set; }
-        public DateTime? DataNascimento { get; set; }
+        public string DataNascimento { get; set; }
         public string Foto { get; set; }
-        public string Perfil { get; set; }
+        public string TipoPerfil { get; set; }
+        public string PsicologoResponsavel { get; set; }
+
     }
 
     public class AuthResponseDto

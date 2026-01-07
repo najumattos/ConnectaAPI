@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260104183059_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260107154744_AdicionandoNovasTabelasPsicologo")]
+    partial class AdicionandoNovasTabelasPsicologo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,11 +27,11 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("Connectamente.API.Models.AbordagemTerapeutica", b =>
                 {
-                    b.Property<uint>("IdAbordagemTerapeutica")
+                    b.Property<int>("IdAbordagemTerapeutica")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int unsigned");
+                        .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("IdAbordagemTerapeutica"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdAbordagemTerapeutica"));
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -50,31 +50,74 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
-                            IdAbordagemTerapeutica = 1u,
+                            IdAbordagemTerapeutica = 1,
                             Descricao = "Abordagem prática e focada em objetivos, que identifica e modifica padrões de pensamentos (cognições) e comportamentos negativos, sendo eficaz para ansiedade, depressão e TOC, com o terapeuta tendo um papel mais ativo.",
                             Nome = "Terapia Cognitivo-Comportamental"
                         },
                         new
                         {
-                            IdAbordagemTerapeutica = 2u,
+                            IdAbordagemTerapeutica = 2,
                             Descricao = "Baseada em Carl Rogers e Abraham Maslow, acredita na capacidade inata do indivíduo para o crescimento, focando na autoaceitação e realização do potencial humano, com o terapeuta oferecendo empatia e consideração positiva incondicional.",
                             Nome = "Humanista/Centrada na Pessoa"
                         },
                         new
                         {
-                            IdAbordagemTerapeutica = 3u,
+                            IdAbordagemTerapeutica = 3,
                             Descricao = "A psicoterapia fenomenológico-existencial é uma abordagem que combina a filosofia da fenomenologia e do existencialismo para compreender a experiência humana. ",
                             Nome = "Psicoterapia Fenomenológico-Existencial"
                         });
                 });
 
+            modelBuilder.Entity("Connectamente.API.Models.CondicaoTerapeutica", b =>
+                {
+                    b.Property<int>("IdCondicaoTerapeutica")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdCondicaoTerapeutica"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("IdCondicaoTerapeutica");
+
+                    b.ToTable("CondicaoTerapeutica");
+
+                    b.HasData(
+                        new
+                        {
+                            IdCondicaoTerapeutica = 1,
+                            Descricao = "Atendimento psicológico com foco nas vivências e desafios específicos da comunidade LGBTQIAPN+. O objetivo é oferecer um acolhimento livre de preconceitos, auxiliando em questões de aceitação, identidade de gênero, orientação sexual, além de fortalecer a autoestima e o enfrentamento de violências sociais.",
+                            Nome = "LGBTQIAPN+"
+                        },
+                        new
+                        {
+                            IdCondicaoTerapeutica = 2,
+                            Descricao = "O luto é um processo natural diante de uma perda significativa, mas que pode ser extremamente doloroso e paralisante. A terapia oferece um espaço seguro para vivenciar as etapas do pesar, ajudando o paciente a ressignificar a perda e a encontrar formas de seguir em frente com a memória do que se foi.",
+                            Nome = "Luto"
+                        },
+                        new
+                        {
+                            IdCondicaoTerapeutica = 3,
+                            Descricao = "A depressão vai além da tristeza profunda; é um transtorno que afeta o humor, a energia e o interesse pela vida. O acompanhamento terapêutico busca identificar as causas desses sentimentos, oferecer suporte emocional e desenvolver estratégias para recuperar a qualidade de vida e o bem-estar mental.",
+                            Nome = "Depressão"
+                        });
+                });
+
             modelBuilder.Entity("Connectamente.API.Models.EmocaoRegistro", b =>
                 {
-                    b.Property<uint>("IdEmocaoRegistro")
+                    b.Property<int>("IdEmocaoRegistro")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int unsigned");
+                        .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("IdEmocaoRegistro"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdEmocaoRegistro"));
 
                     b.Property<int>("Emocao")
                         .HasColumnType("int");
@@ -85,8 +128,8 @@ namespace Connectamente.API.Migrations
                     b.Property<int>("IntensidadeInicial")
                         .HasColumnType("int");
 
-                    b.Property<uint>("RegistroPensamentoId")
-                        .HasColumnType("int unsigned");
+                    b.Property<int>("RegistroPensamentoId")
+                        .HasColumnType("int");
 
                     b.HasKey("IdEmocaoRegistro");
 
@@ -128,11 +171,11 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("Connectamente.API.Models.RegistroPensamento", b =>
                 {
-                    b.Property<uint>("IdRegistro")
+                    b.Property<int>("IdRegistro")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int unsigned");
+                        .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<uint>("IdRegistro"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdRegistro"));
 
                     b.Property<string>("CaminhoArquivoRegistro")
                         .HasMaxLength(255)
@@ -151,6 +194,49 @@ namespace Connectamente.API.Migrations
                     b.ToTable("RegistroPensamento");
                 });
 
+            modelBuilder.Entity("Connectamente.API.Models.TipoPaciente", b =>
+                {
+                    b.Property<int>("IdTipoPaciente")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdTipoPaciente"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("varchar(1000)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.HasKey("IdTipoPaciente");
+
+                    b.ToTable("TipoPaciente");
+
+                    b.HasData(
+                        new
+                        {
+                            IdTipoPaciente = 1,
+                            Descricao = "O atendimento infantil utiliza o brincar como a principal ferramenta de comunicação. Através da ludoterapia, o psicólogo auxilia a criança a expressar suas emoções, medos e conflitos, trabalhando questões comportamentais, dificuldades de aprendizagem e socialização em conjunto com a orientação aos pais ou responsáveis.",
+                            Nome = "Infantil+"
+                        },
+                        new
+                        {
+                            IdTipoPaciente = 2,
+                            Descricao = "Focada na dinâmica do relacionamento, a terapia de casal busca mediar conflitos e melhorar a comunicação entre os parceiros. O objetivo é compreender os padrões de interação, fortalecer o vínculo afetivo ou auxiliar em processos de separação de forma saudável, proporcionando um espaço neutro de escuta e acolhimento para ambos.",
+                            Nome = "Casal"
+                        },
+                        new
+                        {
+                            IdTipoPaciente = 3,
+                            Descricao = "A psicoterapia para adultos é um processo de autoconhecimento e cuidado com a saúde mental. Foca no enfrentamento de desafios cotidianos, como estresse, ansiedade, questões de carreira e relacionamentos, auxiliando o paciente a desenvolver recursos internos para lidar com suas emoções e tomar decisões mais conscientes e alinhadas aos seus valores.",
+                            Nome = "Adultos"
+                        });
+                });
+
             modelBuilder.Entity("Connectamente.API.Models.Usuario", b =>
                 {
                     b.Property<string>("Id")
@@ -163,8 +249,8 @@ namespace Connectamente.API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateOnly>("DataNascimento")
+                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -174,7 +260,6 @@ namespace Connectamente.API.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Foto")
-                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("varchar(300)");
 
@@ -248,8 +333,8 @@ namespace Connectamente.API.Migrations
                         {
                             Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2abb668e-e295-4de2-8d3d-cca9d5e06e9d",
-                            DataNascimento = new DateTime(2002, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ConcurrencyStamp = "68fb7d10-901a-4105-9534-38438cef41ef",
+                            DataNascimento = new DateOnly(2002, 4, 1),
                             Email = "anajuliamattos02@gmail.com",
                             EmailConfirmed = true,
                             Foto = "/img/usuarios/psicologo.png",
@@ -257,10 +342,10 @@ namespace Connectamente.API.Migrations
                             Nome = "Ana Julia",
                             NormalizedEmail = "ANAJULIAMATTOS02@GMAIL.COM",
                             NormalizedUserName = "anajuliamattos02@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMlotJhf7tuYj550eWA3j2fFhNJYo8M9I7hkFeidy1J0W0Obkw+EWl1FYn50m+buEg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE9M2YkpzA924MCFe1W5quROpOs9bE264K3UhvTAEmDpvm70TSJ0c+35JzXVmQha6w==",
                             PhoneNumberConfirmed = false,
                             QtdAcessos = 0,
-                            SecurityStamp = "54c54f79-5fc8-4a6a-912d-0d3b729bd791",
+                            SecurityStamp = "1ddfa952-0e5c-4124-9476-928b5be87413",
                             Sobrenome = " Reis de Mattos",
                             TipoPerfil = 2,
                             TwoFactorEnabled = false,
@@ -270,8 +355,8 @@ namespace Connectamente.API.Migrations
                         {
                             Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "155f7a84-4f85-4f31-b905-974af2376791",
-                            DataNascimento = new DateTime(2001, 12, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ConcurrencyStamp = "17c5b11a-f065-436c-b4fd-da367614f4f0",
+                            DataNascimento = new DateOnly(2001, 12, 19),
                             Email = "tainaravitsantos28@gmail.com",
                             EmailConfirmed = true,
                             Foto = "/img/usuarios/paciente.png",
@@ -279,10 +364,10 @@ namespace Connectamente.API.Migrations
                             Nome = "Tainara Vitoria",
                             NormalizedEmail = "TAINARAVITSANTOS28@GMAIL.COM",
                             NormalizedUserName = "tainaravitsantos28@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKigodQB15y6Q0IZlTvFmQzyUfm8thlS49uq6aaaihOmJw0jnBLefVRMQmvCJw1Z3g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDf1Z7YAFUr30edMYPDBUxY6Bwy6xjD6Vt2uRnDyou/bjwPTnUmHfjPu15yUfnWkbw==",
                             PhoneNumberConfirmed = false,
                             QtdAcessos = 0,
-                            SecurityStamp = "c9dfd88f-9bb9-419f-a568-8b3a91e578b2",
+                            SecurityStamp = "2faf6c2d-71b6-4c2a-a233-70fe352e0fe5",
                             Sobrenome = " dos Santos",
                             TipoPerfil = 1,
                             TwoFactorEnabled = false,
@@ -450,8 +535,8 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("PsicologoAbordagem", b =>
                 {
-                    b.Property<uint>("AbordagemTerapeuticaId")
-                        .HasColumnType("int unsigned");
+                    b.Property<int>("AbordagemTerapeuticaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PsicologoId")
                         .HasColumnType("varchar(255)");
@@ -465,13 +550,67 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
-                            AbordagemTerapeuticaId = 1u,
+                            AbordagemTerapeuticaId = 1,
                             PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
                         },
                         new
                         {
-                            AbordagemTerapeuticaId = 2u,
+                            AbordagemTerapeuticaId = 2,
                             PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
+                        });
+                });
+
+            modelBuilder.Entity("PsicologoCondicaoTratada", b =>
+                {
+                    b.Property<int>("CondicaoTerapeuticaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PsicologoId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("CondicaoTerapeuticaId", "PsicologoId");
+
+                    b.HasIndex("PsicologoId");
+
+                    b.ToTable("PsicologoCondicaoTratada");
+
+                    b.HasData(
+                        new
+                        {
+                            CondicaoTerapeuticaId = 1,
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
+                        },
+                        new
+                        {
+                            CondicaoTerapeuticaId = 2,
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
+                        });
+                });
+
+            modelBuilder.Entity("PsicologoTipoPaciente", b =>
+                {
+                    b.Property<string>("PsicologoId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("TipoPacienteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PsicologoId", "TipoPacienteId");
+
+                    b.HasIndex("TipoPacienteId");
+
+                    b.ToTable("PsicologoTipoPaciente");
+
+                    b.HasData(
+                        new
+                        {
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                            TipoPacienteId = 1
+                        },
+                        new
+                        {
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                            TipoPacienteId = 2
                         });
                 });
 
@@ -510,7 +649,8 @@ namespace Connectamente.API.Migrations
                 {
                     b.HasOne("Connectamente.API.Models.Psicologo", "PsicologoResponsavel")
                         .WithMany()
-                        .HasForeignKey("PsicologoResponsavelId");
+                        .HasForeignKey("PsicologoResponsavelId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("PsicologoResponsavel");
                 });
@@ -581,6 +721,40 @@ namespace Connectamente.API.Migrations
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired()
                         .HasConstraintName("FK_PsicologoAbordagem_Psicologo");
+                });
+
+            modelBuilder.Entity("PsicologoCondicaoTratada", b =>
+                {
+                    b.HasOne("Connectamente.API.Models.CondicaoTerapeutica", null)
+                        .WithMany()
+                        .HasForeignKey("CondicaoTerapeuticaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PsicologoCondicao_CondicaoTerapeutica");
+
+                    b.HasOne("Connectamente.API.Models.Psicologo", null)
+                        .WithMany()
+                        .HasForeignKey("PsicologoId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PsicologoCondicao_Psicologo");
+                });
+
+            modelBuilder.Entity("PsicologoTipoPaciente", b =>
+                {
+                    b.HasOne("Connectamente.API.Models.Psicologo", null)
+                        .WithMany()
+                        .HasForeignKey("PsicologoId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PsicologoPaciente_Psicologo");
+
+                    b.HasOne("Connectamente.API.Models.TipoPaciente", null)
+                        .WithMany()
+                        .HasForeignKey("TipoPacienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PsicologoPaciente_TipoPaciente");
                 });
 #pragma warning restore 612, 618
         }

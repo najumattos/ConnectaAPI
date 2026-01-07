@@ -8,7 +8,7 @@ namespace Connectamente.API.Models;
 public class RegistroPensamento
 {
     [Key]
-    public uint IdRegistro { get; set; }
+    public int IdRegistro { get; set; }
     public DateTime DataHora { get; set; }
 
     [StringLength(255)]

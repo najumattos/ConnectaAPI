@@ -17,17 +17,23 @@ public class Psicologo
     public string CRP { get; set; }
 
     [Display(Name = "Sobre o Psicologo", Prompt = "Descreva você e seu trabalho")]
-    [Required(ErrorMessage = "Campo obrigatório")]
     [StringLength(1000)]
+    [Required(ErrorMessage = "Campo obrigatório")]
     public string Descricao { get; set; }
 
     [Display(Name = "Modalidades de Atendimento", Prompt = "Insira as modalidades de atendiemnto")]
     [Required(ErrorMessage = "Campo obrigatório")]
     public ModalidadeAtendimento ModalidadeDeAtendimento { get; set; }
 
+    [Display(Name = "Tipo paciente que você atende")]
+    [Required(ErrorMessage = "Campo obrigatório")]
+    public ICollection<TipoPaciente> TipoPaciente { get; set; } = new List<TipoPaciente>();
+
+    [Display(Name = "Tipo de condições que você trata")]
+    [Required(ErrorMessage = "Campo obrigatório")]
+    public ICollection<CondicaoTerapeutica> CondicoesTerapeuticas { get; set; } = new List<CondicaoTerapeutica>();
+
     [Display(Name = "Abordagens Terapeuticas", Prompt = "Insira suas Abordagens Terapeuticas")]
     [Required(ErrorMessage = "Campo obrigatório")]
     public ICollection<AbordagemTerapeutica> AbordagensTerapeuticas { get; set; } = new List<AbordagemTerapeutica>();
-
-
 }

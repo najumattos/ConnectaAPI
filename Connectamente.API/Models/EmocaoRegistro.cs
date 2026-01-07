@@ -9,7 +9,7 @@ public class EmocaoRegistro
 
 {
     [Key]
-    public uint IdEmocaoRegistro { get; set; }
+    public int IdEmocaoRegistro { get; set; }
 
     [Display(Name = "Emoção", Prompt = "Emoção")]
     public Emocao Emocao { get; set; }
@@ -26,7 +26,7 @@ public class EmocaoRegistro
     [RegularExpression(@"^(0|10|20|30|40|50|60|70|80|90|100)$", ErrorMessage = "A intensidade deve ser múltipla de 10 (ex: 10, 20...)")]
     public int IntensidadeFinal { get; set; }
 
-    public uint RegistroPensamentoId { get; set; }
+    public int RegistroPensamentoId { get; set; }
     [ForeignKey("RegistroPensamentoId")]
     public virtual RegistroPensamento RegistroPensamento { get; set; }
 }

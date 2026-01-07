@@ -30,7 +30,7 @@ namespace Connectamente.API.Controllers
 
         // GET: api/Registros/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<RegistroPensamento>> GetRegistroPensamento(uint id)
+        public async Task<ActionResult<RegistroPensamento>> GetRegistroPensamento(int id)
         {
             var registroPensamento = await _context.RegistroPensamentos.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace Connectamente.API.Controllers
         // PUT: api/Registros/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRegistroPensamento(uint id, RegistroPensamento registroPensamento)
+        public async Task<IActionResult> PutRegistroPensamento(int id, RegistroPensamento registroPensamento)
         {
             if (id != registroPensamento.IdRegistro)
             {
@@ -86,7 +86,7 @@ namespace Connectamente.API.Controllers
 
         // DELETE: api/Registros/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRegistroPensamento(uint id)
+        public async Task<IActionResult> DeleteRegistroPensamento(int id)
         {
             var registroPensamento = await _context.RegistroPensamentos.FindAsync(id);
             if (registroPensamento == null)
@@ -100,7 +100,7 @@ namespace Connectamente.API.Controllers
             return NoContent();
         }
 
-        private bool RegistroPensamentoExists(uint id)
+        private bool RegistroPensamentoExists(int id)
         {
             return _context.RegistroPensamentos.Any(e => e.IdRegistro == id);
         }

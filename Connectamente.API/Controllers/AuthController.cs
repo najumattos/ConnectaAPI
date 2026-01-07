@@ -23,16 +23,25 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost("register")]
     [Consumes("multipart/form-data")]
-    public async Task<ActionResult<AuthResponseDto>> Register([FromForm] RegisterDto registerDto)
+    public async Task<ActionResult<AuthResponseDto>> Register([FromForm] RegisterCompleteDto registerCompleteDto)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _authService.RegisterAsync(registerDto);
-        if (result == null)
-            return BadRequest(new { message = "Falha ao registrar usuário. Email pode já estar em uso." });
-
-        return Ok(result);
+        try
+        {
+            var result = await _authService.RegisterAsync(registerCompleteDto);
+            return Ok(result);
+        }
+        catch (ArgumentException ex)
+        {
+            // Aqui você captura a mensagem "Email já está em uso" que definiu no Service
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { message = "Erro interno no servidor." });
+        }
     }
 
     /// <summary>

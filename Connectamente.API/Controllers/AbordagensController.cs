@@ -30,7 +30,7 @@ namespace Connectamente.API.Controllers
 
         // GET: api/Abordagens/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AbordagemTerapeutica>> GetAbordagemTerapeutica(uint id)
+        public async Task<ActionResult<AbordagemTerapeutica>> GetAbordagemTerapeutica(int id)
         {
             var abordagemTerapeutica = await _context.AbordagensTerapeuticas.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace Connectamente.API.Controllers
         // PUT: api/Abordagens/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAbordagemTerapeutica(uint id, AbordagemTerapeutica abordagemTerapeutica)
+        public async Task<IActionResult> PutAbordagemTerapeutica(int id, AbordagemTerapeutica abordagemTerapeutica)
         {
             if (id != abordagemTerapeutica.IdAbordagemTerapeutica)
             {
@@ -86,7 +86,7 @@ namespace Connectamente.API.Controllers
 
         // DELETE: api/Abordagens/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAbordagemTerapeutica(uint id)
+        public async Task<IActionResult> DeleteAbordagemTerapeutica(int id)
         {
             var abordagemTerapeutica = await _context.AbordagensTerapeuticas.FindAsync(id);
             if (abordagemTerapeutica == null)
@@ -100,7 +100,7 @@ namespace Connectamente.API.Controllers
             return NoContent();
         }
 
-        private bool AbordagemTerapeuticaExists(uint id)
+        private bool AbordagemTerapeuticaExists(int id)
         {
             return _context.AbordagensTerapeuticas.Any(e => e.IdAbordagemTerapeutica == id);
         }

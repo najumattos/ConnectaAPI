@@ -7,7 +7,7 @@ namespace Connectamente.API.Models;
 public class AbordagemTerapeutica
 {
     [Key]
-    public uint IdAbordagemTerapeutica { get; set; }
+    public int IdAbordagemTerapeutica { get; set; }
 
     [Display(Name = "Abordagem Terapêutica", Prompt = "Abordagem Terapêutica")]
     [Required(ErrorMessage = "Campo Obrigatório")]
