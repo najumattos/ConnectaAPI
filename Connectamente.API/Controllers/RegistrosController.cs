@@ -47,7 +47,7 @@ namespace Connectamente.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRegistroPensamento(int id, RegistroPensamento registroPensamento)
         {
-            if (id != registroPensamento.IdRegistro)
+            if (id != registroPensamento.RegistroId)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace Connectamente.API.Controllers
             _context.RegistroPensamentos.Add(registroPensamento);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRegistroPensamento", new { id = registroPensamento.IdRegistro }, registroPensamento);
+            return CreatedAtAction("GetRegistroPensamento", new { id = registroPensamento.RegistroId }, registroPensamento);
         }
 
         // DELETE: api/Registros/5
@@ -102,7 +102,7 @@ namespace Connectamente.API.Controllers
 
         private bool RegistroPensamentoExists(int id)
         {
-            return _context.RegistroPensamentos.Any(e => e.IdRegistro == id);
+            return _context.RegistroPensamentos.Any(e => e.RegistroId == id);
         }
     }
 }

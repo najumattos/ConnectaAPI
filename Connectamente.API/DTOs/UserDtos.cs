@@ -28,30 +28,21 @@ namespace Connectamente.API.DTOs
 
         public DateOnly DataNascimento { get; set; }
 
-        public IFormFile Foto { get; set; }
+        public IFormFile? Foto { get; set; }
 
         public TipoPerfil TipoPerfil { get; set; }
     }
     public class PsicologoDto
     {
-        [Required]
         public string CRP { get; set; }
-
-        [Required]
-        [StringLength(1000)]
+        public string Nome { get; set; }
         public string Descricao { get; set; }
-
-        [Required]
+        public string NomeCompleto { get; set; }
+        public string Foto { get; set; }
         public ModalidadeAtendimento ModalidadeDeAtendimento { get; set; }
-
-        [Required]
-        public ICollection<int> TiposPacienteIds { get; set; }
-
-        [Required]
-        public ICollection<int> AbordagensIds { get; set; }
-
-        [Required]
-        public ICollection<int> CondicoesIds { get; set; }
+        public List<int> TiposPacienteIds { get; set; }
+        public List<int> AbordagensIds { get; set; }
+        public List<int> CondicoesIds { get; set; }
     }
 
     public class LoginDto

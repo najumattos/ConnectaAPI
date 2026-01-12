@@ -9,29 +9,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Connectamente.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AdicionandoNovasTabelasPsicologo : Migration
+    public partial class EstruturandoBanco : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "AbordagemTerapeutica",
-                columns: table => new
-                {
-                    IdAbordagemTerapeutica = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AbordagemTerapeutica", x => x.IdAbordagemTerapeutica);
-                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -50,40 +33,6 @@ namespace Connectamente.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "CondicaoTerapeutica",
-                columns: table => new
-                {
-                    IdCondicaoTerapeutica = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CondicaoTerapeutica", x => x.IdCondicaoTerapeutica);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "TipoPaciente",
-                columns: table => new
-                {
-                    IdTipoPaciente = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "varchar(150)", maxLength: 150, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TipoPaciente", x => x.IdTipoPaciente);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -109,6 +58,22 @@ namespace Connectamente.API.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "AbordagemPsicologo",
+                columns: table => new
+                {
+                    AbordagemPsicologoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    AbordagemTerapeutica = table.Column<int>(type: "int", nullable: false),
+                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbordagemPsicologo", x => x.AbordagemPsicologoId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -270,7 +235,7 @@ namespace Connectamente.API.Migrations
                 name: "RegistroPensamento",
                 columns: table => new
                 {
-                    IdRegistro = table.Column<int>(type: "int", nullable: false)
+                    RegistroId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DataHora = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     CaminhoArquivoRegistro = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
@@ -280,7 +245,7 @@ namespace Connectamente.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RegistroPensamento", x => x.IdRegistro);
+                    table.PrimaryKey("PK_RegistroPensamento", x => x.RegistroId);
                     table.ForeignKey(
                         name: "FK_RegistroPensamento_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
@@ -290,24 +255,20 @@ namespace Connectamente.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "PsicologoAbordagem",
+                name: "CondicaoPsicologo",
                 columns: table => new
                 {
-                    AbordagemTerapeuticaId = table.Column<int>(type: "int", nullable: false),
-                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    CondicaoPsicologoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CondicaoTerapeutica = table.Column<int>(type: "int", nullable: false),
+                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PsicologoAbordagem", x => new { x.AbordagemTerapeuticaId, x.PsicologoId });
+                    table.PrimaryKey("PK_CondicaoPsicologo", x => x.CondicaoPsicologoId);
                     table.ForeignKey(
-                        name: "FK_PsicologoAbordagem_AbordagemTerapeutica",
-                        column: x => x.AbordagemTerapeuticaId,
-                        principalTable: "AbordagemTerapeutica",
-                        principalColumn: "IdAbordagemTerapeutica",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PsicologoAbordagem_Psicologo",
+                        name: "FK_CondicaoPsicologo_Psicologo_PsicologoId",
                         column: x => x.PsicologoId,
                         principalTable: "Psicologo",
                         principalColumn: "UsuarioId");
@@ -315,52 +276,23 @@ namespace Connectamente.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "PsicologoCondicaoTratada",
+                name: "PacientePsicologo",
                 columns: table => new
                 {
-                    CondicaoTerapeuticaId = table.Column<int>(type: "int", nullable: false),
-                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    PacientePsicologoId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    TipoPaciente = table.Column<int>(type: "int", nullable: false),
+                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PsicologoCondicaoTratada", x => new { x.CondicaoTerapeuticaId, x.PsicologoId });
+                    table.PrimaryKey("PK_PacientePsicologo", x => x.PacientePsicologoId);
                     table.ForeignKey(
-                        name: "FK_PsicologoCondicao_CondicaoTerapeutica",
-                        column: x => x.CondicaoTerapeuticaId,
-                        principalTable: "CondicaoTerapeutica",
-                        principalColumn: "IdCondicaoTerapeutica",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PsicologoCondicao_Psicologo",
+                        name: "FK_PacientePsicologo_Psicologo_PsicologoId",
                         column: x => x.PsicologoId,
                         principalTable: "Psicologo",
                         principalColumn: "UsuarioId");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "PsicologoTipoPaciente",
-                columns: table => new
-                {
-                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TipoPacienteId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PsicologoTipoPaciente", x => new { x.PsicologoId, x.TipoPacienteId });
-                    table.ForeignKey(
-                        name: "FK_PsicologoPaciente_Psicologo",
-                        column: x => x.PsicologoId,
-                        principalTable: "Psicologo",
-                        principalColumn: "UsuarioId");
-                    table.ForeignKey(
-                        name: "FK_PsicologoPaciente_TipoPaciente",
-                        column: x => x.TipoPacienteId,
-                        principalTable: "TipoPaciente",
-                        principalColumn: "IdTipoPaciente",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -368,7 +300,7 @@ namespace Connectamente.API.Migrations
                 name: "EmocaoRegistro",
                 columns: table => new
                 {
-                    IdEmocaoRegistro = table.Column<int>(type: "int", nullable: false)
+                    EmocaoRegistroId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Emocao = table.Column<int>(type: "int", nullable: false),
                     IntensidadeInicial = table.Column<int>(type: "int", nullable: false),
@@ -377,25 +309,15 @@ namespace Connectamente.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EmocaoRegistro", x => x.IdEmocaoRegistro);
+                    table.PrimaryKey("PK_EmocaoRegistro", x => x.EmocaoRegistroId);
                     table.ForeignKey(
                         name: "FK_EmocaoRegistro_RegistroPensamento_RegistroPensamentoId",
                         column: x => x.RegistroPensamentoId,
                         principalTable: "RegistroPensamento",
-                        principalColumn: "IdRegistro",
+                        principalColumn: "RegistroId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.InsertData(
-                table: "AbordagemTerapeutica",
-                columns: new[] { "IdAbordagemTerapeutica", "Descricao", "Nome" },
-                values: new object[,]
-                {
-                    { 1, "Abordagem prática e focada em objetivos, que identifica e modifica padrões de pensamentos (cognições) e comportamentos negativos, sendo eficaz para ansiedade, depressão e TOC, com o terapeuta tendo um papel mais ativo.", "Terapia Cognitivo-Comportamental" },
-                    { 2, "Baseada em Carl Rogers e Abraham Maslow, acredita na capacidade inata do indivíduo para o crescimento, focando na autoaceitação e realização do potencial humano, com o terapeuta oferecendo empatia e consideração positiva incondicional.", "Humanista/Centrada na Pessoa" },
-                    { 3, "A psicoterapia fenomenológico-existencial é uma abordagem que combina a filosofia da fenomenologia e do existencialismo para compreender a experiência humana. ", "Psicoterapia Fenomenológico-Existencial" }
-                });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
@@ -411,28 +333,8 @@ namespace Connectamente.API.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DataNascimento", "Email", "EmailConfirmed", "Foto", "LockoutEnabled", "LockoutEnd", "Nome", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PsicologoResponsavelId", "QtdAcessos", "SecurityStamp", "Sobrenome", "TipoPerfil", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "0b44ca04-f6b0-4a8f-a953-1f2330d30894", 0, "68fb7d10-901a-4105-9534-38438cef41ef", new DateOnly(2002, 4, 1), "anajuliamattos02@gmail.com", true, "/img/usuarios/psicologo.png", true, null, "Ana Julia", "ANAJULIAMATTOS02@GMAIL.COM", "anajuliamattos02@GMAIL.COM", "AQAAAAIAAYagAAAAEE9M2YkpzA924MCFe1W5quROpOs9bE264K3UhvTAEmDpvm70TSJ0c+35JzXVmQha6w==", null, false, null, 0, "1ddfa952-0e5c-4124-9476-928b5be87413", " Reis de Mattos", 2, false, "anajuliamattos02@gmail.com" },
-                    { "ddf093a6-6cb5-4ff7-9a64-83da34aee005", 0, "17c5b11a-f065-436c-b4fd-da367614f4f0", new DateOnly(2001, 12, 19), "tainaravitsantos28@gmail.com", true, "/img/usuarios/paciente.png", true, null, "Tainara Vitoria", "TAINARAVITSANTOS28@GMAIL.COM", "tainaravitsantos28@GMAIL.COM", "AQAAAAIAAYagAAAAEDf1Z7YAFUr30edMYPDBUxY6Bwy6xjD6Vt2uRnDyou/bjwPTnUmHfjPu15yUfnWkbw==", null, false, null, 0, "2faf6c2d-71b6-4c2a-a233-70fe352e0fe5", " dos Santos", 1, false, "tainaravitsantos28@gmail.com" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "CondicaoTerapeutica",
-                columns: new[] { "IdCondicaoTerapeutica", "Descricao", "Nome" },
-                values: new object[,]
-                {
-                    { 1, "Atendimento psicológico com foco nas vivências e desafios específicos da comunidade LGBTQIAPN+. O objetivo é oferecer um acolhimento livre de preconceitos, auxiliando em questões de aceitação, identidade de gênero, orientação sexual, além de fortalecer a autoestima e o enfrentamento de violências sociais.", "LGBTQIAPN+" },
-                    { 2, "O luto é um processo natural diante de uma perda significativa, mas que pode ser extremamente doloroso e paralisante. A terapia oferece um espaço seguro para vivenciar as etapas do pesar, ajudando o paciente a ressignificar a perda e a encontrar formas de seguir em frente com a memória do que se foi.", "Luto" },
-                    { 3, "A depressão vai além da tristeza profunda; é um transtorno que afeta o humor, a energia e o interesse pela vida. O acompanhamento terapêutico busca identificar as causas desses sentimentos, oferecer suporte emocional e desenvolver estratégias para recuperar a qualidade de vida e o bem-estar mental.", "Depressão" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "TipoPaciente",
-                columns: new[] { "IdTipoPaciente", "Descricao", "Nome" },
-                values: new object[,]
-                {
-                    { 1, "O atendimento infantil utiliza o brincar como a principal ferramenta de comunicação. Através da ludoterapia, o psicólogo auxilia a criança a expressar suas emoções, medos e conflitos, trabalhando questões comportamentais, dificuldades de aprendizagem e socialização em conjunto com a orientação aos pais ou responsáveis.", "Infantil+" },
-                    { 2, "Focada na dinâmica do relacionamento, a terapia de casal busca mediar conflitos e melhorar a comunicação entre os parceiros. O objetivo é compreender os padrões de interação, fortalecer o vínculo afetivo ou auxiliar em processos de separação de forma saudável, proporcionando um espaço neutro de escuta e acolhimento para ambos.", "Casal" },
-                    { 3, "A psicoterapia para adultos é um processo de autoconhecimento e cuidado com a saúde mental. Foca no enfrentamento de desafios cotidianos, como estresse, ansiedade, questões de carreira e relacionamentos, auxiliando o paciente a desenvolver recursos internos para lidar com suas emoções e tomar decisões mais conscientes e alinhadas aos seus valores.", "Adultos" }
+                    { "0b44ca04-f6b0-4a8f-a953-1f2330d30894", 0, "867D9C11-C732-4740-953B-99763567BB45", new DateOnly(2002, 4, 1), "anajuliamattos02@gmail.com", true, "/img/usuarios/psicologo.png", true, null, "Ana Julia", "ANAJULIAMATTOS02@GMAIL.COM", "ANAJULIAMATTOS02@GMAIL.COM", "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==", null, false, null, 0, "55952B9E-D8B4-46E0-9E1A-D790177726D6", " Reis de Mattos", 2, false, "anajuliamattos02@gmail.com" },
+                    { "ddf093a6-6cb5-4ff7-9a64-83da34aee005", 0, "F1A3E7E1-8812-4C6E-8C8B-885521C55355", new DateOnly(2001, 12, 19), "tainaravitsantos28@gmail.com", true, "/img/usuarios/paciente.png", true, null, "Tainara Vitoria", "TAINARAVITSANTOS28@GMAIL.COM", "TAINARAVITSANTOS28@GMAIL.COM", "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==", null, false, null, 0, "B06D441D-A7B0-4A9B-983D-4A47008C369B", " dos Santos", 1, false, "tainaravitsantos28@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -450,31 +352,36 @@ namespace Connectamente.API.Migrations
                 values: new object[] { "0b44ca04-f6b0-4a8f-a953-1f2330d30894", "12345", "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.", 1 });
 
             migrationBuilder.InsertData(
-                table: "PsicologoAbordagem",
-                columns: new[] { "AbordagemTerapeuticaId", "PsicologoId" },
+                table: "AbordagemPsicologo",
+                columns: new[] { "AbordagemPsicologoId", "AbordagemTerapeutica", "PsicologoId" },
                 values: new object[,]
                 {
-                    { 1, "0b44ca04-f6b0-4a8f-a953-1f2330d30894" },
-                    { 2, "0b44ca04-f6b0-4a8f-a953-1f2330d30894" }
+                    { -2, 1, "0b44ca04-f6b0-4a8f-a953-1f2330d30894" },
+                    { -1, 0, "0b44ca04-f6b0-4a8f-a953-1f2330d30894" }
                 });
 
             migrationBuilder.InsertData(
-                table: "PsicologoCondicaoTratada",
-                columns: new[] { "CondicaoTerapeuticaId", "PsicologoId" },
+                table: "CondicaoPsicologo",
+                columns: new[] { "CondicaoPsicologoId", "CondicaoTerapeutica", "PsicologoId" },
                 values: new object[,]
                 {
-                    { 1, "0b44ca04-f6b0-4a8f-a953-1f2330d30894" },
-                    { 2, "0b44ca04-f6b0-4a8f-a953-1f2330d30894" }
+                    { -2, 13, "0b44ca04-f6b0-4a8f-a953-1f2330d30894" },
+                    { -1, 3, "0b44ca04-f6b0-4a8f-a953-1f2330d30894" }
                 });
 
             migrationBuilder.InsertData(
-                table: "PsicologoTipoPaciente",
-                columns: new[] { "PsicologoId", "TipoPacienteId" },
+                table: "PacientePsicologo",
+                columns: new[] { "PacientePsicologoId", "PsicologoId", "TipoPaciente" },
                 values: new object[,]
                 {
-                    { "0b44ca04-f6b0-4a8f-a953-1f2330d30894", 1 },
-                    { "0b44ca04-f6b0-4a8f-a953-1f2330d30894", 2 }
+                    { -2, "0b44ca04-f6b0-4a8f-a953-1f2330d30894", 4 },
+                    { -1, "0b44ca04-f6b0-4a8f-a953-1f2330d30894", 6 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbordagemPsicologo_PsicologoId",
+                table: "AbordagemPsicologo",
+                column: "PsicologoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -519,29 +426,31 @@ namespace Connectamente.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CondicaoPsicologo_PsicologoId",
+                table: "CondicaoPsicologo",
+                column: "PsicologoId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EmocaoRegistro_RegistroPensamentoId",
                 table: "EmocaoRegistro",
                 column: "RegistroPensamentoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PsicologoAbordagem_PsicologoId",
-                table: "PsicologoAbordagem",
+                name: "IX_PacientePsicologo_PsicologoId",
+                table: "PacientePsicologo",
                 column: "PsicologoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PsicologoCondicaoTratada_PsicologoId",
-                table: "PsicologoCondicaoTratada",
-                column: "PsicologoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PsicologoTipoPaciente_TipoPacienteId",
-                table: "PsicologoTipoPaciente",
-                column: "TipoPacienteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RegistroPensamento_UsuarioId",
                 table: "RegistroPensamento",
                 column: "UsuarioId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AbordagemPsicologo_Psicologo_PsicologoId",
+                table: "AbordagemPsicologo",
+                column: "PsicologoId",
+                principalTable: "Psicologo",
+                principalColumn: "UsuarioId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUserClaims_AspNetUsers_UserId",
@@ -580,8 +489,11 @@ namespace Connectamente.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Psicologo_AspNetUsers_UsuarioId",
-                table: "Psicologo");
+                name: "FK_AspNetUsers_Psicologo_PsicologoResponsavelId",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "AbordagemPsicologo");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -599,16 +511,13 @@ namespace Connectamente.API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CondicaoPsicologo");
+
+            migrationBuilder.DropTable(
                 name: "EmocaoRegistro");
 
             migrationBuilder.DropTable(
-                name: "PsicologoAbordagem");
-
-            migrationBuilder.DropTable(
-                name: "PsicologoCondicaoTratada");
-
-            migrationBuilder.DropTable(
-                name: "PsicologoTipoPaciente");
+                name: "PacientePsicologo");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -617,19 +526,10 @@ namespace Connectamente.API.Migrations
                 name: "RegistroPensamento");
 
             migrationBuilder.DropTable(
-                name: "AbordagemTerapeutica");
-
-            migrationBuilder.DropTable(
-                name: "CondicaoTerapeutica");
-
-            migrationBuilder.DropTable(
-                name: "TipoPaciente");
+                name: "Psicologo");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Psicologo");
         }
     }
 }

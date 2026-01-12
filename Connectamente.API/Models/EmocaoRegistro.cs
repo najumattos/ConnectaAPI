@@ -9,7 +9,7 @@ public class EmocaoRegistro
 
 {
     [Key]
-    public int IdEmocaoRegistro { get; set; }
+    public int EmocaoRegistroId { get; set; }
 
     [Display(Name = "Emoção", Prompt = "Emoção")]
     public Emocao Emocao { get; set; }

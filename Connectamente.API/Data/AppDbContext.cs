@@ -10,90 +10,121 @@ public class AppDbContext : IdentityDbContext<Usuario>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
-    public DbSet<AbordagemTerapeutica> AbordagensTerapeuticas { get; set; }
-    public DbSet<CondicaoTerapeutica> CondicoesTerapeuticas { get; set; }
+    public DbSet<AbordagemPsicologo> AbordagensPsicologo { get; set; }
+    public DbSet<CondicaoPsicologo> CondicoesTerapeuticas { get; set; }
     public DbSet<EmocaoRegistro> EmocoesRegistro { get; set; }
     public DbSet<Psicologo> Psicologos { get; set; }
     public DbSet<RegistroPensamento> RegistroPensamentos { get; set; }
-    public DbSet<TipoPaciente> TiposPaciente { get; set; }
-    public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<PacientePsicologo> TiposPaciente { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        SeedAbordagemPadrao(builder);
-        SeedCondicaoPadrao(builder);
-        SeedTipoPacientePadrao(builder);
-        SeedUsuarioPadrao(builder);
+        SeedAbordagemPsicologoPadrao(builder);
+        SeedCondicaoPsicologoPadrao(builder);
+        //SeedEmocaoRegistroPadrao(builder);
+        SeedPacientePsicologoPadrao(builder);
         SeedPsicologoPadrao(builder);
+        //SeedRegistroPensamentoPadrao(builder)
+        SeedUsuarioPadrao(builder);
 
         //IA
-        // Configuração para o relacionamento muitos-para-muitos entre Psicologo e AbordagemTerapeutica
+        // Configuração para o relacionamento 1-N entre Psicologo e AbordagemPsicologo
         builder.Entity<Psicologo>()
-     .HasMany(p => p.AbordagensTerapeuticas)
-     .WithMany() // Deixe vazio se a classe AbordagemTerapeutica não tiver uma ICollection<Psicologo>
-     .UsingEntity<Dictionary<string, object>>(
-         "PsicologoAbordagem",
-         j => j
-             .HasOne<AbordagemTerapeutica>()
-             .WithMany()
-             .HasForeignKey("AbordagemTerapeuticaId")
-             .HasConstraintName("FK_PsicologoAbordagem_AbordagemTerapeutica")
-             .OnDelete(DeleteBehavior.Cascade),
-         j => j
-             .HasOne<Psicologo>()
-             .WithMany()
-             .HasForeignKey("PsicologoId")
-             .HasConstraintName("FK_PsicologoAbordagem_Psicologo")
-             .OnDelete(DeleteBehavior.ClientCascade)
-     );
-        
-        // Configuração para o relacionamento muitos-para-muitos entre Psicologo e CondicaoTerapeutica
+      .HasMany(p => p.AbordagensTerapeuticas)
+      .WithOne(a => a.Psicologo)
+      .HasForeignKey(a => a.PsicologoId);
+
+        // Configuração para o relacionamento 1-N entre Psicologo e CondicaoPsicologo
         builder.Entity<Psicologo>()
-     .HasMany(p => p.CondicoesTerapeuticas)
-     .WithMany() 
-     .UsingEntity<Dictionary<string, object>>(
-         "PsicologoCondicaoTratada",
-         j => j
-             .HasOne<CondicaoTerapeutica>()
-             .WithMany()
-             .HasForeignKey("CondicaoTerapeuticaId")
-             .HasConstraintName("FK_PsicologoCondicao_CondicaoTerapeutica")
-             .OnDelete(DeleteBehavior.Cascade),
-         j => j
-             .HasOne<Psicologo>()
-             .WithMany()
-             .HasForeignKey("PsicologoId")
-             .HasConstraintName("FK_PsicologoCondicao_Psicologo")
-             .OnDelete(DeleteBehavior.ClientCascade)
-     );
-        
-        // Configuração para o relacionamento muitos-para-muitos entre Psicologo e TipoPaciente
+      .HasMany(p => p.CondicoesTerapeuticas)
+      .WithOne(c => c.Psicologo)
+      .HasForeignKey(c => c.PsicologoId);
+
+        // Configuração para o relacionamento 1-N entre Psicologo e PacientePsicologo
         builder.Entity<Psicologo>()
-     .HasMany(p => p.TipoPaciente)
-     .WithMany() 
-     .UsingEntity<Dictionary<string, object>>(
-         "PsicologoTipoPaciente",
-         j => j
-             .HasOne<TipoPaciente>()
-             .WithMany()
-             .HasForeignKey("TipoPacienteId")
-             .HasConstraintName("FK_PsicologoPaciente_TipoPaciente")
-             .OnDelete(DeleteBehavior.Cascade),
-         j => j
-             .HasOne<Psicologo>()
-             .WithMany()
-             .HasForeignKey("PsicologoId")
-             .HasConstraintName("FK_PsicologoPaciente_Psicologo")
-             .OnDelete(DeleteBehavior.ClientCascade)
-     );
+      .HasMany(p => p.TiposPacientes)
+      .WithOne(c => c.Psicologo)
+      .HasForeignKey(c => c.PsicologoId);
+        // Relacionamento Paciente -> Psicologo Responsável
         builder.Entity<Usuario>()
-    .HasOne(u => u.PsicologoResponsavel)
-    .WithMany()
-    .HasForeignKey(u => u.PsicologoResponsavelId)
-    .OnDelete(DeleteBehavior.Restrict);
+            .HasOne(u => u.PsicologoResponsavel)
+            .WithMany()
+            .HasForeignKey(u => u.PsicologoResponsavelId)
+            .OnDelete(DeleteBehavior.Restrict);
+        //falta EmocaoRegistro() e RegistroPensamento()
     }
+
+    private static void SeedAbordagemPsicologoPadrao(ModelBuilder builder) {
+        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
+
+        builder.Entity<AbordagemPsicologo>().HasData(
+            new AbordagemPsicologo
+            {
+                AbordagemPsicologoId = -1,
+                PsicologoId = psicologoId,
+                AbordagemTerapeutica = Enums.AbordagemTerapeutica.TCC
+            },
+            new AbordagemPsicologo
+            {
+                AbordagemPsicologoId = -2,
+                PsicologoId = psicologoId,
+                AbordagemTerapeutica = Enums.AbordagemTerapeutica.Psicanalise
+            }
+        );
+    }
+    private static void SeedCondicaoPsicologoPadrao(ModelBuilder builder) {
+        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
+
+        builder.Entity<CondicaoPsicologo>().HasData(
+            new CondicaoPsicologo
+            {
+                CondicaoPsicologoId = -1,
+                PsicologoId = psicologoId,
+                CondicaoTerapeutica = Enums.CondicaoTerapeutica.Gestacao
+            },
+            new CondicaoPsicologo
+            {
+                CondicaoPsicologoId = -2,
+                PsicologoId = psicologoId,
+                CondicaoTerapeutica = Enums.CondicaoTerapeutica.FobiaEspecifica
+            }
+        );
+    }
+    /*private static void SeedEmocaoRegistroPadrao(ModelBuilder builder) { }*/
+    private static void SeedPacientePsicologoPadrao(ModelBuilder builder) {
+        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
+
+        builder.Entity<PacientePsicologo>().HasData(
+            new PacientePsicologo
+            {
+                PacientePsicologoId = -1,
+                PsicologoId = psicologoId,
+                TipoPaciente = Enums.TipoPaciente.Familiar
+            },
+            new PacientePsicologo
+            {
+                PacientePsicologoId = -2,
+                PsicologoId = psicologoId,
+                TipoPaciente = Enums.TipoPaciente.Geriatrico
+            }
+        );
+    }
+    private static void SeedPsicologoPadrao(ModelBuilder builder)
+    {
+        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
+        builder.Entity<Psicologo>().HasData(
+        new Psicologo{
+                UsuarioId = psicologoId,
+                CRP = "12345",
+                Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
+                ModalidadeDeAtendimento = Enums.ModalidadeAtendimento.Presencial
+            });              
+       
+        //falta EmocaoRegistro() e RegistroPensamento()
+    }
+    /*private static void SeedRegistroPensamentoPadrao(ModelBuilder builder) { }*/
     private static void SeedUsuarioPadrao(ModelBuilder builder)
     {
         #region Populate Roles - Perfis de Usuário
@@ -112,7 +143,8 @@ public class AppDbContext : IdentityDbContext<Usuario>
         ];
         builder.Entity<IdentityRole>().HasData(roles);
         #endregion
-
+        
+        string hashFixo = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==";
         #region Populate Usuário
         List<Usuario> usuarios = [
             new Usuario(){
@@ -120,34 +152,37 @@ public class AppDbContext : IdentityDbContext<Usuario>
                 Email = "anajuliamattos02@gmail.com",
                 NormalizedEmail = "ANAJULIAMATTOS02@GMAIL.COM",
                 UserName = "anajuliamattos02@gmail.com",
-                NormalizedUserName = "anajuliamattos02@GMAIL.COM",
+                NormalizedUserName = "ANAJULIAMATTOS02@GMAIL.COM",
                 LockoutEnabled = true,
                 EmailConfirmed = true,
                 Nome = "Ana Julia",
-                Sobrenome = " Reis de Mattos",                
-                DataNascimento = DateOnly.Parse("01/04/2002"),
+                Sobrenome = " Reis de Mattos",
+                DataNascimento = new DateOnly(2002, 4, 1),
                 Foto = "/img/usuarios/psicologo.png",
-                TipoPerfil = Enums.TipoPerfil.Psicologo
+                TipoPerfil = Enums.TipoPerfil.Psicologo,
+                PasswordHash = hashFixo,
+                SecurityStamp = "55952B9E-D8B4-46E0-9E1A-D790177726D6", // Valor fixo qualquer
+    ConcurrencyStamp = "867D9C11-C732-4740-953B-99763567BB45"
             },
              new Usuario(){
                 Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
                 Email = "tainaravitsantos28@gmail.com",
                 NormalizedEmail = "TAINARAVITSANTOS28@GMAIL.COM",
                 UserName = "tainaravitsantos28@gmail.com",
-                NormalizedUserName = "tainaravitsantos28@GMAIL.COM",
+                NormalizedUserName = "TAINARAVITSANTOS28@GMAIL.COM",
                 LockoutEnabled = true,
                 EmailConfirmed = true,
                 Nome = "Tainara Vitoria",
                 Sobrenome = " dos Santos",
-                DataNascimento = DateOnly.Parse("19/12/2001"),
-                Foto = "/img/usuarios/paciente.png"
+                DataNascimento = new DateOnly(2001, 12, 19),
+                Foto = "/img/usuarios/paciente.png",
+                PasswordHash = hashFixo,
+                SecurityStamp = "B06D441D-A7B0-4A9B-983D-4A47008C369B",
+                 ConcurrencyStamp = "F1A3E7E1-8812-4C6E-8C8B-885521C55355"
             }
         ];
-            PasswordHasher<Usuario> pass = new();
-        foreach (var user in usuarios)
-        {
-            user.PasswordHash = pass.HashPassword(user, "123456");
-        }
+
+       
         builder.Entity<Usuario>().HasData(usuarios);
         #endregion
 
@@ -167,112 +202,5 @@ public class AppDbContext : IdentityDbContext<Usuario>
         #endregion
     }
 
-    private static void SeedAbordagemPadrao(ModelBuilder builder)
-    {
-        List<AbordagemTerapeutica> abordagensTerapeutica =
-        [
-            new()
-            {
-             IdAbordagemTerapeutica = 1,
-             Nome = "Terapia Cognitivo-Comportamental",
-             Descricao = "Abordagem prática e focada em objetivos, que identifica e modifica padrões de pensamentos (cognições) e comportamentos negativos, sendo eficaz para ansiedade, depressão e TOC, com o terapeuta tendo um papel mais ativo."
-            },
-            new()
-            {
-             IdAbordagemTerapeutica = 2,
-             Nome = "Humanista/Centrada na Pessoa",
-             Descricao = "Baseada em Carl Rogers e Abraham Maslow, acredita na capacidade inata do indivíduo para o crescimento, focando na autoaceitação e realização do potencial humano, com o terapeuta oferecendo empatia e consideração positiva incondicional."
-            },
-            new()
-            {
-             IdAbordagemTerapeutica = 3,
-             Nome = "Psicoterapia Fenomenológico-Existencial",
-             Descricao = "A psicoterapia fenomenológico-existencial é uma abordagem que combina a filosofia da fenomenologia e do existencialismo para compreender a experiência humana. "
-            }
-        ];
-        builder.Entity<AbordagemTerapeutica>().HasData(abordagensTerapeutica);
-    }
-
-    private static void SeedCondicaoPadrao(ModelBuilder builder)
-    {
-        List<CondicaoTerapeutica> condicoesTerapeuticas =
-        [
-            new()
-            {
-             IdCondicaoTerapeutica = 1,
-             Nome = "LGBTQIAPN+",
-             Descricao = "Atendimento psicológico com foco nas vivências e desafios específicos da comunidade LGBTQIAPN+. O objetivo é oferecer um acolhimento livre de preconceitos, auxiliando em questões de aceitação, identidade de gênero, orientação sexual, além de fortalecer a autoestima e o enfrentamento de violências sociais."
-            },
-            new()
-            {
-             IdCondicaoTerapeutica = 2,
-             Nome = "Luto",
-             Descricao = "O luto é um processo natural diante de uma perda significativa, mas que pode ser extremamente doloroso e paralisante. A terapia oferece um espaço seguro para vivenciar as etapas do pesar, ajudando o paciente a ressignificar a perda e a encontrar formas de seguir em frente com a memória do que se foi."
-            },
-            new()
-            {
-             IdCondicaoTerapeutica = 3,
-             Nome = "Depressão",
-             Descricao = "A depressão vai além da tristeza profunda; é um transtorno que afeta o humor, a energia e o interesse pela vida. O acompanhamento terapêutico busca identificar as causas desses sentimentos, oferecer suporte emocional e desenvolver estratégias para recuperar a qualidade de vida e o bem-estar mental."
-            }
-        ];
-        builder.Entity<CondicaoTerapeutica>().HasData(condicoesTerapeuticas);
-    }
-
-    private static void SeedTipoPacientePadrao(ModelBuilder builder)
-    {
-        List<TipoPaciente> tipoPacientesTratados =
-        [
-            new()
-            {
-             IdTipoPaciente = 1,
-             Nome = "Infantil+",
-             Descricao = "O atendimento infantil utiliza o brincar como a principal ferramenta de comunicação. Através da ludoterapia, o psicólogo auxilia a criança a expressar suas emoções, medos e conflitos, trabalhando questões comportamentais, dificuldades de aprendizagem e socialização em conjunto com a orientação aos pais ou responsáveis."
-            },
-            new()
-            {
-             IdTipoPaciente = 2,
-             Nome = "Casal",
-             Descricao = "Focada na dinâmica do relacionamento, a terapia de casal busca mediar conflitos e melhorar a comunicação entre os parceiros. O objetivo é compreender os padrões de interação, fortalecer o vínculo afetivo ou auxiliar em processos de separação de forma saudável, proporcionando um espaço neutro de escuta e acolhimento para ambos."
-            },
-            new()
-            {
-             IdTipoPaciente = 3,
-             Nome = "Adultos",
-             Descricao = "A psicoterapia para adultos é um processo de autoconhecimento e cuidado com a saúde mental. Foca no enfrentamento de desafios cotidianos, como estresse, ansiedade, questões de carreira e relacionamentos, auxiliando o paciente a desenvolver recursos internos para lidar com suas emoções e tomar decisões mais conscientes e alinhadas aos seus valores."
-            }
-        ];
-        builder.Entity<TipoPaciente>().HasData(tipoPacientesTratados);
-    }
-
-    private static void SeedPsicologoPadrao(ModelBuilder builder)
-    {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
-        List<Psicologo> psicologos = 
-       [
-            new(){
-                UsuarioId = psicologoId,
-                CRP = "12345",
-                Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
-                ModalidadeDeAtendimento = Enums.ModalidadeAtendimento.Presencial                 
-            }
-
-            ];
-        builder.Entity<Psicologo>().HasData(psicologos);
-        builder.Entity("PsicologoAbordagem").HasData(
-            new { PsicologoId = psicologoId, AbordagemTerapeuticaId = 1 },
-            new { PsicologoId = psicologoId, AbordagemTerapeuticaId = 2 }
-        );
-
-        builder.Entity("PsicologoCondicaoTratada").HasData(
-            new { PsicologoId = psicologoId, CondicaoTerapeuticaId = 1 }, 
-            new { PsicologoId = psicologoId, CondicaoTerapeuticaId = 2 }  
-        );
-
-        builder.Entity("PsicologoTipoPaciente").HasData(
-            new { PsicologoId = psicologoId, TipoPacienteId = 1 }, 
-            new { PsicologoId = psicologoId, TipoPacienteId = 2 }  
-        );
-    }
 
 }

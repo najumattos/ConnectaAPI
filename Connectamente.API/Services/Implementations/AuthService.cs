@@ -5,8 +5,6 @@ using Connectamente.API.Helpers;
 using Connectamente.API.Models;
 using Connectamente.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Connectamente.API.Services.Implementations;
 
@@ -33,9 +31,9 @@ public class AuthService : IAuthService
     }
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterCompleteDto completeDto)
-    {       
+    {
         var registerDto = completeDto.DadosUsuario;
-        var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);      
+        var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
 
         if (existingUser != null)
         {
@@ -84,14 +82,26 @@ public class AuthService : IAuthService
                     ModalidadeDeAtendimento = completeDto.DadosPsicologo.ModalidadeDeAtendimento
                 };
 
-                psicologo.AbordagensTerapeuticas = await _context.AbordagensTerapeuticas
-                    .Where(a => completeDto.DadosPsicologo.AbordagensIds.Contains(a.IdAbordagemTerapeutica)).ToListAsync();
+                psicologo.AbordagensTerapeuticas = completeDto.DadosPsicologo.AbordagensIds
+    .Select(id => new AbordagemPsicologo
+    {
+        PsicologoId = user.Id,
+        AbordagemTerapeutica = (AbordagemTerapeutica)id // Cast para o Enum
+    }).ToList();
 
-                psicologo.CondicoesTerapeuticas = await _context.CondicoesTerapeuticas
-                    .Where(c => completeDto.DadosPsicologo.CondicoesIds.Contains(c.IdCondicaoTerapeutica)).ToListAsync();
+                psicologo.CondicoesTerapeuticas = completeDto.DadosPsicologo.CondicoesIds
+    .Select(id => new CondicaoPsicologo
+    {
+        PsicologoId = user.Id,
+        CondicaoTerapeutica = (CondicaoTerapeutica)id // Cast para o Enum
+    }).ToList();
 
-                psicologo.TipoPaciente = await _context.TiposPaciente
-                    .Where(t => completeDto.DadosPsicologo.TiposPacienteIds.Contains(t.IdTipoPaciente)).ToListAsync();
+                psicologo.TiposPacientes = completeDto.DadosPsicologo.TiposPacienteIds
+     .Select(id => new PacientePsicologo
+     {
+         PsicologoId = user.Id,
+         TipoPaciente = (TipoPaciente)id // Cast para o Enum
+     }).ToList();
 
                 _context.Psicologos.Add(psicologo);
                 await _context.SaveChangesAsync();
@@ -110,7 +120,7 @@ public class AuthService : IAuthService
             // Se houve erro após salvar a foto, removemos ela do disco
             if (fotoPath != null) await _fileService.DeleteFileAsync(fotoPath);
             throw;
-        }      
+        }
 
         // 3. Monta o retorno
         var userDto = new UserDto
