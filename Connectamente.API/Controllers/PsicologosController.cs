@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
 using Connectamente.API.Models;
 using Connectamente.API.DTOs;
-using Humanizer;
 
 namespace Connectamente.API.Controllers
 {
@@ -17,10 +17,12 @@ namespace Connectamente.API.Controllers
     public class PsicologosController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<Usuario> _userManager;
 
-        public PsicologosController(AppDbContext context)
+        public PsicologosController(AppDbContext context, UserManager<Usuario> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }       
 
         // GET: api/Psicologos
@@ -169,15 +171,37 @@ namespace Connectamente.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePsicologo(string id)
         {
-            var psicologo = await _context.Psicologos.FindAsync(id);
-            if (psicologo == null)
+            var psicologo = await _context.Psicologos
+         .Include(p => p.AbordagensTerapeuticas)
+         .Include(p => p.CondicoesTerapeuticas)
+         .Include(p => p.TiposPacientes)
+         .FirstOrDefaultAsync(p => p.UsuarioId == id);
+
+            if (psicologo == null) return NotFound();
+
+            // Remove as listas dependentes primeiro
+            _context.AbordagensPsicologo.RemoveRange(psicologo.AbordagensTerapeuticas);
+            _context.CondicoesTerapeuticas.RemoveRange(psicologo.CondicoesTerapeuticas);
+            _context.TiposPaciente.RemoveRange(psicologo.TiposPacientes);
+
+            var usuario = await _userManager.FindByIdAsync(id);
+
+            if (psicologo == null && usuario == null) return NotFound();
+
+            // 3. Se o psicólogo existe, removemos ele primeiro do Contexto
+            if (psicologo != null)
             {
-                return NotFound();
+                _context.Psicologos.Remove(psicologo);
             }
 
-            _context.Psicologos.Remove(psicologo);
-            await _context.SaveChangesAsync();
+            // 4. Se o usuário existe, removemos via UserManager
+            if (usuario != null)
+            {
+                var result = await _userManager.DeleteAsync(usuario);
+                if (!result.Succeeded) return BadRequest(result.Errors);
+            }
 
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

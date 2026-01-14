@@ -51,8 +51,8 @@ public class AppDbContext : IdentityDbContext<Usuario>
         builder.Entity<Usuario>()
             .HasOne(u => u.PsicologoResponsavel)
             .WithMany()
-            .HasForeignKey(u => u.PsicologoResponsavelId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .HasForeignKey(u => u.PsicologoResponsavelId);
+           // .OnDelete(DeleteBehavior.); tem qe ver isso ae
         //falta EmocaoRegistro() e RegistroPensamento()
     }
 
