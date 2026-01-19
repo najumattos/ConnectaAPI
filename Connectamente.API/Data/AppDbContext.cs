@@ -7,6 +7,14 @@ namespace Connectamente.API.Data;
 
 public class AppDbContext : IdentityDbContext<Usuario>
 {
+    // IDs das ROLES (Os Perfis/Cargos)
+    private const string ROLE_PSICOLOGO_ID = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
+    private const string ROLE_PACIENTE_ID = "ddf093a6-6cb5-4ff7-9a64-83da34aee005";
+
+    // IDs dos USUÁRIOS (As Pessoas)
+    private const string USER_ANA_JULIA_ID = "70f93f27-32b1-4de5-bee3-b0de2cf80047";
+    private const string USER_TAINARA_ID = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b";
+
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
@@ -56,67 +64,63 @@ public class AppDbContext : IdentityDbContext<Usuario>
         //falta EmocaoRegistro() e RegistroPensamento()
     }
 
-    private static void SeedAbordagemPsicologoPadrao(ModelBuilder builder) {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
+    private static void SeedAbordagemPsicologoPadrao(ModelBuilder builder) {        
 
         builder.Entity<AbordagemPsicologo>().HasData(
             new AbordagemPsicologo
             {
                 AbordagemPsicologoId = -1,
-                PsicologoId = psicologoId,
+                PsicologoId = USER_ANA_JULIA_ID,
                 AbordagemTerapeutica = Enums.AbordagemTerapeutica.TCC
             },
             new AbordagemPsicologo
             {
                 AbordagemPsicologoId = -2,
-                PsicologoId = psicologoId,
+                PsicologoId = USER_ANA_JULIA_ID,
                 AbordagemTerapeutica = Enums.AbordagemTerapeutica.Psicanalise
             }
         );
     }
     private static void SeedCondicaoPsicologoPadrao(ModelBuilder builder) {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
 
         builder.Entity<CondicaoPsicologo>().HasData(
             new CondicaoPsicologo
             {
                 CondicaoPsicologoId = -1,
-                PsicologoId = psicologoId,
+                PsicologoId = USER_ANA_JULIA_ID,
                 CondicaoTerapeutica = Enums.CondicaoTerapeutica.Gestacao
             },
             new CondicaoPsicologo
             {
                 CondicaoPsicologoId = -2,
-                PsicologoId = psicologoId,
+                PsicologoId = USER_ANA_JULIA_ID,
                 CondicaoTerapeutica = Enums.CondicaoTerapeutica.FobiaEspecifica
             }
         );
     }
     /*private static void SeedEmocaoRegistroPadrao(ModelBuilder builder) { }*/
     private static void SeedPacientePsicologoPadrao(ModelBuilder builder) {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
 
         builder.Entity<PacientePsicologo>().HasData(
             new PacientePsicologo
             {
                 PacientePsicologoId = -1,
-                PsicologoId = psicologoId,
+                PsicologoId = USER_ANA_JULIA_ID,
                 TipoPaciente = Enums.TipoPaciente.Familiar
             },
             new PacientePsicologo
             {
                 PacientePsicologoId = -2,
-                PsicologoId = psicologoId,
+                PsicologoId = USER_ANA_JULIA_ID,
                 TipoPaciente = Enums.TipoPaciente.Geriatrico
             }
         );
     }
     private static void SeedPsicologoPadrao(ModelBuilder builder)
     {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
         builder.Entity<Psicologo>().HasData(
         new Psicologo{
-                UsuarioId = psicologoId,
+                UsuarioId = USER_ANA_JULIA_ID,
                 CRP = "12345",
                 Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
                 ModalidadeDeAtendimento = Enums.ModalidadeAtendimento.Presencial
@@ -131,12 +135,12 @@ public class AppDbContext : IdentityDbContext<Usuario>
         List<IdentityRole> roles =
         [
             new IdentityRole() {
-               Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+               Id = ROLE_PSICOLOGO_ID,
                Name = "Psicologo",
                NormalizedName = "PSICOLOGO"
             },
             new IdentityRole() {
-               Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
+               Id = ROLE_PACIENTE_ID,
                Name = "Paciente",
                NormalizedName = "PACIENTE"
             },
@@ -148,7 +152,7 @@ public class AppDbContext : IdentityDbContext<Usuario>
         #region Populate Usuário
         List<Usuario> usuarios = [
             new Usuario(){
-                Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                Id = USER_ANA_JULIA_ID,
                 Email = "anajuliamattos02@gmail.com",
                 NormalizedEmail = "ANAJULIAMATTOS02@GMAIL.COM",
                 UserName = "anajuliamattos02@gmail.com",
@@ -165,7 +169,7 @@ public class AppDbContext : IdentityDbContext<Usuario>
     ConcurrencyStamp = "867D9C11-C732-4740-953B-99763567BB45"
             },
              new Usuario(){
-                Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
+                Id = USER_TAINARA_ID,
                 Email = "tainaravitsantos28@gmail.com",
                 NormalizedEmail = "TAINARAVITSANTOS28@GMAIL.COM",
                 UserName = "tainaravitsantos28@gmail.com",

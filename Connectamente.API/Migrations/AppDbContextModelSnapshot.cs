@@ -47,13 +47,13 @@ namespace Connectamente.API.Migrations
                         {
                             AbordagemPsicologoId = -1,
                             AbordagemTerapeutica = 0,
-                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
+                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
                         },
                         new
                         {
                             AbordagemPsicologoId = -2,
                             AbordagemTerapeutica = 1,
-                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
+                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
                         });
                 });
 
@@ -82,13 +82,13 @@ namespace Connectamente.API.Migrations
                         {
                             CondicaoPsicologoId = -1,
                             CondicaoTerapeutica = 3,
-                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
+                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
                         },
                         new
                         {
                             CondicaoPsicologoId = -2,
                             CondicaoTerapeutica = 13,
-                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
+                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
                         });
                 });
 
@@ -143,13 +143,13 @@ namespace Connectamente.API.Migrations
                         new
                         {
                             PacientePsicologoId = -1,
-                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
                             TipoPaciente = 6
                         },
                         new
                         {
                             PacientePsicologoId = -2,
-                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
                             TipoPaciente = 4
                         });
                 });
@@ -178,7 +178,7 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
-                            UsuarioId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                            UsuarioId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
                             CRP = "12345",
                             Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
                             ModalidadeDeAtendimento = 1
@@ -304,7 +304,7 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                            Id = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "867D9C11-C732-4740-953B-99763567BB45",
                             DataNascimento = new DateOnly(2002, 4, 1),
@@ -326,7 +326,7 @@ namespace Connectamente.API.Migrations
                         },
                         new
                         {
-                            Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
+                            Id = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "F1A3E7E1-8812-4C6E-8C8B-885521C55355",
                             DataNascimento = new DateOnly(2001, 12, 19),
@@ -477,12 +477,12 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                            UserId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
                             RoleId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
                         },
                         new
                         {
-                            UserId = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
+                            UserId = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b",
                             RoleId = "ddf093a6-6cb5-4ff7-9a64-83da34aee005"
                         });
                 });
@@ -568,8 +568,7 @@ namespace Connectamente.API.Migrations
                 {
                     b.HasOne("Connectamente.API.Models.Psicologo", "PsicologoResponsavel")
                         .WithMany()
-                        .HasForeignKey("PsicologoResponsavelId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("PsicologoResponsavelId");
 
                     b.Navigation("PsicologoResponsavel");
                 });
