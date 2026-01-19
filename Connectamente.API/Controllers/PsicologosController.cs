@@ -98,6 +98,7 @@ namespace Connectamente.API.Controllers
 
             var psicologo = new Psicologo
             {
+                //ta aparecendo os campos de nome e sobrenome
                 UsuarioId = usuarioId,
                 CRP = psicologoDto.CRP,
                 Descricao = psicologoDto.Descricao,
@@ -160,8 +161,9 @@ namespace Connectamente.API.Controllers
             return new
             {
                 p.UsuarioId,
+                p.Usuario.Nome,
                 NomeCompleto = p.Usuario?.Nome + " " + p.Usuario?.Sobrenome,
-                Foto = p.Usuario?.Foto,
+                p.Usuario?.Foto,
                 p.CRP,
                 p.Descricao,
                 p.ModalidadeDeAtendimento,

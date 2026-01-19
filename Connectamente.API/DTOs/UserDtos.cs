@@ -7,7 +7,7 @@ namespace Connectamente.API.DTOs
     public class RegisterCompleteDto
     {
         public RegisterDto DadosUsuario { get; set; }
-        // Este campo é opcional: só vem preenchido se for psicólogo
+        // Rever isso aqui. 
         public PsicologoDto? DadosPsicologo { get; set; }
     }
     public class RegisterDto

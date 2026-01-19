@@ -4,6 +4,7 @@ using Connectamente.API.Models;
 using Connectamente.API.Services.Implementations;
 using Connectamente.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -127,7 +128,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // Isso limpa as redes conhecidas para que ele aceite os headers do proxy (comum em Docker/Hospedagens)
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 var app = builder.Build();
+
+// 1. Deve ser o primeiro para entender o protocolo original
+app.UseForwardedHeaders();
 
 // Garantir que o banco exista ao executar o projeto
 using (var scope = app.Services.CreateScope())
@@ -147,7 +158,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-//app.UseHttpsRedirection();  Se redireciona a autenticação da errado
+app.UseHttpsRedirection();  //Se redireciona a autenticação da errado
 
 app.UseStaticFiles();
 
