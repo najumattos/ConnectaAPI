@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260120141141_ProvavelmenteApagarei")]
-    partial class ProvavelmenteApagarei
+    [Migration("20260122164837_Connectamente")]
+    partial class Connectamente
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,13 +50,13 @@ namespace Connectamente.API.Migrations
                         {
                             AbordagemPsicologoId = -1,
                             AbordagemTerapeutica = 0,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
                         },
                         new
                         {
                             AbordagemPsicologoId = -2,
                             AbordagemTerapeutica = 1,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
                         });
                 });
 
@@ -85,13 +85,13 @@ namespace Connectamente.API.Migrations
                         {
                             CondicaoPsicologoId = -1,
                             CondicaoTerapeutica = 3,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
                         },
                         new
                         {
                             CondicaoPsicologoId = -2,
                             CondicaoTerapeutica = 13,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
                         });
                 });
 
@@ -146,13 +146,13 @@ namespace Connectamente.API.Migrations
                         new
                         {
                             PacientePsicologoId = -1,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                             TipoPaciente = 6
                         },
                         new
                         {
                             PacientePsicologoId = -2,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            PsicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                             TipoPaciente = 4
                         });
                 });
@@ -181,7 +181,7 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
-                            UsuarioId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            UsuarioId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                             CRP = "12345",
                             Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
                             ModalidadeDeAtendimento = 1
@@ -307,7 +307,7 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "867D9C11-C732-4740-953B-99763567BB45",
                             DataNascimento = new DateOnly(2002, 4, 1),
@@ -329,7 +329,7 @@ namespace Connectamente.API.Migrations
                         },
                         new
                         {
-                            Id = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b",
+                            Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
                             AccessFailedCount = 0,
                             ConcurrencyStamp = "F1A3E7E1-8812-4C6E-8C8B-885521C55355",
                             DataNascimento = new DateOnly(2001, 12, 19),
@@ -480,12 +480,12 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            UserId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                             RoleId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894"
                         },
                         new
                         {
-                            UserId = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b",
+                            UserId = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
                             RoleId = "ddf093a6-6cb5-4ff7-9a64-83da34aee005"
                         });
                 });

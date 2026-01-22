@@ -7,14 +7,6 @@ namespace Connectamente.API.Data;
 
 public class AppDbContext : IdentityDbContext<Usuario>
 {
-    // IDs das ROLES (Os Perfis/Cargos)
-    private const string ROLE_PSICOLOGO_ID = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
-    private const string ROLE_PACIENTE_ID = "ddf093a6-6cb5-4ff7-9a64-83da34aee005";
-
-    // IDs dos USUÁRIOS (As Pessoas)
-    private const string USER_ANA_JULIA_ID = "70f93f27-32b1-4de5-bee3-b0de2cf80047";
-    private const string USER_TAINARA_ID = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b";
-
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
@@ -60,72 +52,80 @@ public class AppDbContext : IdentityDbContext<Usuario>
             .HasOne(u => u.PsicologoResponsavel)
             .WithMany()
             .HasForeignKey(u => u.PsicologoResponsavelId);
-           // .OnDelete(DeleteBehavior.); tem qe ver isso ae
+        // .OnDelete(DeleteBehavior.); tem qe ver isso ae
         //falta EmocaoRegistro() e RegistroPensamento()
     }
 
-    private static void SeedAbordagemPsicologoPadrao(ModelBuilder builder) {        
+    private static void SeedAbordagemPsicologoPadrao(ModelBuilder builder)
+    {
+        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
 
         builder.Entity<AbordagemPsicologo>().HasData(
             new AbordagemPsicologo
             {
                 AbordagemPsicologoId = -1,
-                PsicologoId = USER_ANA_JULIA_ID,
+                PsicologoId = psicologoId,
                 AbordagemTerapeutica = Enums.AbordagemTerapeutica.TCC
             },
             new AbordagemPsicologo
             {
                 AbordagemPsicologoId = -2,
-                PsicologoId = USER_ANA_JULIA_ID,
+                PsicologoId = psicologoId,
                 AbordagemTerapeutica = Enums.AbordagemTerapeutica.Psicanalise
             }
         );
     }
-    private static void SeedCondicaoPsicologoPadrao(ModelBuilder builder) {
+    private static void SeedCondicaoPsicologoPadrao(ModelBuilder builder)
+    {
+        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
 
         builder.Entity<CondicaoPsicologo>().HasData(
             new CondicaoPsicologo
             {
                 CondicaoPsicologoId = -1,
-                PsicologoId = USER_ANA_JULIA_ID,
+                PsicologoId = psicologoId,
                 CondicaoTerapeutica = Enums.CondicaoTerapeutica.Gestacao
             },
             new CondicaoPsicologo
             {
                 CondicaoPsicologoId = -2,
-                PsicologoId = USER_ANA_JULIA_ID,
+                PsicologoId = psicologoId,
                 CondicaoTerapeutica = Enums.CondicaoTerapeutica.FobiaEspecifica
             }
         );
     }
     /*private static void SeedEmocaoRegistroPadrao(ModelBuilder builder) { }*/
-    private static void SeedPacientePsicologoPadrao(ModelBuilder builder) {
+    private static void SeedPacientePsicologoPadrao(ModelBuilder builder)
+    {
+        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
 
         builder.Entity<PacientePsicologo>().HasData(
             new PacientePsicologo
             {
                 PacientePsicologoId = -1,
-                PsicologoId = USER_ANA_JULIA_ID,
+                PsicologoId = psicologoId,
                 TipoPaciente = Enums.TipoPaciente.Familiar
             },
             new PacientePsicologo
             {
                 PacientePsicologoId = -2,
-                PsicologoId = USER_ANA_JULIA_ID,
+                PsicologoId = psicologoId,
                 TipoPaciente = Enums.TipoPaciente.Geriatrico
             }
         );
     }
     private static void SeedPsicologoPadrao(ModelBuilder builder)
     {
+        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
         builder.Entity<Psicologo>().HasData(
-        new Psicologo{
-                UsuarioId = USER_ANA_JULIA_ID,
-                CRP = "12345",
-                Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
-                ModalidadeDeAtendimento = Enums.ModalidadeAtendimento.Presencial
-            });              
-       
+        new Psicologo
+        {
+            UsuarioId = psicologoId,
+            CRP = "12345",
+            Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
+            ModalidadeDeAtendimento = Enums.ModalidadeAtendimento.Presencial
+        });
+
         //falta EmocaoRegistro() e RegistroPensamento()
     }
     /*private static void SeedRegistroPensamentoPadrao(ModelBuilder builder) { }*/
@@ -135,24 +135,24 @@ public class AppDbContext : IdentityDbContext<Usuario>
         List<IdentityRole> roles =
         [
             new IdentityRole() {
-               Id = ROLE_PSICOLOGO_ID,
+               Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                Name = "Psicologo",
                NormalizedName = "PSICOLOGO"
             },
             new IdentityRole() {
-               Id = ROLE_PACIENTE_ID,
+               Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
                Name = "Paciente",
                NormalizedName = "PACIENTE"
             },
         ];
         builder.Entity<IdentityRole>().HasData(roles);
         #endregion
-        
+
         string hashFixo = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==";
         #region Populate Usuário
         List<Usuario> usuarios = [
             new Usuario(){
-                Id = USER_ANA_JULIA_ID,
+                Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                 Email = "anajuliamattos02@gmail.com",
                 NormalizedEmail = "ANAJULIAMATTOS02@GMAIL.COM",
                 UserName = "anajuliamattos02@gmail.com",
@@ -169,7 +169,7 @@ public class AppDbContext : IdentityDbContext<Usuario>
     ConcurrencyStamp = "867D9C11-C732-4740-953B-99763567BB45"
             },
              new Usuario(){
-                Id = USER_TAINARA_ID,
+                Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
                 Email = "tainaravitsantos28@gmail.com",
                 NormalizedEmail = "TAINARAVITSANTOS28@GMAIL.COM",
                 UserName = "tainaravitsantos28@gmail.com",
@@ -186,7 +186,7 @@ public class AppDbContext : IdentityDbContext<Usuario>
             }
         ];
 
-       
+
         builder.Entity<Usuario>().HasData(usuarios);
         #endregion
 
