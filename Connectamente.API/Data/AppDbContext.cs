@@ -1,4 +1,5 @@
 ﻿using Connectamente.API.Data.Configurations;
+using Connectamente.API.Helpers;
 using Connectamente.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -32,69 +33,62 @@ public class AppDbContext : IdentityDbContext<Usuario>
     }
 
     private static void SeedAbordagemPsicologoPadrao(ModelBuilder builder)
-    {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
-
+    {      
         builder.Entity<AbordagemPsicologo>().HasData(
             new AbordagemPsicologo
             {
                 AbordagemPsicologoId = -1,
-                PsicologoId = psicologoId,
+                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
                 AbordagemTerapeutica = Enums.AbordagemTerapeutica.TCC
             },
             new AbordagemPsicologo
             {
                 AbordagemPsicologoId = -2,
-                PsicologoId = psicologoId,
+                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
                 AbordagemTerapeutica = Enums.AbordagemTerapeutica.Psicanalise
             }
         );
     }
     private static void SeedCondicaoPsicologoPadrao(ModelBuilder builder)
-    {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
-
+    {        
         builder.Entity<CondicaoPsicologo>().HasData(
             new CondicaoPsicologo
             {
                 CondicaoPsicologoId = -1,
-                PsicologoId = psicologoId,
+                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
                 CondicaoTerapeutica = Enums.CondicaoTerapeutica.Gestacao
             },
             new CondicaoPsicologo
             {
                 CondicaoPsicologoId = -2,
-                PsicologoId = psicologoId,
+                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
                 CondicaoTerapeutica = Enums.CondicaoTerapeutica.FobiaEspecifica
             }
         );
     }
    private static void SeedPacientePsicologoPadrao(ModelBuilder builder)
-    {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
-
+    {       
         builder.Entity<PacientePsicologo>().HasData(
             new PacientePsicologo
             {
                 PacientePsicologoId = -1,
-                PsicologoId = psicologoId,
+                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
                 TipoPaciente = Enums.TipoPaciente.Familiar
             },
             new PacientePsicologo
             {
                 PacientePsicologoId = -2,
-                PsicologoId = psicologoId,
+                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
                 TipoPaciente = Enums.TipoPaciente.Geriatrico
             }
         );
     }
     private static void SeedPsicologoPadrao(ModelBuilder builder)
     {
-        string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
         builder.Entity<Psicologo>().HasData(
         new Psicologo
         {
-            UsuarioId = psicologoId,
+            UsuarioId = SeedDataConstants.USER_ANA_JULIA_ID,
             CRP = "12345",
             Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
             ModalidadeDeAtendimento = Enums.ModalidadeAtendimento.Presencial
@@ -107,12 +101,12 @@ public class AppDbContext : IdentityDbContext<Usuario>
         List<IdentityRole> roles =
         [
             new IdentityRole() {
-               Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+               Id = SeedDataConstants.ROLE_PSICOLOGO_ID,
                Name = "Psicologo",
                NormalizedName = "PSICOLOGO"
             },
             new IdentityRole() {
-               Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
+               Id = SeedDataConstants.ROLE_PACIENTE_ID,
                Name = "Paciente",
                NormalizedName = "PACIENTE"
             },
@@ -123,17 +117,15 @@ public class AppDbContext : IdentityDbContext<Usuario>
         List<IdentityUserRole<string>> userRoles =
         [
             new IdentityUserRole<string>() {
-                UserId ="0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                UserId =SeedDataConstants.USER_ANA_JULIA_ID,
                 RoleId = roles[0].Id
             },
             new IdentityUserRole<string>() {
-                UserId = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
+                UserId = SeedDataConstants.USER_TAINARA_ID,
                 RoleId = roles[1].Id
             }
         ];
         builder.Entity<IdentityUserRole<string>>().HasData(userRoles);
         #endregion
     }
-
-
 }

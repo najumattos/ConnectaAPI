@@ -1,4 +1,5 @@
-﻿using Connectamente.API.Models;
+﻿using Connectamente.API.Helpers;
+using Connectamente.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +14,7 @@ namespace Connectamente.API.Data.Configurations
             #region Populate Usuário
             List<Usuario> usuarios = [
                 new Usuario(){
-                Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
+                Id = SeedDataConstants.USER_ANA_JULIA_ID,
                 UserName = "anajuliamattos02@gmail.com",
                 Email = "anajuliamattos02@gmail.com",
                 EmailConfirmed = true,
@@ -33,7 +34,7 @@ namespace Connectamente.API.Data.Configurations
                 TwoFactorEnabled = false
             },
              new Usuario(){
-                Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
+                Id = SeedDataConstants.USER_TAINARA_ID,
                 UserName = "tainaravitsantos28@gmail.com",
                 Email = "tainaravitsantos28@gmail.com",
                 EmailConfirmed = true,
