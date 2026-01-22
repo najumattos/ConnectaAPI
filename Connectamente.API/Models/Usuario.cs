@@ -9,8 +9,7 @@ namespace Connectamente.API.Models;
     [Table("Usuario")]
     public class Usuario : IdentityUser
     {
-    //o gemini me explicou que essa classe nao pode ter um campo de ID por causa do Identity mas no projeto interdisciplinar ta assim e que o identity tem um campo Id string
-
+    
     //nome e sobrenome separados para que o site possar referir-se ao usuario apenas pelo primeiro nome
     [Display(Name = "Nome do Usuário", Prompt = "Informe o nome")]
     [Required(ErrorMessage = "Informe o nome do Usuario")]

@@ -1,4 +1,5 @@
-﻿using Connectamente.API.Models;
+﻿using Connectamente.API.Data.Configurations;
+using Connectamente.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -21,39 +22,13 @@ public class AppDbContext : IdentityDbContext<Usuario>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+        PopulateRoles(builder);
+        builder.ApplyConfiguration(new UserConfiguration());
+
+        SeedPsicologoPadrao(builder);
         SeedAbordagemPsicologoPadrao(builder);
         SeedCondicaoPsicologoPadrao(builder);
-        //SeedEmocaoRegistroPadrao(builder);
         SeedPacientePsicologoPadrao(builder);
-        SeedPsicologoPadrao(builder);
-        //SeedRegistroPensamentoPadrao(builder)
-        SeedUsuarioPadrao(builder);
-
-        //IA
-        // Configuração para o relacionamento 1-N entre Psicologo e AbordagemPsicologo
-        builder.Entity<Psicologo>()
-      .HasMany(p => p.AbordagensTerapeuticas)
-      .WithOne(a => a.Psicologo)
-      .HasForeignKey(a => a.PsicologoId);
-
-        // Configuração para o relacionamento 1-N entre Psicologo e CondicaoPsicologo
-        builder.Entity<Psicologo>()
-      .HasMany(p => p.CondicoesTerapeuticas)
-      .WithOne(c => c.Psicologo)
-      .HasForeignKey(c => c.PsicologoId);
-
-        // Configuração para o relacionamento 1-N entre Psicologo e PacientePsicologo
-        builder.Entity<Psicologo>()
-      .HasMany(p => p.TiposPacientes)
-      .WithOne(c => c.Psicologo)
-      .HasForeignKey(c => c.PsicologoId);
-        // Relacionamento Paciente -> Psicologo Responsável
-        builder.Entity<Usuario>()
-            .HasOne(u => u.PsicologoResponsavel)
-            .WithMany()
-            .HasForeignKey(u => u.PsicologoResponsavelId);
-        // .OnDelete(DeleteBehavior.); tem qe ver isso ae
-        //falta EmocaoRegistro() e RegistroPensamento()
     }
 
     private static void SeedAbordagemPsicologoPadrao(ModelBuilder builder)
@@ -94,8 +69,7 @@ public class AppDbContext : IdentityDbContext<Usuario>
             }
         );
     }
-    /*private static void SeedEmocaoRegistroPadrao(ModelBuilder builder) { }*/
-    private static void SeedPacientePsicologoPadrao(ModelBuilder builder)
+   private static void SeedPacientePsicologoPadrao(ModelBuilder builder)
     {
         string psicologoId = "0b44ca04-f6b0-4a8f-a953-1f2330d30894";
 
@@ -128,10 +102,8 @@ public class AppDbContext : IdentityDbContext<Usuario>
 
         //falta EmocaoRegistro() e RegistroPensamento()
     }
-    /*private static void SeedRegistroPensamentoPadrao(ModelBuilder builder) { }*/
-    private static void SeedUsuarioPadrao(ModelBuilder builder)
-    {
-        #region Populate Roles - Perfis de Usuário
+    private static void PopulateRoles(ModelBuilder builder)
+    {     
         List<IdentityRole> roles =
         [
             new IdentityRole() {
@@ -146,59 +118,16 @@ public class AppDbContext : IdentityDbContext<Usuario>
             },
         ];
         builder.Entity<IdentityRole>().HasData(roles);
-        #endregion
-
-        string hashFixo = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==";
-        #region Populate Usuário
-        List<Usuario> usuarios = [
-            new Usuario(){
-                Id = "0b44ca04-f6b0-4a8f-a953-1f2330d30894",
-                Email = "anajuliamattos02@gmail.com",
-                NormalizedEmail = "ANAJULIAMATTOS02@GMAIL.COM",
-                UserName = "anajuliamattos02@gmail.com",
-                NormalizedUserName = "ANAJULIAMATTOS02@GMAIL.COM",
-                LockoutEnabled = true,
-                EmailConfirmed = true,
-                Nome = "Ana Julia",
-                Sobrenome = " Reis de Mattos",
-                DataNascimento = new DateOnly(2002, 4, 1),
-                Foto = "/img/usuarios/psicologo.png",
-                TipoPerfil = Enums.TipoPerfil.Psicologo,
-                PasswordHash = hashFixo,
-                SecurityStamp = "55952B9E-D8B4-46E0-9E1A-D790177726D6", // Valor fixo qualquer
-    ConcurrencyStamp = "867D9C11-C732-4740-953B-99763567BB45"
-            },
-             new Usuario(){
-                Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
-                Email = "tainaravitsantos28@gmail.com",
-                NormalizedEmail = "TAINARAVITSANTOS28@GMAIL.COM",
-                UserName = "tainaravitsantos28@gmail.com",
-                NormalizedUserName = "TAINARAVITSANTOS28@GMAIL.COM",
-                LockoutEnabled = true,
-                EmailConfirmed = true,
-                Nome = "Tainara Vitoria",
-                Sobrenome = " dos Santos",
-                DataNascimento = new DateOnly(2001, 12, 19),
-                Foto = "/img/usuarios/paciente.png",
-                PasswordHash = hashFixo,
-                SecurityStamp = "B06D441D-A7B0-4A9B-983D-4A47008C369B",
-                 ConcurrencyStamp = "F1A3E7E1-8812-4C6E-8C8B-885521C55355"
-            }
-        ];
-
-
-        builder.Entity<Usuario>().HasData(usuarios);
-        #endregion
-
+      
         #region Populate UserRole - Usuário com Perfil
         List<IdentityUserRole<string>> userRoles =
         [
             new IdentityUserRole<string>() {
-                UserId = usuarios[0].Id,
+                UserId ="0b44ca04-f6b0-4a8f-a953-1f2330d30894",
                 RoleId = roles[0].Id
             },
             new IdentityUserRole<string>() {
-                UserId = usuarios[1].Id,
+                UserId = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
                 RoleId = roles[1].Id
             }
         ];
