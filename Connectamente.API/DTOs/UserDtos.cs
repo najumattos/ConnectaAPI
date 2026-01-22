@@ -12,33 +12,25 @@ namespace Connectamente.API.DTOs
     }
     public class RegisterDto
     {
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Required][EmailAddress] public string Email { get; set; }
 
-        [Required]
-        [MinLength(6)]
-        public string Senha { get; set; }
+        [Required][MinLength(6)] public string Senha { get; set; }
 
-        [Required]
-        public string Nome { get; set; }
+        [Required] public string Nome { get; set; }
 
-        [Required]
-        public string Sobrenome { get; set; }
+        [Required] public string Sobrenome { get; set; }
 
-        public DateOnly DataNascimento { get; set; }
+        [Required] public DateOnly DataNascimento { get; set; }
 
+        [Required] public TipoPerfil TipoPerfil { get; set; }
         public IFormFile? Foto { get; set; }
 
-        public TipoPerfil TipoPerfil { get; set; }
     }
     public class PsicologoDto
     {
+        //do jeito que ta tem que fazer duas requisiçoes, uma pra obter os dados de usuario e outra pra obter os dados de psicologo
         public string CRP { get; set; }
-        public string Nome { get; set; }
         public string Descricao { get; set; }
-        public string NomeCompleto { get; set; }
-        public string Foto { get; set; }
         public ModalidadeAtendimento ModalidadeDeAtendimento { get; set; }
         public List<int> TiposPacienteIds { get; set; }
         public List<int> AbordagensIds { get; set; }
@@ -58,12 +50,12 @@ namespace Connectamente.API.DTOs
     {
         public string Id { get; set; }
         public string Email { get; set; }
+        public string NomeCompleto { get; set; }
         public string Nome { get; set; }
-        public string Sobrenome { get; set; }
         public string DataNascimento { get; set; }
         public string Foto { get; set; }
         public string TipoPerfil { get; set; }
-        public string PsicologoResponsavel { get; set; }
+        //public string PsicologoResponsavel { get; set; }
 
     }
 

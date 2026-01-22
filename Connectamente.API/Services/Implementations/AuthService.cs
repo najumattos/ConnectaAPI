@@ -30,118 +30,7 @@ public class AuthService : IAuthService
         _context = context;
     }
 
-    public async Task<AuthResponseDto> RegisterAsync(RegisterCompleteDto completeDto)
-    {
-        var registerDto = completeDto.DadosUsuario;
-        var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
-
-        if (existingUser != null)
-        {
-            throw new ArgumentException("Email já está em uso.");
-        }
-
-        string fotoPath = null;
-        if (registerDto.Foto != null)
-        {
-            fotoPath = await _fileService.SaveFileAsync(registerDto.Foto, "img/usuarios");
-        }
-
-        var user = new Usuario
-        {
-            UserName = registerDto.Email,
-            Email = registerDto.Email,
-            Nome = registerDto.Nome,
-            Sobrenome = registerDto.Sobrenome,
-            DataNascimento = registerDto.DataNascimento,
-            Foto = fotoPath,
-            TipoPerfil = registerDto.TipoPerfil
-        };
-
-        // 1. Cria o usuário no Identity
-        using var transaction = await _context.Database.BeginTransactionAsync();
-        try
-        {
-            var result = await _userManager.CreateAsync(user, registerDto.Senha);
-            if (!result.Succeeded)
-            {
-                if (fotoPath != null) await _fileService.DeleteFileAsync(fotoPath);
-                var errors = string.Join(", ", result.Errors.Select(e => TranslateIdentityErrors.TranslateErrorMessage(e.Code)));
-                throw new ArgumentException($"Falha ao criar usuário: {errors}");
-            }
-
-            // 2. Tratamento de Perfis
-            if (user.TipoPerfil == TipoPerfil.Psicologo && completeDto.DadosPsicologo != null)
-            {
-                await _userManager.AddToRoleAsync(user, "Psicologo");
-
-                var psicologo = new Psicologo
-                {
-                    UsuarioId = user.Id,
-                    CRP = completeDto.DadosPsicologo.CRP,
-                    Descricao = completeDto.DadosPsicologo.Descricao,
-                    ModalidadeDeAtendimento = completeDto.DadosPsicologo.ModalidadeDeAtendimento
-                };
-
-                psicologo.AbordagensTerapeuticas = completeDto.DadosPsicologo.AbordagensIds
-    .Select(id => new AbordagemPsicologo
-    {
-        PsicologoId = user.Id,
-        AbordagemTerapeutica = (AbordagemTerapeutica)id // Cast para o Enum
-    }).ToList();
-
-                psicologo.CondicoesTerapeuticas = completeDto.DadosPsicologo.CondicoesIds
-    .Select(id => new CondicaoPsicologo
-    {
-        PsicologoId = user.Id,
-        CondicaoTerapeutica = (CondicaoTerapeutica)id // Cast para o Enum
-    }).ToList();
-
-                psicologo.TiposPacientes = completeDto.DadosPsicologo.TiposPacienteIds
-     .Select(id => new PacientePsicologo
-     {
-         PsicologoId = user.Id,
-         TipoPaciente = (TipoPaciente)id // Cast para o Enum
-     }).ToList();
-
-                _context.Psicologos.Add(psicologo);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                // Garante que o paciente também tenha uma Role definida
-                await _userManager.AddToRoleAsync(user, "Paciente");
-            }
-
-            await transaction.CommitAsync();
-        }
-        catch (Exception)
-        {
-            await transaction.RollbackAsync();
-            // Se houve erro após salvar a foto, removemos ela do disco
-            if (fotoPath != null) await _fileService.DeleteFileAsync(fotoPath);
-            throw;
-        }
-
-        // 3. Monta o retorno
-        var userDto = new UserDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Nome = user.Nome,
-            Sobrenome = user.Sobrenome,
-            DataNascimento = user.DataNascimento.ToString(),
-            Foto = fotoPath != null ? _fileService.GetFileUrl(fotoPath) : null,
-            TipoPerfil = user.TipoPerfil.ToString()
-        };
-
-        return new AuthResponseDto
-        {
-            Token = _jwtService.GenerateToken(userDto),
-            Expiration = DateTime.UtcNow.AddMinutes(60),
-            User = userDto
-        };
-    }
-
+    
     public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
     {
         var user = await _userManager.FindByEmailAsync(loginDto.Email);
@@ -155,15 +44,16 @@ public class AuthService : IAuthService
         {
             throw new UnauthorizedAccessException("Usuário e/ou Senha Inválidos.");
         }
-
+        
         var userDto = new UserDto
         {
             Id = user.Id,
             Email = user.Email,
             Nome = user.Nome,
+            NomeCompleto = $"{user.Nome} {user.Sobrenome}",
             DataNascimento = user.DataNascimento.ToString(),
-            Foto = !string.IsNullOrEmpty(user.Foto) ? _fileService.GetFileUrl(user.Foto) : null,
-            TipoPerfil = user.TipoPerfil.ToString()
+            TipoPerfil = user.TipoPerfil.ToString(),
+            Foto = !string.IsNullOrEmpty(user.Foto) ? _fileService.GetFileUrl(user.Foto) : null
         };
         var token = _jwtService.GenerateToken(userDto);
 
@@ -188,9 +78,67 @@ public class AuthService : IAuthService
             Id = user.Id,
             Email = user.Email,
             Nome = user.Nome,
+            NomeCompleto = $"{user.Nome} {user.Sobrenome}",
             DataNascimento = user.DataNascimento.ToString(),
-            Foto = !string.IsNullOrEmpty(user.Foto) ? _fileService.GetFileUrl(user.Foto) : null,
-            TipoPerfil = user.TipoPerfil.ToString()
+            TipoPerfil = user.TipoPerfil.ToString(),
+            Foto = !string.IsNullOrEmpty(user.Foto) ? _fileService.GetFileUrl(user.Foto) : null
+        };
+    }
+
+    public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
+    {
+        var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
+        if (existingUser != null)
+        {
+            throw new ArgumentException("Email já está em uso.");
+        }
+
+        // Salvar a foto se existir
+        string fotoPath = null;
+        if (registerDto.Foto != null)
+        {
+            fotoPath = await _fileService.SaveFileAsync(registerDto.Foto, "img/usuarios");
+        }
+        var user = new Usuario
+        {
+            UserName = registerDto.Email,
+            Email = registerDto.Email,
+            Nome = registerDto.Nome,
+            Sobrenome = registerDto.Sobrenome,
+            DataNascimento = registerDto.DataNascimento,
+            Foto = fotoPath,
+            TipoPerfil = registerDto.TipoPerfil
+        };
+
+        var result = await _userManager.CreateAsync(user, registerDto.Senha);
+        if (!result.Succeeded)
+        {
+            if (fotoPath != null)
+                await _fileService.DeleteFileAsync(fotoPath);
+
+            var errors = string.Join(", ", result.Errors.Select(e => TranslateIdentityErrors.TranslateErrorMessage(e.Code)));
+            throw new ArgumentException($"Falha ao criar usuário: {errors}");
+        }
+
+        await _userManager.AddToRoleAsync(user, "Paciente");
+
+        var userDto = new UserDto
+        {
+            Id = user.Id,
+            Email = user.Email,
+            Nome = user.Nome,
+            NomeCompleto = $"{user.Nome} {user.Sobrenome}",
+            DataNascimento = user.DataNascimento.ToString(),
+            TipoPerfil = user.TipoPerfil.ToString(),
+            Foto = fotoPath != null ? _fileService.GetFileUrl(fotoPath) : null
+        };
+        var token = _jwtService.GenerateToken(userDto);
+
+        return new AuthResponseDto
+        {
+            Token = token,
+            Expiration = DateTime.UtcNow.AddMinutes(60),
+            User = userDto
         };
     }
 }

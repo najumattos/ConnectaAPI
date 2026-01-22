@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Connectamente.API.Migrations
 {
     /// <inheritdoc />
-    public partial class CorrigindoSeedsEIds : Migration
+    public partial class ProvavelmenteApagarei : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

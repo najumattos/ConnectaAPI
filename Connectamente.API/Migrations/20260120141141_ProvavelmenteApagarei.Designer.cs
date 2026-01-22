@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260119162807_CorrigindoSeedsEIds")]
-    partial class CorrigindoSeedsEIds
+    [Migration("20260120141141_ProvavelmenteApagarei")]
+    partial class ProvavelmenteApagarei
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
