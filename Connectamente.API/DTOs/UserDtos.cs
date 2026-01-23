@@ -4,13 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Connectamente.API.DTOs
 {
-    public class RegisterCompleteDto
-    {
-        public RegisterDto DadosUsuario { get; set; }
-        // Rever isso aqui. 
-        public PsicologoDto? DadosPsicologo { get; set; }
-    }
-    public class RegisterDto
+     public class RegisterDto
     {
         [Required][EmailAddress] public string Email { get; set; }
 
@@ -23,6 +17,9 @@ namespace Connectamente.API.DTOs
         [Required] public DateOnly DataNascimento { get; set; }
 
         [Required] public TipoPerfil TipoPerfil { get; set; }
+        
+        [Required] [Phone] public string Celular { get; set; }
+
         public IFormFile? Foto { get; set; }
 
     }
@@ -37,6 +34,15 @@ namespace Connectamente.API.DTOs
         public List<int> CondicoesIds { get; set; }
     }
 
+    public class PacienteDto {
+
+        public string ContatoEmergencia { get; set; }
+        public int QtdAcessos { get; set; }
+        public string HistoricoPaciente { get; set; }
+
+        public string PsicologoResponsavel { get; set; }
+        public List<int> RegistroSessoesId { get; set; }
+    }
     public class LoginDto
     {
         [Required]
@@ -53,10 +59,9 @@ namespace Connectamente.API.DTOs
         public string NomeCompleto { get; set; }
         public string Nome { get; set; }
         public string DataNascimento { get; set; }
+        public string Celular { get; set; }
         public string Foto { get; set; }
         public string TipoPerfil { get; set; }
-        //public string PsicologoResponsavel { get; set; }
-
     }
 
     public class AuthResponseDto

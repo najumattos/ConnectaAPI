@@ -26,11 +26,16 @@ public class AppDbContext : IdentityDbContext<Usuario>
         PopulateRoles(builder);
         builder.ApplyConfiguration(new UserConfiguration());
         builder.ApplyConfiguration(new PsicoConfigurations());
+        builder.ApplyConfiguration(new PacienteConfig());
         builder.ApplyConfiguration(new AbordagemConfig());
         builder.ApplyConfiguration(new CondicaoConfig());
-        builder.ApplyConfiguration(new PacienteConfig());
+        builder.ApplyConfiguration(new TipoPacienteConfig());
+        CascataConfigPsico(builder);
 
-        // Exemplo de configuração de cascata
+    }
+
+    private static void CascataConfigPsico(ModelBuilder builder)
+    {
         builder.Entity<AbordagemPsicologo>()
             .HasOne(a => a.Psicologo)
             .WithMany(p => p.AbordagensTerapeuticas)
@@ -48,9 +53,8 @@ public class AppDbContext : IdentityDbContext<Usuario>
            .WithMany(p => p.TiposPacientes)
            .HasForeignKey(a => a.PsicologoId)
            .OnDelete(DeleteBehavior.Cascade);
-
-  //tem que apagar as migrations e testar
     }
+
     private static void PopulateRoles(ModelBuilder builder)
     {     
         List<IdentityRole> roles =

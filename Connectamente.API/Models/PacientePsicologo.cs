@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Connectamente.API.Models
 {
+    //aqui é o tipoPaciente ex: Adolescente, idoso, gravida, etc
     [Table("PacientePsicologo")]
     public class PacientePsicologo
     {

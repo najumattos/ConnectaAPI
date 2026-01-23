@@ -36,8 +36,4 @@ public class Psicologo
     [Display(Name = "Abordagens Terapeuticas", Prompt = "Insira suas Abordagens Terapeuticas")]
     [Required(ErrorMessage = "Campo obrigatório")]
     public virtual ICollection<AbordagemPsicologo> AbordagensTerapeuticas { get; set; } = new List<AbordagemPsicologo>();
-
-
-
-
 }

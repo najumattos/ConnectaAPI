@@ -50,6 +50,7 @@ public class AuthService : IAuthService
             Id = user.Id,
             Email = user.Email,
             Nome = user.Nome,
+            Celular = user.PhoneNumber,
             NomeCompleto = $"{user.Nome} {user.Sobrenome}",
             DataNascimento = user.DataNascimento.ToString(),
             TipoPerfil = user.TipoPerfil.ToString(),
@@ -78,6 +79,7 @@ public class AuthService : IAuthService
             Id = user.Id,
             Email = user.Email,
             Nome = user.Nome,
+            Celular = user.PhoneNumber,
             NomeCompleto = $"{user.Nome} {user.Sobrenome}",
             DataNascimento = user.DataNascimento.ToString(),
             TipoPerfil = user.TipoPerfil.ToString(),
@@ -106,6 +108,7 @@ public class AuthService : IAuthService
             Nome = registerDto.Nome,
             Sobrenome = registerDto.Sobrenome,
             DataNascimento = registerDto.DataNascimento,
+            PhoneNumber = registerDto.Celular,
             Foto = fotoPath,
             TipoPerfil = registerDto.TipoPerfil
         };
@@ -127,6 +130,7 @@ public class AuthService : IAuthService
             Id = user.Id,
             Email = user.Email,
             Nome = user.Nome,
+            Celular = user.PhoneNumber,
             NomeCompleto = $"{user.Nome} {user.Sobrenome}",
             DataNascimento = user.DataNascimento.ToString(),
             TipoPerfil = user.TipoPerfil.ToString(),

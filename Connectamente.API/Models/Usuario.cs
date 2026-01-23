@@ -10,7 +10,6 @@ namespace Connectamente.API.Models;
     public class Usuario : IdentityUser
     {
     
-    //nome e sobrenome separados para que o site possar referir-se ao usuario apenas pelo primeiro nome
     [Display(Name = "Nome do Usuário", Prompt = "Informe o nome")]
     [Required(ErrorMessage = "Informe o nome do Usuario")]
     [StringLength(150)]
@@ -31,16 +30,7 @@ namespace Connectamente.API.Models;
     [StringLength(300)]
     public string Foto { get; set; }
 
-    //Cada dia que o usuario entra a contagem de acesso aumenta, esse dado é importante para contar "ofensivas" 
-    public int QtdAcessos { get; set; }
-
     public TipoPerfil TipoPerfil { get; set; } = TipoPerfil.Paciente;
-
-    //todo psicologo é um usuario mas se o tipo for paciente, ele pode ter um psicologo responsavel
-    //pode ser nulo pois nem todo usuario precisa ter um psicologo atribuido
-    public string? PsicologoResponsavelId { get; set; }
-    [ForeignKey("PsicologoResponsavelId")]
-    public virtual Psicologo? PsicologoResponsavel { get; set; }
-
-    // email, telefone e senha ja vem da IdentityUser
+    /*Cada dia que o usuario entra a contagem de acesso aumenta, esse dado é importante para contar "ofensivas" 
+    Esse dado é relevante pra paciente apenas*/    
 }

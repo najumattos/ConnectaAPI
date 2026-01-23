@@ -8,7 +8,6 @@ public class IdadeMinima : ValidationAttribute
     public IdadeMinima(int idadeMinima)
     {
         _idadeMinima = idadeMinima;
-        // Mensagem de erro padrão caso você esqueça de definir uma
         ErrorMessage = $"A idade mínima permitida é de {_idadeMinima} anos.";
     }
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
