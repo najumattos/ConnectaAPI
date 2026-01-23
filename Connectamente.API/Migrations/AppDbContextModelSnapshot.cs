@@ -510,7 +510,8 @@ namespace Connectamente.API.Migrations
                 {
                     b.HasOne("Connectamente.API.Models.Psicologo", "Psicologo")
                         .WithMany("AbordagensTerapeuticas")
-                        .HasForeignKey("PsicologoId");
+                        .HasForeignKey("PsicologoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Psicologo");
                 });
@@ -519,7 +520,8 @@ namespace Connectamente.API.Migrations
                 {
                     b.HasOne("Connectamente.API.Models.Psicologo", "Psicologo")
                         .WithMany("CondicoesTerapeuticas")
-                        .HasForeignKey("PsicologoId");
+                        .HasForeignKey("PsicologoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Psicologo");
                 });
@@ -539,7 +541,8 @@ namespace Connectamente.API.Migrations
                 {
                     b.HasOne("Connectamente.API.Models.Psicologo", "Psicologo")
                         .WithMany("TiposPacientes")
-                        .HasForeignKey("PsicologoId");
+                        .HasForeignKey("PsicologoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Psicologo");
                 });

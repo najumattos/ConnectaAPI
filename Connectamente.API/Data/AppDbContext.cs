@@ -25,76 +25,31 @@ public class AppDbContext : IdentityDbContext<Usuario>
         base.OnModelCreating(builder);
         PopulateRoles(builder);
         builder.ApplyConfiguration(new UserConfiguration());
+        builder.ApplyConfiguration(new PsicoConfigurations());
+        builder.ApplyConfiguration(new AbordagemConfig());
+        builder.ApplyConfiguration(new CondicaoConfig());
+        builder.ApplyConfiguration(new PacienteConfig());
 
-        SeedPsicologoPadrao(builder);
-        SeedAbordagemPsicologoPadrao(builder);
-        SeedCondicaoPsicologoPadrao(builder);
-        SeedPacientePsicologoPadrao(builder);
-    }
+        // Exemplo de configuração de cascata
+        builder.Entity<AbordagemPsicologo>()
+            .HasOne(a => a.Psicologo)
+            .WithMany(p => p.AbordagensTerapeuticas)
+            .HasForeignKey(a => a.PsicologoId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-    private static void SeedAbordagemPsicologoPadrao(ModelBuilder builder)
-    {      
-        builder.Entity<AbordagemPsicologo>().HasData(
-            new AbordagemPsicologo
-            {
-                AbordagemPsicologoId = -1,
-                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
-                AbordagemTerapeutica = Enums.AbordagemTerapeutica.TCC
-            },
-            new AbordagemPsicologo
-            {
-                AbordagemPsicologoId = -2,
-                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
-                AbordagemTerapeutica = Enums.AbordagemTerapeutica.Psicanalise
-            }
-        );
-    }
-    private static void SeedCondicaoPsicologoPadrao(ModelBuilder builder)
-    {        
-        builder.Entity<CondicaoPsicologo>().HasData(
-            new CondicaoPsicologo
-            {
-                CondicaoPsicologoId = -1,
-                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
-                CondicaoTerapeutica = Enums.CondicaoTerapeutica.Gestacao
-            },
-            new CondicaoPsicologo
-            {
-                CondicaoPsicologoId = -2,
-                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
-                CondicaoTerapeutica = Enums.CondicaoTerapeutica.FobiaEspecifica
-            }
-        );
-    }
-   private static void SeedPacientePsicologoPadrao(ModelBuilder builder)
-    {       
-        builder.Entity<PacientePsicologo>().HasData(
-            new PacientePsicologo
-            {
-                PacientePsicologoId = -1,
-                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
-                TipoPaciente = Enums.TipoPaciente.Familiar
-            },
-            new PacientePsicologo
-            {
-                PacientePsicologoId = -2,
-                PsicologoId = SeedDataConstants.USER_ANA_JULIA_ID,
-                TipoPaciente = Enums.TipoPaciente.Geriatrico
-            }
-        );
-    }
-    private static void SeedPsicologoPadrao(ModelBuilder builder)
-    {
-        builder.Entity<Psicologo>().HasData(
-        new Psicologo
-        {
-            UsuarioId = SeedDataConstants.USER_ANA_JULIA_ID,
-            CRP = "12345",
-            Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
-            ModalidadeDeAtendimento = Enums.ModalidadeAtendimento.Presencial
-        });
+        builder.Entity<CondicaoPsicologo>()
+            .HasOne(a => a.Psicologo)
+            .WithMany(p => p.CondicoesTerapeuticas)
+            .HasForeignKey(a => a.PsicologoId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        //falta EmocaoRegistro() e RegistroPensamento()
+        builder.Entity<PacientePsicologo>()
+           .HasOne(a => a.Psicologo)
+           .WithMany(p => p.TiposPacientes)
+           .HasForeignKey(a => a.PsicologoId)
+           .OnDelete(DeleteBehavior.Cascade);
+
+  //tem que apagar as migrations e testar
     }
     private static void PopulateRoles(ModelBuilder builder)
     {     
@@ -127,5 +82,5 @@ public class AppDbContext : IdentityDbContext<Usuario>
         ];
         builder.Entity<IdentityUserRole<string>>().HasData(userRoles);
         #endregion
-    }
+    }   
 }

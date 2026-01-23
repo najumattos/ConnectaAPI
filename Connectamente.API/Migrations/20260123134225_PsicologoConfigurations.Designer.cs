@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260122204150_AdcSeedDataConstants")]
-    partial class AdcSeedDataConstants
+    [Migration("20260123134225_PsicologoConfigurations")]
+    partial class PsicologoConfigurations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -513,7 +513,8 @@ namespace Connectamente.API.Migrations
                 {
                     b.HasOne("Connectamente.API.Models.Psicologo", "Psicologo")
                         .WithMany("AbordagensTerapeuticas")
-                        .HasForeignKey("PsicologoId");
+                        .HasForeignKey("PsicologoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Psicologo");
                 });
@@ -522,7 +523,8 @@ namespace Connectamente.API.Migrations
                 {
                     b.HasOne("Connectamente.API.Models.Psicologo", "Psicologo")
                         .WithMany("CondicoesTerapeuticas")
-                        .HasForeignKey("PsicologoId");
+                        .HasForeignKey("PsicologoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Psicologo");
                 });
@@ -542,7 +544,8 @@ namespace Connectamente.API.Migrations
                 {
                     b.HasOne("Connectamente.API.Models.Psicologo", "Psicologo")
                         .WithMany("TiposPacientes")
-                        .HasForeignKey("PsicologoId");
+                        .HasForeignKey("PsicologoId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Psicologo");
                 });
