@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
-using Connectamente.API.Models;
+using Connectamente.API.Models.RPD;
 
 namespace Connectamente.API.Controllers
 {

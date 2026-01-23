@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Connectamente.API.Models
+namespace Connectamente.API.Models.PsicologoModel
 {
     [Table("CondicaoPsicologo")]
-    public class CondicaoPsicologo
+    public class CondicoesTratadas
     {
         [Key]
         public int CondicaoPsicologoId { get; set; }

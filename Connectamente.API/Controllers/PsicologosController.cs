@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
 using Connectamente.API.Models;
 using Connectamente.API.DTOs;
+using Connectamente.API.Models.Psicologo;
 
 namespace Connectamente.API.Controllers
 {
@@ -64,17 +65,17 @@ namespace Connectamente.API.Controllers
             // Atualiza Abordagens (Remove as atuais e adiciona as novas do DTO)
             _context.AbordagensPsicologo.RemoveRange(p.AbordagensTerapeuticas);
             p.AbordagensTerapeuticas = psicologoDto.AbordagensIds
-                .Select(id => new AbordagemPsicologo { AbordagemTerapeutica = (Enums.AbordagemTerapeutica)id }).ToList();
+                .Select(id => new AbordagensUtilizadas { AbordagemTerapeutica = (Enums.AbordagemTerapeutica)id }).ToList();
 
             // Atualiza Condições (Remove as atuais e adiciona as novas do DTO)
             _context.CondicoesTerapeuticas.RemoveRange(p.CondicoesTerapeuticas);
             p.CondicoesTerapeuticas = psicologoDto.CondicoesIds
-                .Select(id => new CondicaoPsicologo { CondicaoTerapeutica = (Enums.CondicaoTerapeutica)id }).ToList();
+                .Select(id => new CondicoesTratadas { CondicaoTerapeutica = (Enums.CondicaoTerapeutica)id }).ToList();
 
             // Atualiza Tipos de Paciente (Remove as atuais e adiciona as novas do DTO)
             _context.TiposPaciente.RemoveRange(p.TiposPacientes);
             p.TiposPacientes = psicologoDto.TiposPacienteIds
-                .Select(id => new PacientePsicologo { TipoPaciente = (Enums.TipoPaciente)id }).ToList();
+                .Select(id => new TiposPacienteTratados { TipoPaciente = (Enums.TipoPaciente)id }).ToList();
 
             try
             {
@@ -105,15 +106,15 @@ namespace Connectamente.API.Controllers
                 ModalidadeDeAtendimento = psicologoDto.ModalidadeDeAtendimento,
                 // Mapeando as listas a partir dos IDs do DTO
                 AbordagensTerapeuticas = psicologoDto.AbordagensIds
-                .Select(id => new AbordagemPsicologo
+                .Select(id => new AbordagensUtilizadas
                 { AbordagemTerapeutica = (Enums.AbordagemTerapeutica)id }).ToList(),
 
                 CondicoesTerapeuticas = psicologoDto.CondicoesIds
-                .Select(id => new CondicaoPsicologo
+                .Select(id => new CondicoesTratadas
                 { CondicaoTerapeutica = (Enums.CondicaoTerapeutica)id }).ToList(),
 
                 TiposPacientes = psicologoDto.TiposPacienteIds
-                .Select(id => new PacientePsicologo { TipoPaciente = (Enums.TipoPaciente)id }).ToList()
+                .Select(id => new TiposPacienteTratados { TipoPaciente = (Enums.TipoPaciente)id }).ToList()
             };
 
             _context.Psicologos.Add(psicologo);

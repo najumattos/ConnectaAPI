@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Connectamente.API.Models
+namespace Connectamente.API.Models.Paciente.Paciente
 {
     [Table("RegistroSessao")]
     public class RegistroSessao

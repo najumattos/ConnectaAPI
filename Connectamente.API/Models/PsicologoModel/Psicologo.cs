@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Connectamente.API.Models;
+namespace Connectamente.API.Models.PsicologoModel;
 
 [Table("Psicologo")]
 public class Psicologo
@@ -27,13 +27,13 @@ public class Psicologo
 
     [Display(Name = "Tipo paciente que você atende")]
     [Required(ErrorMessage = "Campo obrigatório")]
-    public virtual ICollection<PacientePsicologo> TiposPacientes { get; set; } = new List<PacientePsicologo>();
+    public virtual ICollection<TiposPacienteTratados> TiposPacientes { get; set; } = new List<TiposPacienteTratados>();
 
     [Display(Name = "Tipo de condições que você trata")]
     [Required(ErrorMessage = "Campo obrigatório")]
-    public virtual ICollection<CondicaoPsicologo> CondicoesTerapeuticas { get; set; } = new List<CondicaoPsicologo>();
+    public virtual ICollection<CondicoesTratadas> CondicoesTerapeuticas { get; set; } = new List<CondicoesTratadas>();
 
     [Display(Name = "Abordagens Terapeuticas", Prompt = "Insira suas Abordagens Terapeuticas")]
     [Required(ErrorMessage = "Campo obrigatório")]
-    public virtual ICollection<AbordagemPsicologo> AbordagensTerapeuticas { get; set; } = new List<AbordagemPsicologo>();
+    public virtual ICollection<AbordagensUtilizadas> AbordagensTerapeuticas { get; set; } = new List<AbordagensUtilizadas>();
 }

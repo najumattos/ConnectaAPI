@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Data.Configurations
 {
-    public class UserConfiguration : IEntityTypeConfiguration<Usuario>
+    public class UserConfig : IEntityTypeConfiguration<Usuario>
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Usuario> builder)
         {

@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Connectamente.API.Models;
+namespace Connectamente.API.Models.PsicologoModel;
 
 [Table("AbordagemPsicologo")]
-public class AbordagemPsicologo
+public class AbordagensUtilizadas
 {
     [Key]
     public int AbordagemPsicologoId { get; set; }
@@ -16,6 +16,6 @@ public class AbordagemPsicologo
 
     public string PsicologoId { get; set; }// Deve ser string porque UsuarioId no Identity é string
     [ForeignKey("PsicologoId")]
-    public virtual Psicologo Psicologo{ get; set; }
+    public virtual Psicologo Psicologo { get; set; }
 
 }

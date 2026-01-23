@@ -2,11 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Connectamente.API.Models
+namespace Connectamente.API.Models.PsicologoModel
 {
     //aqui é o tipoPaciente ex: Adolescente, idoso, gravida, etc
     [Table("PacientePsicologo")]
-    public class PacientePsicologo
+    public class TiposPacienteTratados
     {
         [Key]
         public int PacientePsicologoId { get; set; }

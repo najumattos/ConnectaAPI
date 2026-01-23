@@ -1,6 +1,8 @@
 ﻿using Connectamente.API.Data.Configurations;
 using Connectamente.API.Helpers;
 using Connectamente.API.Models;
+using Connectamente.API.Models.Psicologo;
+using Connectamente.API.Models.RPD;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,20 +14,20 @@ public class AppDbContext : IdentityDbContext<Usuario>
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
-    public DbSet<AbordagemPsicologo> AbordagensPsicologo { get; set; }
-    public DbSet<CondicaoPsicologo> CondicoesTerapeuticas { get; set; }
+    public DbSet<AbordagensUtilizadas> AbordagensPsicologo { get; set; }
+    public DbSet<CondicoesTratadas> CondicoesTerapeuticas { get; set; }
     public DbSet<EmocaoRegistro> EmocoesRegistro { get; set; }
     public DbSet<Psicologo> Psicologos { get; set; }
     public DbSet<RegistroPensamento> RegistroPensamentos { get; set; }
-    public DbSet<PacientePsicologo> TiposPaciente { get; set; }
+    public DbSet<TiposPacienteTratados> TiposPaciente { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         PopulateRoles(builder);
-        builder.ApplyConfiguration(new UserConfiguration());
-        builder.ApplyConfiguration(new PsicoConfigurations());
+        builder.ApplyConfiguration(new UserConfig());
+        builder.ApplyConfiguration(new PsicoConfig());
         builder.ApplyConfiguration(new PacienteConfig());
         builder.ApplyConfiguration(new AbordagemConfig());
         builder.ApplyConfiguration(new CondicaoConfig());
@@ -36,19 +38,19 @@ public class AppDbContext : IdentityDbContext<Usuario>
 
     private static void CascataConfigPsico(ModelBuilder builder)
     {
-        builder.Entity<AbordagemPsicologo>()
+        builder.Entity<AbordagensUtilizadas>()
             .HasOne(a => a.Psicologo)
             .WithMany(p => p.AbordagensTerapeuticas)
             .HasForeignKey(a => a.PsicologoId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<CondicaoPsicologo>()
+        builder.Entity<CondicoesTratadas>()
             .HasOne(a => a.Psicologo)
             .WithMany(p => p.CondicoesTerapeuticas)
             .HasForeignKey(a => a.PsicologoId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<PacientePsicologo>()
+        builder.Entity<TiposPacienteTratados>()
            .HasOne(a => a.Psicologo)
            .WithMany(p => p.TiposPacientes)
            .HasForeignKey(a => a.PsicologoId)

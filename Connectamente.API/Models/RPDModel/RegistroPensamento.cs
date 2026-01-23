@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Connectamente.API.Models;
+namespace Connectamente.API.Models.RPD;
 
 [Table("RegistroPensamento")]
 public class RegistroPensamento
@@ -14,11 +14,11 @@ public class RegistroPensamento
     [StringLength(255)]
     public string CaminhoArquivoRegistro { get; set; }
 
-    public string UsuarioId { get; set; } 
-    [ForeignKey("UsuarioId")] 
+    public string UsuarioId { get; set; }
+    [ForeignKey("UsuarioId")]
     public virtual Usuario Usuario { get; set; }
 
     //nao sei o quanto isso aqui ta certo
-   /* public ICollection<EmocaoRegistro> EmocoesIniciais { get; set; }
-    public ICollection<EmocaoRegistro> EmocoesFinais { get; set; }*/
+    /* public ICollection<EmocaoRegistro> EmocoesIniciais { get; set; }
+     public ICollection<EmocaoRegistro> EmocoesFinais { get; set; }*/
 }
