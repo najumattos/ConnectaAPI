@@ -1,7 +1,10 @@
 ﻿using Connectamente.API.Data.Configurations;
+using Connectamente.API.Data.Configurations.PacienteConfig;
+using Connectamente.API.Data.Configurations.PsicologoConfig;
 using Connectamente.API.Helpers;
 using Connectamente.API.Models;
-using Connectamente.API.Models.Psicologo;
+using Connectamente.API.Models.PacienteModel;
+using Connectamente.API.Models.PsicologoModel;
 using Connectamente.API.Models.RPD;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -9,17 +12,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Data;
 
-public class AppDbContext : IdentityDbContext<Usuario>
+public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<Usuario>(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-    }
     public DbSet<AbordagensUtilizadas> AbordagensPsicologo { get; set; }
     public DbSet<CondicoesTratadas> CondicoesTerapeuticas { get; set; }
     public DbSet<EmocaoRegistro> EmocoesRegistro { get; set; }
     public DbSet<Psicologo> Psicologos { get; set; }
     public DbSet<RegistroPensamento> RegistroPensamentos { get; set; }
     public DbSet<TiposPacienteTratados> TiposPaciente { get; set; }
+    public DbSet<Paciente> Pacientes { get; set; }
+    public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<RegistroSessao> RegistrosSesoes { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -27,11 +30,15 @@ public class AppDbContext : IdentityDbContext<Usuario>
         base.OnModelCreating(builder);
         PopulateRoles(builder);
         builder.ApplyConfiguration(new UserConfig());
-        builder.ApplyConfiguration(new PsicoConfig());
+
         builder.ApplyConfiguration(new PacienteConfig());
+        builder.ApplyConfiguration(new RegistroSessaoConfig());
+
+        builder.ApplyConfiguration(new PsicoConfig());
         builder.ApplyConfiguration(new AbordagemConfig());
         builder.ApplyConfiguration(new CondicaoConfig());
         builder.ApplyConfiguration(new TipoPacienteConfig());
+       
         CascataConfigPsico(builder);
 
     }

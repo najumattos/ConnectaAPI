@@ -1,5 +1,5 @@
 ﻿using Connectamente.API.Helpers;
-using Connectamente.API.Models.Psicologo;
+using Connectamente.API.Models.PsicologoModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

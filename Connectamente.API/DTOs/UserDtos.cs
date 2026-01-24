@@ -1,5 +1,4 @@
 ﻿using Connectamente.API.Enums;
-using Connectamente.API.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Connectamente.API.DTOs
@@ -70,4 +69,5 @@ namespace Connectamente.API.DTOs
         public DateTime Expiration { get; set; }
         public UserDto User { get; set; } = null!;
     }
+  
 }

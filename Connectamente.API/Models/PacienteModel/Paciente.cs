@@ -1,5 +1,4 @@
-﻿using Connectamente.API.Models.Paciente.Paciente;
-using Connectamente.API.Models.PsicologoModel;
+﻿using Connectamente.API.Models.PsicologoModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,7 +12,7 @@ public class Paciente
     public string UsuarioId { get; set; }
     [ForeignKey("UsuarioId")]
     public virtual Usuario Usuario { get; set; }
-
+                                                           
     [Required] public string ContatoEmergencia { get; set; }
 
     public int QtdAcessos { get; set; }
@@ -22,11 +21,7 @@ public class Paciente
     [StringLength(1000)]
     [Required(ErrorMessage = "Campo obrigatório")]
     public string HistoricoPaciente { get; set; }
-
-    public int RegistroSessaoId { get; set; }
-    [ForeignKey("RegistroSessaoId")]
-    public virtual ICollection<RegistroSessao> RegistroSessoes { get; set; }
-
+   
     public string PsicologoResponsavelId { get; set; }
     [ForeignKey("PsicologoResponsavelId")]
     public virtual Psicologo PsicologoResponsavel { get; set; }

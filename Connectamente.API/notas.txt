@@ -339,8 +339,8 @@ app.Run();
 
 
 17. Executar no terminal para Criar os Controllers:
-    dotnet aspnet-codegenerator controller -name PsicologosController -async -api -m Psicologo -dc AppDbContext -outDir Controllers
-    dotnet aspnet-codegenerator controller -name ProdutosController -async -api -m Produto -dc AppDbContext -outDir Controllers
+    dotnet aspnet-codegenerator controller -name UsuariosController -async -api -m Usuario -dc AppDbContext -outDir Controllers
+    dotnet aspnet-codegenerator controller -name RegistrosSessoesController -async -api -m RegistroSessao -dc AppDbContext -outDir Controllers
 
 
 

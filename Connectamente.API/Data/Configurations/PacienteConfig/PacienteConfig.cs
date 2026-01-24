@@ -1,10 +1,9 @@
 ﻿using Connectamente.API.Helpers;
-using Connectamente.API.Models.Paciente;
-using Connectamente.API.Models.Paciente.Paciente;
+using Connectamente.API.Models.PacienteModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Connectamente.API.Data.Configurations;
+namespace Connectamente.API.Data.Configurations.PacienteConfig;
 
 public class PacienteConfig : IEntityTypeConfiguration<Paciente>
 {
@@ -16,8 +15,8 @@ public class PacienteConfig : IEntityTypeConfiguration<Paciente>
                 ContatoEmergencia = "14999009858",
                 QtdAcessos = 0, //contar automaticamente
                 HistoricoPaciente = "historico paciente",
-                PsicologoResponsavelId = SeedDataConstants.USER_ANA_JULIA_ID                    
-             }   
+                PsicologoResponsavelId = SeedDataConstants.USER_ANA_JULIA_ID,
+             }                  
              ];
         builder.HasData(pacientes);
     }

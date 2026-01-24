@@ -1,6 +1,5 @@
 ﻿using Connectamente.API.Helpers;
 using Connectamente.API.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Data.Configurations

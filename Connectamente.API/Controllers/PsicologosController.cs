@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
 using Connectamente.API.Models;
 using Connectamente.API.DTOs;
-using Connectamente.API.Models.Psicologo;
+using Connectamente.API.Models.PsicologoModel;
 
 namespace Connectamente.API.Controllers
 {
@@ -153,7 +153,7 @@ namespace Connectamente.API.Controllers
           .Include(p => p.CondicoesTerapeuticas)
           .Include(p => p.TiposPacientes)
           .FirstOrDefaultAsync(p => p.UsuarioId == id);
-        }
+        }                                             
         private static object MapearParaResposta(Psicologo p)
         {
             /*O conceito de "Flattening" (Achatamento)
