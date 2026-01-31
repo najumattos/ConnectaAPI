@@ -86,6 +86,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 // Registro dos Serviços Customizados
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 // Configuração do CORS
 builder.Services.AddCors(options =>

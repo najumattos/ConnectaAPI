@@ -1,122 +1,92 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
-using Connectamente.API.Models;
+using Connectamente.API.DTOs;
+using Connectamente.API.Services.Interfaces;
 
-namespace Connectamente.API.Controllers
+namespace Connectamente.API.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class UsuariosController(AppDbContext context, IUsuarioService usuarioService) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsuariosController : ControllerBase
+    private readonly AppDbContext _context = context;
+    private readonly IUsuarioService _usuarioService = usuarioService;
+
+    // GET: api/Usuarios
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetUsuarios()
     {
-        private readonly AppDbContext _context;
+        var resultado = await _usuarioService.ObterTodosUsuarios();
 
-        public UsuariosController(AppDbContext context)
+        return Ok(resultado);
+    }
+
+    // GET: api/Usuarios/5
+    [HttpGet("{id}")]
+    public async Task<ActionResult<UserDto>> GetUsuario(string id)
+    {
+        var usuario = await _usuarioService.ObterUsuarioPorId(id);
+
+        if (usuario == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: api/Usuarios
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
+        return usuario;
+    }
+
+    // PUT: api/Usuarios/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutUsuario(string id, IFormFile? arquivo, [FromForm] UserUpdateDto usuarioUpdateDto)
+    {
+        try
         {
-            return await _context.Usuarios.ToListAsync();
+            var usuarioAtualizado = await _usuarioService.AtualizarUsuario(id, arquivo, usuarioUpdateDto);
+            return Ok(usuarioAtualizado);
         }
-
-        // GET: api/Usuarios/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Usuario>> GetUsuario(string id)
+        catch (Exception ex)
         {
-            var usuario = await _context.Usuarios.FindAsync(id);
-
-            if (usuario == null)
+            if (!_usuarioService.UsuarioExists(id))
             {
-                return NotFound();
+                return NotFound("Usuário não encontrado.");
             }
-
-            return usuario;
+            return BadRequest(ex.Message);
         }
+    }
 
-        // PUT: api/Usuarios/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsuario(string id, Usuario usuario)
+    // POST: api/Usuarios
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    //post é o registro ne, então nao faz sentido ter dois
+    /*[HttpPost]
+    public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
+    {
+        _context.Usuarios.Add(usuario);
+        try
         {
-            if (id != usuario.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(usuario).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UsuarioExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Usuarios
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
-        {
-            _context.Usuarios.Add(usuario);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (UsuarioExists(usuario.Id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
-        }
-
-        // DELETE: api/Usuarios/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsuario(string id)
-        {
-            var usuario = await _context.Usuarios.FindAsync(id);
-            if (usuario == null)
-            {
-                return NotFound();
-            }
-
-            _context.Usuarios.Remove(usuario);
             await _context.SaveChangesAsync();
-
-            return NoContent();
         }
-
-        private bool UsuarioExists(string id)
+        catch (DbUpdateException)
         {
-            return _context.Usuarios.Any(e => e.Id == id);
+            if (_usuarioService.UsuarioExists(usuario.Id))
+            {
+                return Conflict();
+            }
         }
+
+        return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
+    }          */
+
+    // DELETE: api/Usuarios/5
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUsuario(string id)
+    {
+        var usuario = await _usuarioService.DeletarUsuario(id);
+        if (usuario == null)
+        {
+            return NotFound();
+        }
+        return NoContent();
     }
 }
