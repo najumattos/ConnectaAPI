@@ -1,11 +1,10 @@
-﻿using Connectamente.API.DTOs;
-using Connectamente.API.Services.Interfaces;
+﻿using Connectamente.API.DTOs.UsersDTOs;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Connectamente.API.Services.Implementations;
+namespace Connectamente.API.Services.JwtService;
 
 
 public class JwtService : IJwtService
@@ -32,7 +31,7 @@ public class JwtService : IJwtService
         {
         new Claim(ClaimTypes.NameIdentifier, user.Id),
         new Claim(ClaimTypes.Email, user.Email!),
-        new Claim(ClaimTypes.Name, user.Nome),        
+        new Claim(ClaimTypes.Name, user.Nome),
         new Claim("foto", user.Foto ?? "/Img/Usuarios/no-photo.png"),
         new Claim(ClaimTypes.Role, user.TipoPerfil.ToString()),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

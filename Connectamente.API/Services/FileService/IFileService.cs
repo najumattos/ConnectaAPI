@@ -1,4 +1,4 @@
-﻿namespace Connectamente.API.Services.Interfaces;
+﻿namespace Connectamente.API.Services.FileService;
 
 public interface IFileService
 {

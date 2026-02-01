@@ -1,8 +1,10 @@
 using Connectamente.API.Data;
 using Connectamente.API.Middleware;
 using Connectamente.API.Models;
-using Connectamente.API.Services.Implementations;
-using Connectamente.API.Services.Interfaces;
+using Connectamente.API.Services.Auth;
+using Connectamente.API.Services.FileService;
+using Connectamente.API.Services.JwtService;
+using Connectamente.API.Services.UsuarioService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;

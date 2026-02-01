@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
 using Connectamente.API.Models;
-using Connectamente.API.DTOs;
 using Connectamente.API.Models.PsicologoModel;
+using Connectamente.API.DTOs.PsicologoDTOs;
 
 namespace Connectamente.API.Controllers
 {
@@ -99,7 +99,6 @@ namespace Connectamente.API.Controllers
 
             var psicologo = new Psicologo
             {
-                //ta aparecendo os campos de nome e sobrenome
                 UsuarioId = usuarioId,
                 CRP = psicologoDto.CRP,
                 Descricao = psicologoDto.Descricao,
@@ -133,6 +132,10 @@ namespace Connectamente.API.Controllers
 
             if (usuario != null)
             {
+                if (usuario.TipoPerfil == Enums.TipoPerfil.Paciente)
+                {
+                    return BadRequest("Psicologo não encontrado");
+                }
                 var result = await _userManager.DeleteAsync(usuario);
                 if (!result.Succeeded) return BadRequest(result.Errors);
             }

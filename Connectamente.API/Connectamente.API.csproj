@@ -27,4 +27,9 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\PsicologoService\" />
+    <Folder Include="Services\PacienteService\" />
+  </ItemGroup>
+
 </Project>

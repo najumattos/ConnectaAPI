@@ -1,10 +1,11 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.DTOs;
+using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Models;
-using Connectamente.API.Services.Interfaces;
+using Connectamente.API.Services.FileService;
 using Microsoft.EntityFrameworkCore;
 
-namespace Connectamente.API.Services.Implementations;
+namespace Connectamente.API.Services.UsuarioService;
 
 public class UsuarioService(AppDbContext context, IFileService fileService) : IUsuarioService
 {
@@ -21,8 +22,8 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         }
 
         AtualizarCampos(usuarioBanco, usuarioUpdateDto);
- // Salvamos tudo de uma única vez (Uma única viagem ao banco!)
- await _context.SaveChangesAsync();
+        // Salvamos tudo de uma única vez (Uma única viagem ao banco!)
+        await _context.SaveChangesAsync();
         return MapearParaResposta(usuarioBanco);
     }
 
@@ -37,7 +38,7 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
             await _fileService.DeleteFileAsync(usuario.Foto);
         }
 
-       var novoPath = await _fileService.SaveFileAsync(novaFoto, "img/usuarios");
+        var novoPath = await _fileService.SaveFileAsync(novaFoto, "img/usuarios");
 
         // 3. Atualiza o caminho da string no banco de dados
         usuario.Foto = novoPath;
@@ -58,7 +59,7 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         if (!string.IsNullOrWhiteSpace(userUpdateDto.Celular))
             u.PhoneNumber = userUpdateDto.Celular;
     }
-   
+
     public bool UsuarioExists(string id)
     {
         return _context.Usuarios.Any(e => e.Id == id);
@@ -74,13 +75,14 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         return MapearParaResposta(u);
     }
 
-    public async Task<IEnumerable<UserDto>> ObterTodosUsuarios() {
+    public async Task<IEnumerable<UserDto>> ObterTodosUsuarios()
+    {
         var usuarios = await _context.Usuarios
            .AsNoTracking()
            .ToListAsync();
-       return usuarios.Select(u => MapearParaResposta(u));
+        return usuarios.Select(u => MapearParaResposta(u));
 
-        
+
     }
     public UserDto MapearParaResposta(Usuario u)
     {
@@ -107,7 +109,7 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         var usuario = await _context.Usuarios.FindAsync(id);
         if (usuario == null)
         {
-            return null; 
+            return null;
         }
         _context.Usuarios.Remove(usuario);
         await _context.SaveChangesAsync();

@@ -1,6 +1,7 @@
 ﻿using Connectamente.API.DTOs;
+using Connectamente.API.DTOs.UsersDTOs;
 
-namespace Connectamente.API.Services.Interfaces;
+namespace Connectamente.API.Services.AuthService;
 
 public interface IAuthService
 {

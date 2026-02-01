@@ -1,50 +1,38 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.DTOs;
-using Connectamente.API.Enums;
+using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Helpers;
 using Connectamente.API.Models;
-using Connectamente.API.Services.Interfaces;
+using Connectamente.API.Services.FileService;
+using Connectamente.API.Services.JwtService;
+using Connectamente.API.Services.UsuarioService;
 using Microsoft.AspNetCore.Identity;
 
-namespace Connectamente.API.Services.Implementations;
+namespace Connectamente.API.Services.AuthService;
 
-public class AuthService : IAuthService
-{
-    private readonly UserManager<Usuario> _userManager;
-    private readonly SignInManager<Usuario> _signInManager;
-    private readonly IJwtService _jwtService;
-    private readonly IFileService _fileService;
-    private readonly AppDbContext _context;
-    public AuthService(
-        UserManager<Usuario> userManager,
-        SignInManager<Usuario> signInManager,
-        IJwtService jwtService,
-        IFileService fileService,
-        AppDbContext context
-    )
-    {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _jwtService = jwtService;
-        _fileService = fileService;
-        _context = context;
-    }
+public class AuthService(
+    UserManager<Usuario> userManager,
+    SignInManager<Usuario> signInManager,
+    IJwtService jwtService,
+    IFileService fileService,
+    IUsuarioService usuarioService
+    ) : IAuthService
+{    
 
-    
     public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
     {
-        var user = await _userManager.FindByEmailAsync(loginDto.Email);
+        var user = await userManager.FindByEmailAsync(loginDto.Email);
         if (user == null)
         {
             throw new UnauthorizedAccessException("Usuário e/ou Senha Inválidos.");
         }
 
-        var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Senha, false);
+        var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Senha, false);
         if (!result.Succeeded)
         {
             throw new UnauthorizedAccessException("Usuário e/ou Senha Inválidos.");
         }
-        
+
         var userDto = new UserDto
         {
             Id = user.Id,
@@ -54,9 +42,9 @@ public class AuthService : IAuthService
             NomeCompleto = $"{user.Nome} {user.Sobrenome}",
             DataNascimento = user.DataNascimento.ToString(),
             TipoPerfil = user.TipoPerfil.ToString(),
-            Foto = !string.IsNullOrEmpty(user.Foto) ? _fileService.GetFileUrl(user.Foto) : null
+            Foto = !string.IsNullOrEmpty(user.Foto) ? fileService.GetFileUrl(user.Foto) : null
         };
-        var token = _jwtService.GenerateToken(userDto);
+        var token = jwtService.GenerateToken(userDto);
 
         return new AuthResponseDto
         {
@@ -68,7 +56,7 @@ public class AuthService : IAuthService
 
     public async Task<UserDto> GetUserByIdAsync(string userId)
     {
-        var user = await _userManager.FindByIdAsync(userId);
+        var user = await userManager.FindByIdAsync(userId);
         if (user == null)
         {
             throw new KeyNotFoundException("Usuário não encontrado.");
@@ -83,23 +71,23 @@ public class AuthService : IAuthService
             NomeCompleto = $"{user.Nome} {user.Sobrenome}",
             DataNascimento = user.DataNascimento.ToString(),
             TipoPerfil = user.TipoPerfil.ToString(),
-            Foto = !string.IsNullOrEmpty(user.Foto) ? _fileService.GetFileUrl(user.Foto) : null
+            Foto = !string.IsNullOrEmpty(user.Foto) ? fileService.GetFileUrl(user.Foto) : null
         };
     }
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
     {
-        var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
+        var existingUser = await userManager.FindByEmailAsync(registerDto.Email);
         if (existingUser != null)
         {
             throw new ArgumentException("Email já está em uso.");
         }
-
+            
         // Salvar a foto se existir
         string fotoPath = null;
         if (registerDto.Foto != null)
         {
-            fotoPath = await _fileService.SaveFileAsync(registerDto.Foto, "img/usuarios");
+            fotoPath = await fileService.SaveFileAsync(registerDto.Foto, "img/usuarios");
         }
         var user = new Usuario
         {
@@ -113,17 +101,21 @@ public class AuthService : IAuthService
             TipoPerfil = registerDto.TipoPerfil
         };
 
-        var result = await _userManager.CreateAsync(user, registerDto.Senha);
+
+
+        var usuarioDto = usuarioService.MapearParaResposta(user);
+
+        var result = await userManager.CreateAsync(user, registerDto.Senha);
         if (!result.Succeeded)
         {
             if (fotoPath != null)
-                await _fileService.DeleteFileAsync(fotoPath);
+                await fileService.DeleteFileAsync(fotoPath);
 
             var errors = string.Join(", ", result.Errors.Select(e => TranslateIdentityErrors.TranslateErrorMessage(e.Code)));
             throw new ArgumentException($"Falha ao criar usuário: {errors}");
         }
 
-        await _userManager.AddToRoleAsync(user, "Paciente");
+        await userManager.AddToRoleAsync(user, "Paciente");
 
         var userDto = new UserDto
         {
@@ -134,9 +126,9 @@ public class AuthService : IAuthService
             NomeCompleto = $"{user.Nome} {user.Sobrenome}",
             DataNascimento = user.DataNascimento.ToString(),
             TipoPerfil = user.TipoPerfil.ToString(),
-            Foto = fotoPath != null ? _fileService.GetFileUrl(fotoPath) : null
+            Foto = fotoPath != null ? fileService.GetFileUrl(fotoPath) : null
         };
-        var token = _jwtService.GenerateToken(userDto);
+        var token = jwtService.GenerateToken(userDto);
 
         return new AuthResponseDto
         {

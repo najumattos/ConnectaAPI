@@ -2,10 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
 using Connectamente.API.Models.PacienteModel;
-using Connectamente.API.Models.PsicologoModel;
-using Connectamente.API.DTOs;
 using Connectamente.API.Models;
 using Microsoft.AspNetCore.Identity;
+using Connectamente.API.DTOs.PacienteDTOs;
 
 namespace Connectamente.API.Controllers;
 
@@ -44,25 +43,25 @@ public class PacientesController : ControllerBase
     public async Task<ActionResult<Paciente>> GetPaciente(string id)
     {
         var paciente = await ObterDadosPaciente(id);
-        if (paciente == null) return NotFound();
+        if (paciente == null) return Conflict("Paciente nï¿½o encontrado."); ;
         return Ok(MapearParaResposta(paciente));
     }
 
-    //ERROOOOOOOOOOOOOOOOOU
+
     // PUT: api/Pacientes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    [HttpPut("{id}")]   
     public async Task<IActionResult> PutPaciente(string id, PacienteDto pacienteDto)
     {
         var p = await ObterDadosPaciente(id);
 
-        if (p == null) return NotFound();
-
-        // Atualiza campos básicos
+        if (p == null) return NotFound();                                            
+                  
+        // Atualiza campos bï¿½sicos
         p.ContatoEmergencia = pacienteDto.ContatoEmergencia;
        // p.QtdAcessos = pacienteDto.QtdAcessos; esse campo nao se edita
         p.HistoricoPaciente = pacienteDto.HistoricoPaciente;
-        p.PsicologoResponsavelId = pacienteDto.PsicologoResponsavel;       //Esse campo se atualiza diferente
+       // p.PsicologoResponsavelId = pacienteDto.PsicologoResponsavel;       //Esse campo se atualiza diferente
 
         try
         {
@@ -81,18 +80,24 @@ public class PacientesController : ControllerBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<Paciente>> PostPaciente(PacienteDto pacienteDto, [FromQuery] string usuarioId)
-    {
-        if (PacienteExists(usuarioId)) return Conflict("Este usuário já possui perfil de paciente.");
-
-        var paciente = new Paciente
+    {      
+               var paciente = new Paciente
         {
-            //ta aparecendo os campos de nome e sobrenome
             UsuarioId = usuarioId,
             ContatoEmergencia = pacienteDto.ContatoEmergencia,
-            QtdAcessos = pacienteDto.QtdAcessos,
             HistoricoPaciente = pacienteDto.HistoricoPaciente,
-            PsicologoResponsavelId = pacienteDto.PsicologoResponsavel //adicionar verificacao
+          //  PsicologoResponsavelId = pacienteDto.PsicologoResponsavel //adicionar verificacao
         };
+        var usuario = await _context.Users.FindAsync(paciente.UsuarioId);
+        if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
+        {
+            return BadRequest("Um usuï¿½rio com perfil de Psicï¿½logo nï¿½o pode possuir um perfil de Paciente.");
+        }
+        if (PacienteExists(usuarioId))
+        {
+            return Conflict("Este usuï¿½rio jï¿½ possui um perfil de paciente cadastrado.");
+        }
+
         _context.Pacientes.Add(paciente);
         await _context.SaveChangesAsync();
 
@@ -110,7 +115,11 @@ public class PacientesController : ControllerBase
         if (paciente == null && usuario == null) return NotFound();
 
         if (usuario != null)
-        {
+        {            
+            if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
+            {
+                return BadRequest("Paciente nï¿½o encontrado");
+            }
             var result = await _userManager.DeleteAsync(usuario);
             if (!result.Succeeded) return BadRequest(result.Errors);
         }
@@ -142,8 +151,7 @@ public class PacientesController : ControllerBase
             p.Usuario?.Foto,
             p.ContatoEmergencia,
             p.HistoricoPaciente,
-            PsicologoResponsavel = p.PsicologoResponsavel?.Usuario?.Nome + " " + p.PsicologoResponsavel?.Usuario?.Sobrenome,
-            p.QtdAcessos            
+            PsicologoResponsavel = p.PsicologoResponsavel?.Usuario?.Nome + " " + p.PsicologoResponsavel?.Usuario?.Sobrenome                        
         };
     }
 }

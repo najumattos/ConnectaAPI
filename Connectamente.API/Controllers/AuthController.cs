@@ -1,5 +1,6 @@
 ﻿using Connectamente.API.DTOs;
-using Connectamente.API.Services.Interfaces;
+using Connectamente.API.DTOs.UsersDTOs;
+using Connectamente.API.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

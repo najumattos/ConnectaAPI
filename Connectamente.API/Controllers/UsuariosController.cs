@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Connectamente.API.Data;
 using Connectamente.API.DTOs;
-using Connectamente.API.Services.Interfaces;
+using Connectamente.API.DTOs.UsersDTOs;
+using Connectamente.API.Services.UsuarioService;
 
 namespace Connectamente.API.Controllers;
 
