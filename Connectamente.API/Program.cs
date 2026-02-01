@@ -1,7 +1,7 @@
 using Connectamente.API.Data;
 using Connectamente.API.Middleware;
 using Connectamente.API.Models;
-using Connectamente.API.Services.Auth;
+using Connectamente.API.Services.AuthService;
 using Connectamente.API.Services.FileService;
 using Connectamente.API.Services.JwtService;
 using Connectamente.API.Services.UsuarioService;

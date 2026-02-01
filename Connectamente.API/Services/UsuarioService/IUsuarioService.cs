@@ -12,5 +12,5 @@ public interface IUsuarioService
     public Task<UserDto> ObterUsuarioPorId(string id);
     public Task<IEnumerable<UserDto>> ObterTodosUsuarios();
     public Task<Usuario> DeletarUsuario(string id);
-    public UserDto MapearParaResposta(Usuario usuario);
+    public UserDto MapearUserDto(Usuario usuario);
 }

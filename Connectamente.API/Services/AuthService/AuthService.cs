@@ -1,5 +1,4 @@
-﻿using Connectamente.API.Data;
-using Connectamente.API.DTOs;
+﻿using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Helpers;
 using Connectamente.API.Models;
@@ -17,41 +16,25 @@ public class AuthService(
     IFileService fileService,
     IUsuarioService usuarioService
     ) : IAuthService
-{    
+{
 
     public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
     {
         var user = await userManager.FindByEmailAsync(loginDto.Email);
         if (user == null)
         {
-            throw new UnauthorizedAccessException("Usuário e/ou Senha Inválidos.");
+            throw new UnauthorizedAccessException("Usuário Inválido.");
         }
 
         var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Senha, false);
         if (!result.Succeeded)
         {
-            throw new UnauthorizedAccessException("Usuário e/ou Senha Inválidos.");
+            throw new UnauthorizedAccessException("Senha Inválida.");
         }
-
-        var userDto = new UserDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Nome = user.Nome,
-            Celular = user.PhoneNumber,
-            NomeCompleto = $"{user.Nome} {user.Sobrenome}",
-            DataNascimento = user.DataNascimento.ToString(),
-            TipoPerfil = user.TipoPerfil.ToString(),
-            Foto = !string.IsNullOrEmpty(user.Foto) ? fileService.GetFileUrl(user.Foto) : null
-        };
+        var userDto = usuarioService.MapearUserDto(user);       
         var token = jwtService.GenerateToken(userDto);
-
-        return new AuthResponseDto
-        {
-            Token = token,
-            Expiration = DateTime.UtcNow.AddMinutes(60),
-            User = userDto
-        };
+        var AuthDtoMapeado = MapearAuthDto(userDto, token);
+        return AuthDtoMapeado;       
     }
 
     public async Task<UserDto> GetUserByIdAsync(string userId)
@@ -61,18 +44,8 @@ public class AuthService(
         {
             throw new KeyNotFoundException("Usuário não encontrado.");
         }
-
-        return new UserDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Nome = user.Nome,
-            Celular = user.PhoneNumber,
-            NomeCompleto = $"{user.Nome} {user.Sobrenome}",
-            DataNascimento = user.DataNascimento.ToString(),
-            TipoPerfil = user.TipoPerfil.ToString(),
-            Foto = !string.IsNullOrEmpty(user.Foto) ? fileService.GetFileUrl(user.Foto) : null
-        };
+         var userDto = usuarioService.MapearUserDto(user);
+        return userDto;
     }
 
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
@@ -82,29 +55,15 @@ public class AuthService(
         {
             throw new ArgumentException("Email já está em uso.");
         }
-            
+     
+       
         // Salvar a foto se existir
         string fotoPath = null;
         if (registerDto.Foto != null)
         {
             fotoPath = await fileService.SaveFileAsync(registerDto.Foto, "img/usuarios");
         }
-        var user = new Usuario
-        {
-            UserName = registerDto.Email,
-            Email = registerDto.Email,
-            Nome = registerDto.Nome,
-            Sobrenome = registerDto.Sobrenome,
-            DataNascimento = registerDto.DataNascimento,
-            PhoneNumber = registerDto.Celular,
-            Foto = fotoPath,
-            TipoPerfil = registerDto.TipoPerfil
-        };
-
-
-
-        var usuarioDto = usuarioService.MapearParaResposta(user);
-
+        var user = CriarUsuario(registerDto, fotoPath);        
         var result = await userManager.CreateAsync(user, registerDto.Senha);
         if (!result.Succeeded)
         {
@@ -116,19 +75,16 @@ public class AuthService(
         }
 
         await userManager.AddToRoleAsync(user, "Paciente");
+        
+        var userDto = usuarioService.MapearUserDto(user);        
 
-        var userDto = new UserDto
-        {
-            Id = user.Id,
-            Email = user.Email,
-            Nome = user.Nome,
-            Celular = user.PhoneNumber,
-            NomeCompleto = $"{user.Nome} {user.Sobrenome}",
-            DataNascimento = user.DataNascimento.ToString(),
-            TipoPerfil = user.TipoPerfil.ToString(),
-            Foto = fotoPath != null ? fileService.GetFileUrl(fotoPath) : null
-        };
         var token = jwtService.GenerateToken(userDto);
+
+        var AuthDto = MapearAuthDto(userDto, token);
+        return AuthDto;
+     }
+    private static AuthResponseDto MapearAuthDto(UserDto userDto, string token)
+    {
 
         return new AuthResponseDto
         {
@@ -137,4 +93,20 @@ public class AuthService(
             User = userDto
         };
     }
+    private static Usuario CriarUsuario(RegisterDto registerDto, string fotoPath)
+    {
+
+        return new Usuario
+        {
+            UserName = registerDto.Email,
+            Email = registerDto.Email,
+            Nome = registerDto.Nome,
+            Sobrenome = registerDto.Sobrenome,
+            DataNascimento = registerDto.DataNascimento,
+            PhoneNumber = registerDto.Celular,
+            Foto = fotoPath,
+            TipoPerfil = registerDto.TipoPerfil
+        };
+    }
+   
 }

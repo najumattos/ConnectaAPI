@@ -24,7 +24,7 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         AtualizarCampos(usuarioBanco, usuarioUpdateDto);
         // Salvamos tudo de uma única vez (Uma única viagem ao banco!)
         await _context.SaveChangesAsync();
-        return MapearParaResposta(usuarioBanco);
+        return MapearUserDto(usuarioBanco);
     }
 
     public async Task<string> AtualizarFoto(Usuario usuario, IFormFile novaFoto)
@@ -72,7 +72,7 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
             .FirstOrDefaultAsync(u => u.Id == id);
         if (u == null) return null;
 
-        return MapearParaResposta(u);
+        return MapearUserDto(u);
     }
 
     public async Task<IEnumerable<UserDto>> ObterTodosUsuarios()
@@ -80,11 +80,11 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         var usuarios = await _context.Usuarios
            .AsNoTracking()
            .ToListAsync();
-        return usuarios.Select(u => MapearParaResposta(u));
+        return usuarios.Select(u => MapearUserDto(u));
 
 
     }
-    public UserDto MapearParaResposta(Usuario u)
+    public UserDto MapearUserDto(Usuario u)
     {
         /*O conceito de "Flattening" (Achatamento)
          Ao "trazer" esses campos do usuario(nome e foto) no DTO, você entrega um "pacote pronto". A tela de "Listagem de Psicólogos" recebe tudo o que precisa em uma única requisição.
@@ -93,9 +93,9 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         {
             Id = u.Id,
             Nome = u.Nome,
+            Email = u.Email,
             Sobrenome = u.Sobrenome,
             NomeCompleto = $"{u.Nome} {u.Sobrenome}",
-            Email = u.Email,
             Foto = u.Foto,
             Celular = u.PhoneNumber,
             DataNascimento = u.DataNascimento.ToString("dd/MM/yyyy"),
