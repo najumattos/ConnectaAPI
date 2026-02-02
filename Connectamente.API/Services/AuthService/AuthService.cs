@@ -4,6 +4,7 @@ using Connectamente.API.Helpers;
 using Connectamente.API.Models;
 using Connectamente.API.Services.FileService;
 using Connectamente.API.Services.JwtService;
+using Connectamente.API.Services.PacienteService;
 using Connectamente.API.Services.UsuarioService;
 using Microsoft.AspNetCore.Identity;
 
@@ -14,7 +15,8 @@ public class AuthService(
     SignInManager<Usuario> signInManager,
     IJwtService jwtService,
     IFileService fileService,
-    IUsuarioService usuarioService
+    IUsuarioService usuarioService,
+    IPacienteService pacienteService
     ) : IAuthService
 {
 
@@ -75,7 +77,7 @@ public class AuthService(
         }
 
         await userManager.AddToRoleAsync(user, "Paciente");
-        
+        await pacienteService.CriarPacienteAuto(user);
         var userDto = usuarioService.MapearUserDto(user);        
 
         var token = jwtService.GenerateToken(userDto);

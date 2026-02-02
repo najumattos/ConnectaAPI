@@ -12,4 +12,5 @@ public interface IPacienteService
     Task<PacienteUpdateDto> AtualizarPaciente(string idPaciente, PacienteUpdateDto pacienteUpdateDto);
     Task<Paciente> DeletarPaciente(string idPaciente);
     PacienteDto MapearPacienteDto(Paciente paciente);
+    Task<Paciente> CriarPacienteAuto(Usuario usuario);
 }

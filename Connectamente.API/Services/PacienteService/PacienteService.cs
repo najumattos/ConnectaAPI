@@ -79,7 +79,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
             }
             _context.Pacientes.Remove(paciente);
 
-            usuario.TipoPerfil = Enums.TipoPerfil.Desativado;
+            usuario.TipoPerfil = Enums.TipoPerfil.PacienteDesativado;
            
 
             await _context.SaveChangesAsync();
@@ -141,5 +141,23 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         };
 
     }
-    #endregion
+
+    public async Task<Paciente> CriarPacienteAuto(Usuario usuario)
+    {
+        if (usuario.TipoPerfil != Enums.TipoPerfil.Paciente)
+        {
+            return null;
+        }
+              var pacienteCriadoAuto = new Paciente
+        {
+            Usuario = usuario,
+            UsuarioId = usuario.Id,
+            ContatoEmergencia = string.Empty, 
+            HistoricoPaciente = string.Empty
+              };
+         _context.Pacientes.Add(pacienteCriadoAuto);
+        await _context.SaveChangesAsync();
+        return pacienteCriadoAuto;
+    }
+   #endregion
 }   

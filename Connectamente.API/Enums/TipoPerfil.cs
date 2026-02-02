@@ -4,6 +4,7 @@
     {
         Paciente = 1,
         Psicologo = 2,
-        Desativado = 3
+        PacienteDesativado = 3,
+        PsicologoDesativado = 4
     }
 }
