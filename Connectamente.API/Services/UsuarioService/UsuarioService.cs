@@ -1,5 +1,4 @@
 ﻿using Connectamente.API.Data;
-using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Models;
 using Connectamente.API.Services.FileService;
@@ -11,7 +10,27 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
 {
     private readonly AppDbContext _context = context;
     private readonly IFileService _fileService = fileService;
+    
+    public async Task<IEnumerable<UserDto>> ObterTodosUsuarios()
+    {
+        var usuarios = await _context.Usuarios
+           .AsNoTracking()
+           .ToListAsync();
+        return usuarios.Select(u => MapearUserDto(u));
 
+
+    }
+    
+    public async Task<UserDto> ObterUsuarioPorId(string id)
+    {
+        var u = await _context.Usuarios
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Id == id);
+        if (u == null) return null;
+
+        return MapearUserDto(u);
+    }
+    
     public async Task<UserDto> AtualizarUsuario(string idUsuario, IFormFile arquivo, UserUpdateDto usuarioUpdateDto)
     {
         var usuarioBanco = await _context.Usuarios.FindAsync(idUsuario);
@@ -26,8 +45,23 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         await _context.SaveChangesAsync();
         return MapearUserDto(usuarioBanco);
     }
+        
+    public async Task<Usuario> DeletarUsuario(string id)
+    {
+        var usuario = await _context.Usuarios.FindAsync(id);
+        if (usuario == null)
+        {
+            return null;
+        }
+        _context.Usuarios.Remove(usuario);
+        await _context.SaveChangesAsync();
+        return usuario;
+    }
 
-    public async Task<string> AtualizarFoto(Usuario usuario, IFormFile novaFoto)
+
+    #region Métodos Auxiliares
+    private async Task<string> AtualizarFoto(Usuario usuario, IFormFile novaFoto)
+
     {
         //var usuario = await _context.Usuarios.FindAsync(usuarioId);
         if (usuario.Id == null) return null;
@@ -46,8 +80,8 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
         // 4. Retornamos a URL completa para o Front-end já exibir a imagem
         return _fileService.GetFileUrl(novoPath);
     }
-
-    public void AtualizarCampos(Usuario u, UserUpdateDto userUpdateDto)
+    
+    private static void AtualizarCampos(Usuario u, UserUpdateDto userUpdateDto)
     {
         // Só atualiza se o que veio do DTO não for nulo ou vazio
         if (!string.IsNullOrWhiteSpace(userUpdateDto.Nome))
@@ -60,30 +94,6 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
             u.PhoneNumber = userUpdateDto.Celular;
     }
 
-    public bool UsuarioExists(string id)
-    {
-        return _context.Usuarios.Any(e => e.Id == id);
-    }
-
-    public async Task<UserDto> ObterUsuarioPorId(string id)
-    {
-        var u = await _context.Usuarios
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == id);
-        if (u == null) return null;
-
-        return MapearUserDto(u);
-    }
-
-    public async Task<IEnumerable<UserDto>> ObterTodosUsuarios()
-    {
-        var usuarios = await _context.Usuarios
-           .AsNoTracking()
-           .ToListAsync();
-        return usuarios.Select(u => MapearUserDto(u));
-
-
-    }
     public UserDto MapearUserDto(Usuario u)
     {
         /*O conceito de "Flattening" (Achatamento)
@@ -103,16 +113,5 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
 
         };
     }
-
-    public async Task<Usuario> DeletarUsuario(string id)
-    {
-        var usuario = await _context.Usuarios.FindAsync(id);
-        if (usuario == null)
-        {
-            return null;
-        }
-        _context.Usuarios.Remove(usuario);
-        await _context.SaveChangesAsync();
-        return usuario;
-    }
+    #endregion
 }

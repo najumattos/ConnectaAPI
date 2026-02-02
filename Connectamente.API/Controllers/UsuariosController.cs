@@ -8,9 +8,8 @@ namespace Connectamente.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UsuariosController(AppDbContext context, IUsuarioService usuarioService) : ControllerBase
+public class UsuariosController(IUsuarioService usuarioService) : ControllerBase
 {
-    private readonly AppDbContext _context = context;
     private readonly IUsuarioService _usuarioService = usuarioService;
 
     // GET: api/Usuarios
@@ -39,6 +38,7 @@ public class UsuariosController(AppDbContext context, IUsuarioService usuarioSer
     // PUT: api/Usuarios/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Consumes("multipart/form-data")]
     public async Task<IActionResult> PutUsuario(string id, IFormFile? arquivo, [FromForm] UserUpdateDto usuarioUpdateDto)
     {
         try
@@ -48,10 +48,7 @@ public class UsuariosController(AppDbContext context, IUsuarioService usuarioSer
         }
         catch (Exception ex)
         {
-            if (!_usuarioService.UsuarioExists(id))
-            {
-                return NotFound("Usuário não encontrado.");
-            }
+          
             return BadRequest(ex.Message);
         }
     }

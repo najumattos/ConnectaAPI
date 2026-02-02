@@ -2,6 +2,8 @@ using Connectamente.API.Data;
 using Connectamente.API.Middleware;
 using Connectamente.API.Models;
 using Connectamente.API.Services.AuthService;
+using Connectamente.API.Services.PsicologoService;
+using Connectamente.API.Services.PacienteService;
 using Connectamente.API.Services.FileService;
 using Connectamente.API.Services.JwtService;
 using Connectamente.API.Services.UsuarioService;
@@ -89,6 +91,10 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IPacienteService, PacienteService>();
+/*builder.Services.AddScoped<IPsicologoService, PsicologoService>();
+     */
+
 
 // Configuração do CORS
 builder.Services.AddCors(options =>

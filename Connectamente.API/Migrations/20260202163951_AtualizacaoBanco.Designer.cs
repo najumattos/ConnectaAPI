@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260124014507_ConfigPaciente")]
-    partial class ConfigPaciente
+    [Migration("20260202163951_AtualizacaoBanco")]
+    partial class AtualizacaoBanco
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,4 +1,4 @@
-﻿namespace Connectamente.API;
+﻿namespace Connectamente.API.Services.PsicologoService;
 
 public class PsicologoService
 {
