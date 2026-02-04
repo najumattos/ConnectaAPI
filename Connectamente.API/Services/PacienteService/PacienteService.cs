@@ -12,7 +12,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
     private readonly AppDbContext _context = context;
     private readonly UserManager<Usuario> _userManager = userManager;
 
-    public async Task<IEnumerable<PacienteDto>> ObterTodosPacientes()
+    public async Task<IEnumerable<UserPacienteDto>> ObterTodosPacientes()
     {
         var pacientes = await _context.Pacientes
            .AsNoTracking()
@@ -20,18 +20,18 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
            .Include(p => p.PsicologoResponsavel)
            .ThenInclude(pr => pr.Usuario)
        .ToListAsync();
-        return pacientes.Select(p => MapearPacienteDto(p));
+        return pacientes.Select(p => MapearUserPacienteDto(p));
     }
 
-    public async Task<PacienteDto> ObterPacientePorId(string idPaciente)
+    public async Task<UserPacienteDto> ObterPacientePorId(string idPaciente)
     {
         var paciente = await ObterDadosPaciente(idPaciente);
         if (paciente == null) return null;
-        var pacienteDto = MapearPacienteDto(paciente);
+        var pacienteDto = MapearUserPacienteDto(paciente);
         return pacienteDto;
     }
    
-    public async Task<PacienteUpdateDto> AtualizarPaciente(string idPaciente, PacienteUpdateDto pacienteUpdateDto)
+    public async Task<PacienteDto> AtualizarPaciente(string idPaciente, PacienteDto pacienteUpdateDto)
     {
         var paciente = await ObterDadosPaciente(idPaciente);
         if (paciente == null) return null;
@@ -44,7 +44,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         return pacienteDtoAtualizado;
     }
 
-    public async Task<PacienteUpdateDto> CriarPaciente(string idFromForm, PacienteUpdateDto pacienteDto)
+    public async Task<PacienteDto> CriarPaciente(string idFromForm, PacienteDto pacienteDto)
     {
         var paciente = new Paciente
         {
@@ -57,8 +57,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
         {
             return null;
-            //return BadRequest("Um usu�rio com perfil de Psic�logo n�o pode possuir um perfil de Paciente.");
-        }
+           }
 
         _context.Pacientes.Add(paciente);
         await _context.SaveChangesAsync();
@@ -89,7 +88,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
 
     #region Métodos Auxiliares
 
-    private async Task<Paciente> ObterDadosPaciente(string id)
+    public async Task<Paciente> ObterDadosPaciente(string id)
     {
         return await _context.Pacientes
          .Include(p => p.Usuario)
@@ -98,14 +97,14 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
          .FirstOrDefaultAsync(p => p.UsuarioId == id);
     }
 
-    private static PacienteUpdateDto AtualizarCamposPaciente(Paciente p, PacienteUpdateDto pacienteUpdateDto)
+    private static PacienteDto AtualizarCamposPaciente(Paciente p, PacienteDto pacienteUpdateDto)
     {
 
         p.ContatoEmergencia = pacienteUpdateDto.ContatoEmergencia;
         p.HistoricoPaciente = pacienteUpdateDto.HistoricoPaciente;
         // p.PsicologoResponsavelId = pacienteDto.PsicologoResponsavel;       //Esse campo se atualiza diferente
 
-        return new PacienteUpdateDto
+        return new PacienteDto
         {
 
 
@@ -119,19 +118,19 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         
     }
     
-    public PacienteDto MapearPacienteDto(Paciente p)
+    public UserPacienteDto MapearUserPacienteDto(Paciente p)
     {
-        return new PacienteDto
+        return new UserPacienteDto
         {
             IdPaciente = p.UsuarioId,
-            Email = p.Usuario.Email,
+           /* Email = p.Usuario.Email,
             NomeCompleto = $"{p.Usuario.Nome} {p.Usuario.Sobrenome}",
             Nome = p.Usuario.Nome,
             Sobrenome = p.Usuario.Sobrenome,
             DataNascimento = p.Usuario.DataNascimento.ToString("dd/MM/yyyy"),
             Celular = p.Usuario.PhoneNumber,
             Foto = p.Usuario.Foto,
-            TipoPerfil = p.Usuario.TipoPerfil.ToString(),
+            TipoPerfil = p.Usuario.TipoPerfil.ToString(),  */
 
             ContatoEmergencia = p.ContatoEmergencia,
             HistoricoPaciente = p.HistoricoPaciente,

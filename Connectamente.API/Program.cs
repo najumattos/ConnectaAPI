@@ -92,8 +92,9 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
-/*builder.Services.AddScoped<IPsicologoService, PsicologoService>();
-     */
+
+builder.Services.AddScoped<IPsicologoService, PsicologoService>();
+
 
 
 // Configuração do CORS

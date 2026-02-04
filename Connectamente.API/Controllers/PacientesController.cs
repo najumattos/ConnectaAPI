@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Connectamente.API.Models.PacienteModel;
 using Connectamente.API.DTOs.PacienteDTOs;
 using Connectamente.API.Services.PacienteService;
-using Connectamente.API.Data;
 
 namespace Connectamente.API.Controllers;
 
@@ -13,7 +12,7 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
     private readonly IPacienteService _pacienteService = pacienteService;
     // GET: api/Pacientes
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PacienteDto>>> GetPacientes()
+    public async Task<ActionResult<IEnumerable<UserPacienteDto>>> GetPacientes()
     {      
         var resultado = await _pacienteService.ObterTodosPacientes();
         return Ok(resultado);
@@ -21,14 +20,14 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
 
     // GET: api/Pacientes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<PacienteDto>> GetPaciente(string id)
+    public async Task<ActionResult<UserPacienteDto>> GetPaciente(string id)
     {
         var pacienteDto = await _pacienteService.ObterPacientePorId(id);
         if (pacienteDto == null)
         {
             return NotFound();
         }
-        return pacienteDto;
+        return Ok(pacienteDto);
     }
 
      // PUT: api/Pacientes/5
@@ -36,20 +35,20 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
     [HttpPut("{id}")]
     
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> PutPaciente(string id, [FromForm] PacienteUpdateDto pacienteUpdateDto)
+    public async Task<IActionResult> PutPaciente(string id, [FromForm] PacienteDto pacienteUpdateDto)
     {
         var paciente = await _pacienteService.AtualizarPaciente(id, pacienteUpdateDto);
 
         if (paciente == null) return NotFound();                                            
                          
-        return NoContent();
+        return Ok(paciente);
     }
  
     // POST: api/Pacientes
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     [Consumes("multipart/form-data")]
-    public async Task<ActionResult<Paciente>> PostPaciente(string usuarioId, [FromForm] PacienteUpdateDto pacienteDto)
+    public async Task<ActionResult<Paciente>> PostPaciente(string usuarioId, [FromForm] PacienteDto pacienteDto)
     {
        var pacienteCriado = await _pacienteService.CriarPaciente(usuarioId, pacienteDto);
 
