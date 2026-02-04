@@ -4,10 +4,12 @@ namespace Connectamente.API.Enums
 {
     public enum AbordagemTerapeutica
     {
+        [Description("Abordagens Terapêuticas")]
+        AbordagensTerapeuticas,
         [Description("Foca em mudar padrões de pensamento e comportamento disfuncionais.")]
         TCC,
 
-    [Description("Exploração do inconsciente e processos mentais profundos.")]
+        [Description("Exploração do inconsciente e processos mentais profundos.")]
         Psicanalise,
 
     [Description("Foca no aqui e agora e na percepção holística do indivíduo.")]

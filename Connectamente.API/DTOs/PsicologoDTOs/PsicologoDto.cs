@@ -5,7 +5,7 @@ namespace Connectamente.API.DTOs.PsicologoDTOs;
 
 public class PsicologoDto {
 
-    [Required] public string IdPsicologo { get; set; }
+    public string IdPsicologo { get; set; }
     [Required] public string CRP { get; set; }
     [Required] public string Descricao { get; set; }
     [Required] public ModalidadeAtendimento ModalidadeDeAtendimento { get; set; }

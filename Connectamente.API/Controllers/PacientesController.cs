@@ -12,7 +12,7 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
     private readonly IPacienteService _pacienteService = pacienteService;
     // GET: api/Pacientes
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserPacienteDto>>> GetPacientes()
+    public async Task<ActionResult<IEnumerable<PacienteDto>>> GetPacientes()
     {      
         var resultado = await _pacienteService.ObterTodosPacientes();
         return Ok(resultado);
@@ -20,7 +20,7 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
 
     // GET: api/Pacientes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<UserPacienteDto>> GetPaciente(string id)
+    public async Task<ActionResult<PacienteDto>> GetPaciente(string id)
     {
         var pacienteDto = await _pacienteService.ObterPacientePorId(id);
         if (pacienteDto == null)
@@ -44,18 +44,6 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
         return Ok(paciente);
     }
  
-    // POST: api/Pacientes
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    [Consumes("multipart/form-data")]
-    public async Task<ActionResult<Paciente>> PostPaciente(string usuarioId, [FromForm] PacienteDto pacienteDto)
-    {
-       var pacienteCriado = await _pacienteService.CriarPaciente(usuarioId, pacienteDto);
-
-        return CreatedAtAction("GetPaciente", new { id = usuarioId }, pacienteCriado);
-
-    }
-
     // DELETE: api/Pacientes/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePaciente(string id)

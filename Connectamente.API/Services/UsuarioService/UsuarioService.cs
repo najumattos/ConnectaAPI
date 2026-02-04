@@ -2,15 +2,24 @@
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Models;
 using Connectamente.API.Services.FileService;
+using Connectamente.API.Services.PacienteService;
+using Connectamente.API.Services.PsicologoService;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Services.UsuarioService;
 
-public class UsuarioService(AppDbContext context, IFileService fileService) : IUsuarioService
+public class UsuarioService(
+    AppDbContext context,
+    IFileService fileService,
+    UserManager<Usuario> userManager,
+    IPacienteService pacienteService,
+    IPsicologoService psicologoService) : IUsuarioService
 {
     private readonly AppDbContext _context = context;
     private readonly IFileService _fileService = fileService;
-    
+    private readonly UserManager<Usuario> _userManager = userManager;
+
     public async Task<IEnumerable<UserDto>> ObterTodosUsuarios()
     {
         var usuarios = await _context.Usuarios
@@ -112,6 +121,20 @@ public class UsuarioService(AppDbContext context, IFileService fileService) : IU
             TipoPerfil = u.TipoPerfil.ToString()
 
         };
+    }
+
+    public async Task CriarPerfilAuto(Usuario usuario)
+    {
+        if (usuario.TipoPerfil == Enums.TipoPerfil.Paciente)
+        {
+            await pacienteService.CriarPacienteAuto(usuario);
+            await _userManager.AddToRoleAsync(usuario, "Paciente");
+        }
+        if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
+        {
+            await psicologoService.CriarPsicologoAuto(usuario);
+            await _userManager.AddToRoleAsync(usuario, "Psicologo");
+        }
     }
     #endregion
 }

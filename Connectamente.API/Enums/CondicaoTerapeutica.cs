@@ -4,6 +4,9 @@ namespace Connectamente.API.Enums
 {
     public enum CondicaoTerapeutica
     {
+        [Description("Condicões Terapêuticas")]
+        CondicoesTerapeuticas,
+
         [Description("Estado de prostração profunda, perda de interesse e desânimo.")]
         Depressao,
 

@@ -76,8 +76,8 @@ public class AuthService(
             throw new ArgumentException($"Falha ao criar usuário: {errors}");
         }
 
-        await userManager.AddToRoleAsync(user, "Paciente");
-        await pacienteService.CriarPacienteAuto(user);
+       
+        await usuarioService.CriarPerfilAuto(user);
         var userDto = usuarioService.MapearUserDto(user);        
 
         var token = jwtService.GenerateToken(userDto);

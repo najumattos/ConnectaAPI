@@ -23,38 +23,6 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         return psicologoDtoAtualizado;
     }
 
-    public async Task<PsicologoDto> CriarPsicologo(string idFromForm, PsicologoDto psicologoDto)
-    {
-        var psicologo = new Psicologo
-        {
-            UsuarioId = idFromForm,            
-            CRP = psicologoDto.CRP,
-            Descricao = psicologoDto.Descricao,
-            ModalidadeDeAtendimento = psicologoDto.ModalidadeDeAtendimento,
-
-            AbordagensTerapeuticas = psicologoDto.Abordagens.ToString()
-                .Select(id => new AbordagensUtilizadas { AbordagemTerapeutica = (Enums.AbordagemTerapeutica)id }).ToList(),
-
-            CondicoesTerapeuticas = psicologoDto.Condicoes.ToString()
-            .Select(id => new CondicoesTratadas { CondicaoTerapeutica = (Enums.CondicaoTerapeutica)id }).ToList(),
-
-            TiposPacientes = psicologoDto.TiposPacientes.ToString()
-            .Select(id => new TiposPacienteTratados { TipoPaciente = (Enums.TipoPaciente)id }).ToList()
-
-
-        };
-        var usuario = await context.Users.FindAsync(psicologo.UsuarioId);
-        if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
-        {
-            return null;
-            }
-
-        context.Psicologos.Add(psicologo);
-        var psicologoDtoAtualizado = AtualizarCamposPsicologo(psicologo, psicologoDto);
-        await context.SaveChangesAsync();
-        return psicologoDtoAtualizado;
-    }
-
     public async Task<Psicologo> DeletarPsicologo(string idPsicologo)
     {
         var psicologo = await ObterDadosPsicologo(idPsicologo);
@@ -80,9 +48,6 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         return new PsicologoDto
         {
            IdPsicologo = p.UsuarioId,
-            /* p.Usuario.Nome,
-             NomeCompleto = p.Usuario?.Nome + " " + p.Usuario?.Sobrenome,
-             p.Usuario?.Foto,  */
             CRP= p.CRP,
             Descricao= p.Descricao,
             ModalidadeDeAtendimento=p.ModalidadeDeAtendimento,
@@ -147,5 +112,30 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
             .Select(id => new TiposPacienteTratados { TipoPaciente = (Enums.TipoPaciente)id }).ToList();
 
         return MapearPsicologoDto(p);
+    }
+
+    public async Task CriarPsicologoAuto(Usuario usuario)
+    {
+        var psicologoCriadoAuto = new Psicologo
+        {
+            UsuarioId = usuario.Id,
+            CRP = string.Empty,
+            Descricao = string.Empty,
+            ModalidadeDeAtendimento = Enums.ModalidadeAtendimento.ModalidadeAtendimento,
+            AbordagensTerapeuticas =
+            [
+                new AbordagensUtilizadas { AbordagemTerapeutica = Enums.AbordagemTerapeutica.AbordagensTerapeuticas }
+            ],
+            CondicoesTerapeuticas =
+            [
+                new CondicoesTratadas { CondicaoTerapeutica = Enums.CondicaoTerapeutica.CondicoesTerapeuticas }
+            ],
+            TiposPacientes =
+            [
+                new TiposPacienteTratados { TipoPaciente = Enums.TipoPaciente.TiposPacientes }
+            ]
+        };
+         context.Psicologos.Add(psicologoCriadoAuto);
+        await context.SaveChangesAsync();
     }
 }

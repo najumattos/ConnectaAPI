@@ -45,20 +45,6 @@ namespace Connectamente.API.Controllers
             return Ok(psicologo);
         }
 
-        // POST: api/Psicologos
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task<ActionResult<Psicologo>> PostPsicologo(PsicologoDto psicologoDto, [FromForm] string usuarioId)
-        {
-
-            var psicologo = psicologoService.CriarPsicologo(usuarioId, psicologoDto);
-
-           
-
-            return CreatedAtAction("GetPsicologo", new { id = psicologo.Id }, psicologoDto);
-        }
-
         // DELETE: api/Psicologos/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePsicologo(string id)

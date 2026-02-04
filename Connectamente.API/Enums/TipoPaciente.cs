@@ -4,6 +4,9 @@ namespace Connectamente.API.Enums
 {
     public enum TipoPaciente
     {
+        [Description("Tipos Paciente")]
+        TiposPacientes = 0,
+
         [Description("Paciente na primeira infância (0 a 12 anos).")]
         Infantil = 1,
 

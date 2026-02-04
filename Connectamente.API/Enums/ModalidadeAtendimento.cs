@@ -4,6 +4,7 @@
     {
         Presencial = 1,
         Online = 2,
-        Hibrido = 3
+        Hibrido = 3,
+        ModalidadeAtendimento = 4
     }
 }

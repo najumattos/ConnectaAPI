@@ -7,5 +7,7 @@ namespace Connectamente.API.DTOs.PacienteDTOs
         [Required] public string IdPaciente { get; set; }
         [Required] public string ContatoEmergencia { get; set; }
         [Required] public string HistoricoPaciente { get; set; }
+        [Required] public string PsicologoResponsavel { get; set; }
+
     }
 }

@@ -12,7 +12,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
     private readonly AppDbContext _context = context;
     private readonly UserManager<Usuario> _userManager = userManager;
 
-    public async Task<IEnumerable<UserPacienteDto>> ObterTodosPacientes()
+    public async Task<IEnumerable<PacienteDto>> ObterTodosPacientes()
     {
         var pacientes = await _context.Pacientes
            .AsNoTracking()
@@ -23,7 +23,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         return pacientes.Select(p => MapearUserPacienteDto(p));
     }
 
-    public async Task<UserPacienteDto> ObterPacientePorId(string idPaciente)
+    public async Task<PacienteDto> ObterPacientePorId(string idPaciente)
     {
         var paciente = await ObterDadosPaciente(idPaciente);
         if (paciente == null) return null;
@@ -44,29 +44,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         return pacienteDtoAtualizado;
     }
 
-    public async Task<PacienteDto> CriarPaciente(string idFromForm, PacienteDto pacienteDto)
-    {
-        var paciente = new Paciente
-        {
-            UsuarioId = idFromForm,
-            ContatoEmergencia = pacienteDto.ContatoEmergencia,
-            HistoricoPaciente = pacienteDto.HistoricoPaciente,
-            //  PsicologoResponsavelId = pacienteDto.PsicologoResponsavel //adicionar verificacao
-        };
-        var usuario = await _context.Users.FindAsync(paciente.UsuarioId);
-        if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
-        {
-            return null;
-           }
-
-        _context.Pacientes.Add(paciente);
-        await _context.SaveChangesAsync();
-        var pacienteDtoAtualizado = AtualizarCamposPaciente(paciente, pacienteDto);
-        return pacienteDtoAtualizado;
-
-    }
-    
-    public async Task<Paciente> DeletarPaciente(string id)
+   public async Task<Paciente> DeletarPaciente(string id)
     {
         var paciente = await ObterDadosPaciente(id);
         var usuario = await _userManager.FindByIdAsync(id);
@@ -118,20 +96,11 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         
     }
     
-    public UserPacienteDto MapearUserPacienteDto(Paciente p)
+    public PacienteDto MapearUserPacienteDto(Paciente p)
     {
-        return new UserPacienteDto
+        return new PacienteDto
         {
-            IdPaciente = p.UsuarioId,
-           /* Email = p.Usuario.Email,
-            NomeCompleto = $"{p.Usuario.Nome} {p.Usuario.Sobrenome}",
-            Nome = p.Usuario.Nome,
-            Sobrenome = p.Usuario.Sobrenome,
-            DataNascimento = p.Usuario.DataNascimento.ToString("dd/MM/yyyy"),
-            Celular = p.Usuario.PhoneNumber,
-            Foto = p.Usuario.Foto,
-            TipoPerfil = p.Usuario.TipoPerfil.ToString(),  */
-
+            IdPaciente = p.UsuarioId,          
             ContatoEmergencia = p.ContatoEmergencia,
             HistoricoPaciente = p.HistoricoPaciente,
             PsicologoResponsavel = p.PsicologoResponsavel?.Usuario != null
@@ -141,12 +110,8 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
 
     }
 
-    public async Task<Paciente> CriarPacienteAuto(Usuario usuario)
+    public async Task CriarPacienteAuto(Usuario usuario)
     {
-        if (usuario.TipoPerfil != Enums.TipoPerfil.Paciente)
-        {
-            return null;
-        }
               var pacienteCriadoAuto = new Paciente
         {
             Usuario = usuario,
@@ -155,8 +120,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
             HistoricoPaciente = string.Empty
               };
          _context.Pacientes.Add(pacienteCriadoAuto);
-        await _context.SaveChangesAsync();
-        return pacienteCriadoAuto;
+        await _context.SaveChangesAsync();       
     }
    #endregion
 }   
