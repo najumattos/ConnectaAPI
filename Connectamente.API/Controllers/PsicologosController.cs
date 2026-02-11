@@ -11,7 +11,7 @@ namespace Connectamente.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PsicologosController(UserManager<Usuario> userManager, IPsicologoService psicologoService) : ControllerBase
+    public class PsicologosController(IPsicologoService psicologoService) : ControllerBase
     {
         
 
@@ -37,8 +37,9 @@ namespace Connectamente.API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> PutPsicologo(string id, PsicologoDto psicologoDto)
+        public async Task<IActionResult> PutPsicologo(string id, [FromForm] PsicologoDto psicologoDto)
         {        
+            //OS CAMPOS OBRIGATORIOS
             var psicologo = await psicologoService.AtualizarPsicologo(id, psicologoDto);
             if (psicologo == null) return NotFound();
 
@@ -49,37 +50,14 @@ namespace Connectamente.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePsicologo(string id)
         {
-            var psicologo = await psicologoService.DeletarPsicologo(id);
-            if (psicologo == null)
+            if (id == null)
             {
                 return NotFound();
             }
+            await psicologoService.DeletarPsicologo(id);
             return NoContent();
         }
 
-                                       
-        private static object MapearParaResposta(Psicologo p)
-        {
-            /*O conceito de "Flattening" (Achatamento)
-             Ao "trazer" esses campos do usuario(nome e foto) no DTO, você entrega um "pacote pronto". A tela de "Listagem de Psicólogos" recebe tudo o que precisa em uma única requisição.
-             */
-            return new
-            {
-                p.UsuarioId,
-                p.Usuario.Nome,
-                NomeCompleto = p.Usuario?.Nome + " " + p.Usuario?.Sobrenome,
-                p.Usuario?.Foto,
-                p.CRP,
-                p.Descricao,
-                p.ModalidadeDeAtendimento,
-                Abordagens = p.AbordagensTerapeuticas
-                    .Select(a => a.AbordagemTerapeutica.ToString()).ToList(),
-                Condicoes = p.CondicoesTerapeuticas
-                    .Select(c => c.CondicaoTerapeutica.ToString()).ToList(),
-                Pacientes = p.TiposPacientes
-                    .Select(t => t.TipoPaciente.ToString()).ToList()
-            };
-        }
-
+                                      
     }
 }

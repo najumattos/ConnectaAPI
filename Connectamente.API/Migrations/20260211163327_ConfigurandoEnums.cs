@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Connectamente.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AtualizacaoBanco : Migration
+    public partial class ConfigurandoEnums : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -216,7 +216,13 @@ namespace Connectamente.API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Descricao = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ModalidadeDeAtendimento = table.Column<int>(type: "int", nullable: false)
+                    ModalidadeDeAtendimento = table.Column<int>(type: "int", nullable: false),
+                    TiposPacientes = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CondicoesTerapeuticas = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AbordagensTerapeuticas = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -254,50 +260,6 @@ namespace Connectamente.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AbordagemPsicologo",
-                columns: table => new
-                {
-                    AbordagemPsicologoId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    AbordagemTerapeutica = table.Column<int>(type: "int", nullable: false),
-                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AbordagemPsicologo", x => x.AbordagemPsicologoId);
-                    table.ForeignKey(
-                        name: "FK_AbordagemPsicologo_Psicologo_PsicologoId",
-                        column: x => x.PsicologoId,
-                        principalTable: "Psicologo",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "CondicaoPsicologo",
-                columns: table => new
-                {
-                    CondicaoPsicologoId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CondicaoTerapeutica = table.Column<int>(type: "int", nullable: false),
-                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CondicaoPsicologo", x => x.CondicaoPsicologoId);
-                    table.ForeignKey(
-                        name: "FK_CondicaoPsicologo_Psicologo_PsicologoId",
-                        column: x => x.PsicologoId,
-                        principalTable: "Psicologo",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Paciente",
                 columns: table => new
                 {
@@ -325,28 +287,6 @@ namespace Connectamente.API.Migrations
                         column: x => x.PsicologoResponsavelId,
                         principalTable: "Psicologo",
                         principalColumn: "UsuarioId");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "PacientePsicologo",
-                columns: table => new
-                {
-                    PacientePsicologoId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    TipoPaciente = table.Column<int>(type: "int", nullable: false),
-                    PsicologoId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PacientePsicologo", x => x.PacientePsicologoId);
-                    table.ForeignKey(
-                        name: "FK_PacientePsicologo_Psicologo_PsicologoId",
-                        column: x => x.PsicologoId,
-                        principalTable: "Psicologo",
-                        principalColumn: "UsuarioId",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -437,45 +377,13 @@ namespace Connectamente.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Psicologo",
-                columns: new[] { "UsuarioId", "CRP", "Descricao", "ModalidadeDeAtendimento" },
-                values: new object[] { "70f93f27-32b1-4de5-bee3-b0de2cf80047", "12345", "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.", 1 });
-
-            migrationBuilder.InsertData(
-                table: "AbordagemPsicologo",
-                columns: new[] { "AbordagemPsicologoId", "AbordagemTerapeutica", "PsicologoId" },
-                values: new object[,]
-                {
-                    { -2, 1, "70f93f27-32b1-4de5-bee3-b0de2cf80047" },
-                    { -1, 0, "70f93f27-32b1-4de5-bee3-b0de2cf80047" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "CondicaoPsicologo",
-                columns: new[] { "CondicaoPsicologoId", "CondicaoTerapeutica", "PsicologoId" },
-                values: new object[,]
-                {
-                    { -2, 13, "70f93f27-32b1-4de5-bee3-b0de2cf80047" },
-                    { -1, 3, "70f93f27-32b1-4de5-bee3-b0de2cf80047" }
-                });
+                columns: new[] { "UsuarioId", "AbordagensTerapeuticas", "CRP", "CondicoesTerapeuticas", "Descricao", "ModalidadeDeAtendimento", "TiposPacientes" },
+                values: new object[] { "70f93f27-32b1-4de5-bee3-b0de2cf80047", "1,2", "12345", "2,1", "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.", 1, "3,2" });
 
             migrationBuilder.InsertData(
                 table: "Paciente",
                 columns: new[] { "UsuarioId", "ContatoEmergencia", "HistoricoPaciente", "PsicologoResponsavelId", "QtdAcessos" },
                 values: new object[] { "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", "14999009858", "historico paciente", "70f93f27-32b1-4de5-bee3-b0de2cf80047", 0 });
-
-            migrationBuilder.InsertData(
-                table: "PacientePsicologo",
-                columns: new[] { "PacientePsicologoId", "PsicologoId", "TipoPaciente" },
-                values: new object[,]
-                {
-                    { -2, "70f93f27-32b1-4de5-bee3-b0de2cf80047", 4 },
-                    { -1, "70f93f27-32b1-4de5-bee3-b0de2cf80047", 6 }
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AbordagemPsicologo_PsicologoId",
-                table: "AbordagemPsicologo",
-                column: "PsicologoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -515,11 +423,6 @@ namespace Connectamente.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CondicaoPsicologo_PsicologoId",
-                table: "CondicaoPsicologo",
-                column: "PsicologoId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_EmocaoRegistro_RegistroPensamentoId",
                 table: "EmocaoRegistro",
                 column: "RegistroPensamentoId");
@@ -528,11 +431,6 @@ namespace Connectamente.API.Migrations
                 name: "IX_Paciente_PsicologoResponsavelId",
                 table: "Paciente",
                 column: "PsicologoResponsavelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PacientePsicologo_PsicologoId",
-                table: "PacientePsicologo",
-                column: "PsicologoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RegistroPensamento_UsuarioId",
@@ -549,9 +447,6 @@ namespace Connectamente.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AbordagemPsicologo");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
@@ -567,13 +462,7 @@ namespace Connectamente.API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CondicaoPsicologo");
-
-            migrationBuilder.DropTable(
                 name: "EmocaoRegistro");
-
-            migrationBuilder.DropTable(
-                name: "PacientePsicologo");
 
             migrationBuilder.DropTable(
                 name: "RegistroSessao");

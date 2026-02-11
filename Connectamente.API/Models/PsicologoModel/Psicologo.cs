@@ -27,13 +27,13 @@ public class Psicologo
 
     [Display(Name = "Tipo paciente que você atende")]
     [Required(ErrorMessage = "Campo obrigatório")]
-    public virtual ICollection<TiposPacienteTratados> TiposPacientes { get; set; } = new List<TiposPacienteTratados>();
-
+    public List<TipoPaciente> TiposPacientes { get; set; }
+    
     [Display(Name = "Tipo de condições que você trata")]
     [Required(ErrorMessage = "Campo obrigatório")]
-    public virtual ICollection<CondicoesTratadas> CondicoesTerapeuticas { get; set; } = new List<CondicoesTratadas>();
+    public List<CondicaoTerapeutica> CondicoesTerapeuticas { get; set; }
 
     [Display(Name = "Abordagens Terapeuticas", Prompt = "Insira suas Abordagens Terapeuticas")]
     [Required(ErrorMessage = "Campo obrigatório")]
-    public virtual ICollection<AbordagensUtilizadas> AbordagensTerapeuticas { get; set; } = new List<AbordagensUtilizadas>();
+    public List<AbordagemTerapeutica> AbordagensTerapeuticas { get; set; }
 }

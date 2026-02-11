@@ -109,82 +109,20 @@ namespace Connectamente.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.AbordagensUtilizadas", b =>
-                {
-                    b.Property<int>("AbordagemPsicologoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("AbordagemPsicologoId"));
-
-                    b.Property<int>("AbordagemTerapeutica")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PsicologoId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("AbordagemPsicologoId");
-
-                    b.HasIndex("PsicologoId");
-
-                    b.ToTable("AbordagemPsicologo");
-
-                    b.HasData(
-                        new
-                        {
-                            AbordagemPsicologoId = -1,
-                            AbordagemTerapeutica = 1,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
-                        },
-                        new
-                        {
-                            AbordagemPsicologoId = -2,
-                            AbordagemTerapeutica = 2,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
-                        });
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.CondicoesTratadas", b =>
-                {
-                    b.Property<int>("CondicaoPsicologoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("CondicaoPsicologoId"));
-
-                    b.Property<int>("CondicaoTerapeutica")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PsicologoId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("CondicaoPsicologoId");
-
-                    b.HasIndex("PsicologoId");
-
-                    b.ToTable("CondicaoPsicologo");
-
-                    b.HasData(
-                        new
-                        {
-                            CondicaoPsicologoId = -1,
-                            CondicaoTerapeutica = 4,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
-                        },
-                        new
-                        {
-                            CondicaoPsicologoId = -2,
-                            CondicaoTerapeutica = 14,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
-                        });
-                });
-
             modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.Psicologo", b =>
                 {
                     b.Property<string>("UsuarioId")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("AbordagensTerapeuticas")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("CRP")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CondicoesTerapeuticas")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -196,6 +134,10 @@ namespace Connectamente.API.Migrations
                     b.Property<int>("ModalidadeDeAtendimento")
                         .HasColumnType("int");
 
+                    b.Property<string>("TiposPacientes")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("UsuarioId");
 
                     b.ToTable("Psicologo");
@@ -204,44 +146,12 @@ namespace Connectamente.API.Migrations
                         new
                         {
                             UsuarioId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
+                            AbordagensTerapeuticas = "1,2",
                             CRP = "12345",
+                            CondicoesTerapeuticas = "2,1",
                             Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.",
-                            ModalidadeDeAtendimento = 1
-                        });
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.TiposPacienteTratados", b =>
-                {
-                    b.Property<int>("PacientePsicologoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("PacientePsicologoId"));
-
-                    b.Property<string>("PsicologoId")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<int>("TipoPaciente")
-                        .HasColumnType("int");
-
-                    b.HasKey("PacientePsicologoId");
-
-                    b.HasIndex("PsicologoId");
-
-                    b.ToTable("PacientePsicologo");
-
-                    b.HasData(
-                        new
-                        {
-                            PacientePsicologoId = -1,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
-                            TipoPaciente = 6
-                        },
-                        new
-                        {
-                            PacientePsicologoId = -2,
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
-                            TipoPaciente = 4
+                            ModalidadeDeAtendimento = 1,
+                            TiposPacientes = "3,2"
                         });
                 });
 
@@ -611,26 +521,6 @@ namespace Connectamente.API.Migrations
                     b.Navigation("Paciente");
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.AbordagensUtilizadas", b =>
-                {
-                    b.HasOne("Connectamente.API.Models.PsicologoModel.Psicologo", "Psicologo")
-                        .WithMany("AbordagensTerapeuticas")
-                        .HasForeignKey("PsicologoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Psicologo");
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.CondicoesTratadas", b =>
-                {
-                    b.HasOne("Connectamente.API.Models.PsicologoModel.Psicologo", "Psicologo")
-                        .WithMany("CondicoesTerapeuticas")
-                        .HasForeignKey("PsicologoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Psicologo");
-                });
-
             modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.Psicologo", b =>
                 {
                     b.HasOne("Connectamente.API.Models.Usuario", "Usuario")
@@ -640,16 +530,6 @@ namespace Connectamente.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.TiposPacienteTratados", b =>
-                {
-                    b.HasOne("Connectamente.API.Models.PsicologoModel.Psicologo", "Psicologo")
-                        .WithMany("TiposPacientes")
-                        .HasForeignKey("PsicologoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Psicologo");
                 });
 
             modelBuilder.Entity("Connectamente.API.Models.RPD.EmocaoRegistro", b =>
@@ -721,15 +601,6 @@ namespace Connectamente.API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.Psicologo", b =>
-                {
-                    b.Navigation("AbordagensTerapeuticas");
-
-                    b.Navigation("CondicoesTerapeuticas");
-
-                    b.Navigation("TiposPacientes");
                 });
 #pragma warning restore 612, 618
         }
