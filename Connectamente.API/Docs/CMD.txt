@@ -1,0 +1,6 @@
+﻿
+LIGAR O BANCO DE DADOS
+docker-compose up -d db
+
+NOVA MIGRATION
+dotnet ef migrations add NovaMigration

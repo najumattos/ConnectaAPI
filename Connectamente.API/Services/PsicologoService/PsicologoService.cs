@@ -2,8 +2,8 @@
 using Connectamente.API.DTOs.PsicologoDTOs;
 using Connectamente.API.Enums;
 using Connectamente.API.Models;
-using Connectamente.API.Models.PacienteModel;
 using Connectamente.API.Models.PsicologoModel;
+using Connectamente.API.Services.PacienteService;
 using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -70,22 +70,24 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
 
     public async Task<IEnumerable<PsicologoDto>> ObterTodosPsicologos()
     {
-       var psicologos = await context.Psicologos
-         .AsNoTracking()
-         .Include(p => p.Usuario)
-         .ToListAsync(); // Aqui os dados saem do banco e vêm para a memória
+        var psicologos = await context.Psicologos
+          .AsNoTracking()
+          .Include(p => p.Usuario)
+          .ToListAsync(); // Aqui os dados saem do banco e vêm para a memória
 
         return psicologos.Select(p => MapearPsicologoDto(p));
     }
-    private async Task<Psicologo> ObterDadosPsicologo(string id)
+    public async Task<Psicologo> ObterDadosPsicologo(string psicologoId)
     {
         return await context.Psicologos
-      .Include(p => p.Usuario).FirstOrDefaultAsync(p => p.UsuarioId == id);
+        .Include(p => p.PacientesVinculados) // ESSENCIAL para não vir null
+            .ThenInclude(p => p.Usuario)      // Se precisar de dados do usuário do paciente
+        .FirstOrDefaultAsync(p => p.UsuarioId == psicologoId);
     }
 
     private PsicologoDto AtualizarCamposPsicologo(Psicologo p, PsicologoDto dto)
-    {  
-            p.CRP = !string.IsNullOrWhiteSpace(dto.CRP) ? dto.CRP : p.CRP;
+    {
+        p.CRP = !string.IsNullOrWhiteSpace(dto.CRP) ? dto.CRP : p.CRP;
         p.Descricao = !string.IsNullOrWhiteSpace(dto.Descricao) ? dto.Descricao : p.Descricao;
         p.ModalidadeDeAtendimento = dto.ModalidadeDeAtendimento;
         if (dto.Abordagens != null && dto.Abordagens.Any())
@@ -103,7 +105,7 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
             p.TiposPacientes = dto.TiposPacientes.ToList();
         }
         return MapearPsicologoDto(p);
-        } 
+    }
 
     public async Task CriarPsicologoAuto(Usuario usuario)
     {
@@ -117,7 +119,8 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
             CondicoesTerapeuticas = new List<CondicaoTerapeutica>(),
             TiposPacientes = new List<TipoPaciente>()
         };
-         context.Psicologos.Add(psicologoCriadoAuto);
+        context.Psicologos.Add(psicologoCriadoAuto);
         await context.SaveChangesAsync();
     }
+
 }

@@ -6,6 +6,7 @@ using Connectamente.API.Models;
 using Connectamente.API.Models.PsicologoModel;
 using Connectamente.API.DTOs.PsicologoDTOs;
 using Connectamente.API.Services.PsicologoService;
+using Connectamente.API.Models.PacienteModel;
 
 namespace Connectamente.API.Controllers
 {
@@ -23,6 +24,7 @@ namespace Connectamente.API.Controllers
 
             return Ok(resultado);
         }
+       
 
         // GET: api/Psicologo/5
         [HttpGet("{id}")]

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260211163327_ConfigurandoEnums")]
-    partial class ConfigurandoEnums
+    [Migration("20260212172536_NovaMigration")]
+    partial class NovaMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
