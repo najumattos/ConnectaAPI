@@ -13,7 +13,6 @@ public class PacienteConfig : IEntityTypeConfiguration<Paciente>
              new Paciente(){
                 UsuarioId = SeedDataConstants.USER_TAINARA_ID,
                 ContatoEmergencia = "14999009858",
-                QtdAcessos = 0, //contar automaticamente
                 HistoricoPaciente = "historico paciente",
                 PsicologoResponsavelId = SeedDataConstants.USER_ANA_JULIA_ID,
              }                  

@@ -10,6 +10,6 @@ namespace Connectamente.API.DTOs.PacienteDTOs
         [Required] public string HistoricoPaciente { get; set; }
         public List<RegistroSessao> SessoesRegistradas { get; set; }
         [Required] public int QtdAcessos { get; set; }
-        [Required] public string PsicologoResponsavelId { get; set; }
+        [Required] public string PsicologoResponsavel { get; set; }
     }
 }

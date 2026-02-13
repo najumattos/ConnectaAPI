@@ -8,7 +8,7 @@ namespace Connectamente.API.Data.Configurations
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Usuario> builder)
         {
-           
+
             string hashFixo = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==";
             #region Populate Usuário
             List<Usuario> usuarios = [
@@ -31,7 +31,8 @@ namespace Connectamente.API.Data.Configurations
                 ConcurrencyStamp = "5458aee0-71ca-4f08-88e8-0f03d18d6960",
                 AccessFailedCount = 0 ,
                 PhoneNumberConfirmed = false,
-                TwoFactorEnabled = false
+                TwoFactorEnabled = false,
+                                              QtdAcessos = 0, //contar automaticamente
             },
              new Usuario(){
                 Id = SeedDataConstants.USER_TAINARA_ID,
@@ -60,7 +61,7 @@ namespace Connectamente.API.Data.Configurations
             builder.HasData(usuarios);
             #endregion
 
-          
+
         }
     }
 }
