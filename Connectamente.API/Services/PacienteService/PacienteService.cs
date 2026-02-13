@@ -80,32 +80,27 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
 
         p.ContatoEmergencia = pacienteUpdateDto.ContatoEmergencia;
         p.HistoricoPaciente = pacienteUpdateDto.HistoricoPaciente;
-        // p.PsicologoResponsavelId = pacienteDto.PsicologoResponsavel;       //Esse campo se atualiza diferente
-
+        p.PsicologoResponsavelId = pacienteUpdateDto.PsicologoResponsavel;   
         return new ProntuarioPacienteDto
         {
 
 
             ContatoEmergencia = p.ContatoEmergencia,
             HistoricoPaciente = p.HistoricoPaciente,
-            /*PsicologoResponsavel = p.PsicologoResponsavel?.Usuario != null
-    ? $"{p.PsicologoResponsavel.Usuario.Nome} {p.PsicologoResponsavel.Usuario.Sobrenome}"
-    : "Não atribuído"    */
+            PsicologoResponsavel = p.PsicologoResponsavel?.Usuario?.Nome ?? "Psicólogo não vinculado"
         };
     
         
     }
     
-    public ProntuarioPacienteDto MapearUserPacienteDto(Paciente p)
+    public ProntuarioPacienteDto MapearUserPacienteDto(Paciente p, string nomePsicoManual = null)
     {
         return new ProntuarioPacienteDto
         {
             IdPaciente = p.UsuarioId,          
             ContatoEmergencia = p.ContatoEmergencia,
             HistoricoPaciente = p.HistoricoPaciente,
-            PsicologoResponsavel = p.PsicologoResponsavel?.Usuario != null
-    ? $"{p.PsicologoResponsavel.Usuario.Nome} {p.PsicologoResponsavel.Usuario.Sobrenome}"
-    : "Não atribuído"
+            PsicologoResponsavel = nomePsicoManual ?? p.PsicologoResponsavel?.Usuario?.Nome ?? "Psicólogo não vinculado"
         };
 
     }

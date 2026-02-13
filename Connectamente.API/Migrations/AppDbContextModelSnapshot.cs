@@ -39,9 +39,6 @@ namespace Connectamente.API.Migrations
                     b.Property<string>("PsicologoResponsavelId")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("QtdAcessos")
-                        .HasColumnType("int");
-
                     b.HasKey("UsuarioId");
 
                     b.HasIndex("PsicologoResponsavelId");
@@ -54,8 +51,7 @@ namespace Connectamente.API.Migrations
                             UsuarioId = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b",
                             ContatoEmergencia = "14999009858",
                             HistoricoPaciente = "historico paciente",
-                            PsicologoResponsavelId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
-                            QtdAcessos = 0
+                            PsicologoResponsavelId = "70f93f27-32b1-4de5-bee3-b0de2cf80047"
                         });
                 });
 
@@ -261,6 +257,9 @@ namespace Connectamente.API.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("QtdAcessos")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
@@ -307,6 +306,7 @@ namespace Connectamente.API.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==",
                             PhoneNumber = "14920044824",
                             PhoneNumberConfirmed = false,
+                            QtdAcessos = 0,
                             SecurityStamp = "15cfe30f-1dac-404e-85e6-02159dbed489",
                             Sobrenome = " Reis de Mattos",
                             TipoPerfil = 2,
@@ -329,6 +329,7 @@ namespace Connectamente.API.Migrations
                             PasswordHash = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==",
                             PhoneNumber = "14988060308",
                             PhoneNumberConfirmed = false,
+                            QtdAcessos = 0,
                             SecurityStamp = "5b0faad3-6502-4325-94ee-33aab11905d7",
                             Sobrenome = " dos Santos",
                             TipoPerfil = 1,

@@ -13,4 +13,5 @@ public class UserDto
     public string DataNascimento { get; set; }
     public string Celular { get; set; }
     public string Foto { get; set; }
+    public int QtdAcessos { get; set; }
 }

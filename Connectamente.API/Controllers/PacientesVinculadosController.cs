@@ -10,24 +10,16 @@ namespace Connectamente.API.Controllers
     public class PacientesVinculadosController(IPacientesVinculados pacientesVinculadosService) : ControllerBase
     {
         // GET: api/PacientesVinculados
-        [HttpGet("{psicologoId}/pacientes")]
+        [HttpGet("{psicologoId}")]
         public async Task<ActionResult<IEnumerable<ProntuarioPacienteDto>>> GetPacientesVinculados(string psicologoId)
         {
             var resultado = await pacientesVinculadosService.ObterPacientesVinculados(psicologoId);
 
             return Ok(resultado);
-        }
-
-        [HttpGet("{psicologoId}/{pacienteId}")]
-        public async Task<ActionResult<Paciente>> GetPacienteVinculado(string psicologoId, string pacienteId)
-        {
-            var resultado = await pacientesVinculadosService.ObterPacienteVinculado(psicologoId, pacienteId);
-
-            return Ok(resultado);
-        }
+        }     
 
         //PUT
-        [HttpPut("{idPsicologo}/vincular/{idPaciente}")]
+        [HttpPut("{idPsicologo}/{idPaciente}")]
         public async Task<IActionResult> VincularPaciente(string idPsicologo, string idPaciente) 
         {
             await pacientesVinculadosService.VincularPaciente(idPsicologo, idPaciente);
@@ -35,7 +27,7 @@ namespace Connectamente.API.Controllers
         }
 
         //DELETE
-        [HttpDelete("{idPsicologo}/desvincular/{idPaciente}")]
+        [HttpDelete("{idPsicologo}/{idPaciente}")]
         public async Task<IActionResult> DesvincularPaciente(string idPsicologo, string idPaciente)
         {
             await pacientesVinculadosService.DesvincularPaciente(idPsicologo, idPaciente);

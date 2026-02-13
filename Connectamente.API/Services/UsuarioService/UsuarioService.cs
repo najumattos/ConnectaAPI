@@ -118,7 +118,8 @@ public class UsuarioService(
             Foto = u.Foto,
             Celular = u.PhoneNumber,
             DataNascimento = u.DataNascimento.ToString("dd/MM/yyyy"),
-            TipoPerfil = u.TipoPerfil.ToString()
+            TipoPerfil = u.TipoPerfil.ToString(),
+            QtdAcessos = u.QtdAcessos
 
         };
     }

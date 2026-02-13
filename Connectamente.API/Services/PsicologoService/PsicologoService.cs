@@ -80,8 +80,9 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
     public async Task<Psicologo> ObterDadosPsicologo(string psicologoId)
     {
         return await context.Psicologos
-        .Include(p => p.PacientesVinculados) // ESSENCIAL para não vir null
-            .ThenInclude(p => p.Usuario)      // Se precisar de dados do usuário do paciente
+        .Include(p => p.Usuario)             // Para o nome do Psico)
+        .Include(p => p.PacientesVinculados)  // Para a lista de pacientes
+            .ThenInclude(p => p.Usuario)      // Para os nomes dos pacientes
         .FirstOrDefaultAsync(p => p.UsuarioId == psicologoId);
     }
 

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Connectamente.API.Migrations
 {
     /// <inheritdoc />
-    public partial class NovaMigration : Migration
+    public partial class MigrationPacienteVinculado : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,6 +50,7 @@ namespace Connectamente.API.Migrations
                     Foto = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TipoPerfil = table.Column<int>(type: "int", nullable: false),
+                    QtdAcessos = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
@@ -267,7 +268,6 @@ namespace Connectamente.API.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ContatoEmergencia = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    QtdAcessos = table.Column<int>(type: "int", nullable: false),
                     HistoricoPaciente = table.Column<string>(type: "varchar(1000)", maxLength: 1000, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PsicologoResponsavelId = table.Column<string>(type: "varchar(255)", nullable: true)
@@ -350,11 +350,11 @@ namespace Connectamente.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DataNascimento", "Email", "EmailConfirmed", "Foto", "LockoutEnabled", "LockoutEnd", "Nome", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Sobrenome", "TipoPerfil", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DataNascimento", "Email", "EmailConfirmed", "Foto", "LockoutEnabled", "LockoutEnd", "Nome", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "QtdAcessos", "SecurityStamp", "Sobrenome", "TipoPerfil", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", 0, "7cb3541f-0085-4145-b6d7-3e9ae3a300a5", new DateOnly(2001, 12, 19), "tainaravitsantos28@gmail.com", true, "/img/usuarios/paciente.png", true, null, "Tainara Vitoria", "TAINARAVITSANTOS28@GMAIL.COM", "TAINARAVITSANTOS28@GMAIL.COM", "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==", "14988060308", false, "5b0faad3-6502-4325-94ee-33aab11905d7", " dos Santos", 1, false, "tainaravitsantos28@gmail.com" },
-                    { "70f93f27-32b1-4de5-bee3-b0de2cf80047", 0, "5458aee0-71ca-4f08-88e8-0f03d18d6960", new DateOnly(2002, 4, 1), "anajuliamattos02@gmail.com", true, "/img/usuarios/psicologo.png", true, null, "Ana Julia", "ANAJULIAMATTOS02@GMAIL.COM", "ANAJULIAMATTOS02@GMAIL.COM", "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==", "14920044824", false, "15cfe30f-1dac-404e-85e6-02159dbed489", " Reis de Mattos", 2, false, "anajuliamattos02@gmail.com" }
+                    { "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", 0, "7cb3541f-0085-4145-b6d7-3e9ae3a300a5", new DateOnly(2001, 12, 19), "tainaravitsantos28@gmail.com", true, "/img/usuarios/paciente.png", true, null, "Tainara Vitoria", "TAINARAVITSANTOS28@GMAIL.COM", "TAINARAVITSANTOS28@GMAIL.COM", "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==", "14988060308", false, 0, "5b0faad3-6502-4325-94ee-33aab11905d7", " dos Santos", 1, false, "tainaravitsantos28@gmail.com" },
+                    { "70f93f27-32b1-4de5-bee3-b0de2cf80047", 0, "5458aee0-71ca-4f08-88e8-0f03d18d6960", new DateOnly(2002, 4, 1), "anajuliamattos02@gmail.com", true, "/img/usuarios/psicologo.png", true, null, "Ana Julia", "ANAJULIAMATTOS02@GMAIL.COM", "ANAJULIAMATTOS02@GMAIL.COM", "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==", "14920044824", false, 0, "15cfe30f-1dac-404e-85e6-02159dbed489", " Reis de Mattos", 2, false, "anajuliamattos02@gmail.com" }
                 });
 
             migrationBuilder.InsertData(
@@ -382,8 +382,8 @@ namespace Connectamente.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "Paciente",
-                columns: new[] { "UsuarioId", "ContatoEmergencia", "HistoricoPaciente", "PsicologoResponsavelId", "QtdAcessos" },
-                values: new object[] { "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", "14999009858", "historico paciente", "70f93f27-32b1-4de5-bee3-b0de2cf80047", 0 });
+                columns: new[] { "UsuarioId", "ContatoEmergencia", "HistoricoPaciente", "PsicologoResponsavelId" },
+                values: new object[] { "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", "14999009858", "historico paciente", "70f93f27-32b1-4de5-bee3-b0de2cf80047" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
