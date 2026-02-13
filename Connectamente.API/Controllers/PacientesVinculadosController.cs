@@ -19,9 +19,9 @@ namespace Connectamente.API.Controllers
         }
 
         [HttpGet("{psicologoId}/{pacienteId}")]
-        public async Task<ActionResult<Paciente>> GetPacienteVinculado(string psicologoId)
+        public async Task<ActionResult<Paciente>> GetPacienteVinculado(string psicologoId, string pacienteId)
         {
-            var resultado = await pacientesVinculadosService.ObterPacienteVinculado(psicologoId);
+            var resultado = await pacientesVinculadosService.ObterPacienteVinculado(psicologoId, pacienteId);
 
             return Ok(resultado);
         }
