@@ -36,6 +36,9 @@ public class AuthService(
         var userDto = usuarioService.MapearUserDto(user);       
         var token = jwtService.GenerateToken(userDto);
         var AuthDtoMapeado = MapearAuthDto(userDto, token);
+        user.QtdAcessos++;
+        //contador de acessos
+
         return AuthDtoMapeado;       
     }
 

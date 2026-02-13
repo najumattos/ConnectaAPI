@@ -12,7 +12,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
     private readonly AppDbContext _context = context;
     private readonly UserManager<Usuario> _userManager = userManager;
 
-    public async Task<IEnumerable<PacienteDto>> ObterTodosPacientes()
+    public async Task<IEnumerable<ProntuarioPacienteDto>> ObterTodosPacientes()
     {
         var pacientes = await _context.Pacientes
            .AsNoTracking()
@@ -23,7 +23,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         return pacientes.Select(p => MapearUserPacienteDto(p));
     }
 
-    public async Task<PacienteDto> ObterPacientePorId(string idPaciente)
+    public async Task<ProntuarioPacienteDto> ObterPacientePorId(string idPaciente)
     {
         var paciente = await ObterDadosPaciente(idPaciente);
         if (paciente == null) return null;
@@ -31,7 +31,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         return pacienteDto;
     }
    
-    public async Task<PacienteDto> AtualizarPaciente(string idPaciente, PacienteDto pacienteUpdateDto)
+    public async Task<ProntuarioPacienteDto> AtualizarPaciente(string idPaciente, ProntuarioPacienteDto pacienteUpdateDto)
     {
         var paciente = await ObterDadosPaciente(idPaciente);
         if (paciente == null) return null;
@@ -75,14 +75,14 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
          .FirstOrDefaultAsync(p => p.UsuarioId == id);
     }
 
-    private static PacienteDto AtualizarCamposPaciente(Paciente p, PacienteDto pacienteUpdateDto)
+    private static ProntuarioPacienteDto AtualizarCamposPaciente(Paciente p, ProntuarioPacienteDto pacienteUpdateDto)
     {
 
         p.ContatoEmergencia = pacienteUpdateDto.ContatoEmergencia;
         p.HistoricoPaciente = pacienteUpdateDto.HistoricoPaciente;
         // p.PsicologoResponsavelId = pacienteDto.PsicologoResponsavel;       //Esse campo se atualiza diferente
 
-        return new PacienteDto
+        return new ProntuarioPacienteDto
         {
 
 
@@ -96,9 +96,9 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         
     }
     
-    public PacienteDto MapearUserPacienteDto(Paciente p)
+    public ProntuarioPacienteDto MapearUserPacienteDto(Paciente p)
     {
-        return new PacienteDto
+        return new ProntuarioPacienteDto
         {
             IdPaciente = p.UsuarioId,          
             ContatoEmergencia = p.ContatoEmergencia,

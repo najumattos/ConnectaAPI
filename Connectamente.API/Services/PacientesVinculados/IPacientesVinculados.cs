@@ -1,11 +1,13 @@
 ﻿using Connectamente.API.DTOs.PacienteDTOs;
+using Connectamente.API.Models.PacienteModel;
 
 namespace Connectamente.API.Services.PacientesVinculados
 {
     public interface IPacientesVinculados
     {
-        Task<IEnumerable<PacienteDto>> ObterPacientesVinculados(string idPsicologo);
-        Task<IEnumerable<PacienteDto>> DesvincularPacientes(string idPsicologo);
-        Task<IEnumerable<PacienteDto>> VincularPacientes(string idPsicologo);
+        Task<IEnumerable<ProntuarioPacienteDto>> ObterPacientesVinculados(string idPsicologo);
+        Task<Paciente> ObterPacienteVinculado(string psicologoId, string pacienteId);
+        Task DesvincularPaciente(string idPsicologo, string idPaciente);
+        Task VincularPaciente(string idPsicologo, string idPaciente);
     }
 }

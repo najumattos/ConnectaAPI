@@ -32,5 +32,7 @@ namespace Connectamente.API.Models;
 
     public TipoPerfil TipoPerfil { get; set; } = TipoPerfil.Paciente;
     /*Cada dia que o usuario entra a contagem de acesso aumenta, esse dado é importante para contar "ofensivas" 
-    Esse dado é relevante pra paciente apenas*/    
+    Esse dado é relevante pra paciente apenas*/
+
+    public int QtdAcessos { get; set; }
 }

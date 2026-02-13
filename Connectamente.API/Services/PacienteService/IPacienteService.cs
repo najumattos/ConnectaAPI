@@ -6,10 +6,11 @@ namespace Connectamente.API.Services.PacienteService;
 
 public interface IPacienteService
 {
-    Task<IEnumerable<PacienteDto>> ObterTodosPacientes();
-    Task<PacienteDto> ObterPacientePorId(string idPaciente);
-    Task<PacienteDto> AtualizarPaciente(string idPaciente, PacienteDto pacienteUpdateDto);
+    Task<IEnumerable<ProntuarioPacienteDto>> ObterTodosPacientes();
+    Task<ProntuarioPacienteDto> ObterPacientePorId(string idPaciente);
+    Task<ProntuarioPacienteDto> AtualizarPaciente(string idPaciente, ProntuarioPacienteDto pacienteUpdateDto);
     Task<Paciente> DeletarPaciente(string idPaciente);
-    PacienteDto MapearUserPacienteDto(Paciente paciente);
+    ProntuarioPacienteDto MapearUserPacienteDto(Paciente paciente);
     Task CriarPacienteAuto(Usuario usuario);
+    Task<Paciente> ObterDadosPaciente(string id);
 }

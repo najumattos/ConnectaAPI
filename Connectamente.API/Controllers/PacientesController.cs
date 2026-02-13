@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Connectamente.API.Models.PacienteModel;
 using Connectamente.API.DTOs.PacienteDTOs;
 using Connectamente.API.Services.PacienteService;
 
@@ -12,7 +11,7 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
     private readonly IPacienteService _pacienteService = pacienteService;
     // GET: api/Pacientes
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<PacienteDto>>> GetPacientes()
+    public async Task<ActionResult<IEnumerable<ProntuarioPacienteDto>>> GetPacientes()
     {      
         var resultado = await _pacienteService.ObterTodosPacientes();
         return Ok(resultado);
@@ -20,7 +19,7 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
 
     // GET: api/Pacientes/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<PacienteDto>> GetPaciente(string id)
+    public async Task<ActionResult<ProntuarioPacienteDto>> GetPaciente(string id)
     {
         var pacienteDto = await _pacienteService.ObterPacientePorId(id);
         if (pacienteDto == null)
@@ -35,7 +34,7 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
     [HttpPut("{id}")]
     
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> PutPaciente(string id, [FromForm] PacienteDto pacienteUpdateDto)
+    public async Task<IActionResult> PutPaciente(string id, [FromForm] ProntuarioPacienteDto pacienteUpdateDto)
     {
         var paciente = await _pacienteService.AtualizarPaciente(id, pacienteUpdateDto);
 
