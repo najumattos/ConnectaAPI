@@ -39,7 +39,7 @@ namespace Connectamente.API.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> PutPsicologo(string id, [FromForm] PsicologoDto psicologoDto)
+        public async Task<IActionResult> PutPsicologo(string id, [FromForm] PsicologoUpdateDto psicologoDto)
         {        
             //OS CAMPOS OBRIGATORIOS
             var psicologo = await psicologoService.AtualizarPsicologo(id, psicologoDto);

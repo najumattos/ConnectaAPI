@@ -1,4 +1,5 @@
 ﻿using Connectamente.API.Data;
+using Connectamente.API.DTOs.PacienteDTOs;
 using Connectamente.API.DTOs.PsicologoDTOs;
 using Connectamente.API.Enums;
 using Connectamente.API.Models;
@@ -13,7 +14,7 @@ namespace Connectamente.API.Services.PsicologoService;
 
 public class PsicologoService(AppDbContext context, UserManager<Usuario> userManager) : IPsicologoService
 {
-    public async Task<PsicologoDto> AtualizarPsicologo(string idPsicologo, PsicologoDto psicologoDto)
+    public async Task<PsicologoUpdateDto> AtualizarPsicologo(string idPsicologo, PsicologoUpdateDto psicologoDto)
     {
         var psicologo = await ObterDadosPsicologo(idPsicologo);
         if (psicologo == null) return null;
@@ -46,8 +47,7 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
     }
 
     public PsicologoDto MapearPsicologoDto(Psicologo p)
-    {
-        //parei aqui. Tem que mexer no post tambem
+    {        
         return new PsicologoDto
         {
             IdPsicologo = p.UsuarioId,
@@ -86,26 +86,26 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         .FirstOrDefaultAsync(p => p.UsuarioId == psicologoId);
     }
 
-    private PsicologoDto AtualizarCamposPsicologo(Psicologo p, PsicologoDto dto)
+    private PsicologoUpdateDto AtualizarCamposPsicologo(Psicologo p, PsicologoUpdateDto dto)
     {
-        p.CRP = !string.IsNullOrWhiteSpace(dto.CRP) ? dto.CRP : p.CRP;
-        p.Descricao = !string.IsNullOrWhiteSpace(dto.Descricao) ? dto.Descricao : p.Descricao;
-        p.ModalidadeDeAtendimento = dto.ModalidadeDeAtendimento;
-        if (dto.Abordagens != null && dto.Abordagens.Any())
-        {
-            p.AbordagensTerapeuticas = dto.Abordagens.ToList();
-        }
+        if (!string.IsNullOrWhiteSpace(dto.Descricao))
+            p.Descricao = dto.Descricao;
 
-        if (dto.Condicoes != null && dto.Condicoes.Any())
+        if (dto.ModalidadeDeAtendimento.HasValue)
         {
-            p.CondicoesTerapeuticas = dto.Condicoes.ToList();
+            p.ModalidadeDeAtendimento = dto.ModalidadeDeAtendimento.Value;
         }
-
-        if (dto.TiposPacientes != null && dto.TiposPacientes.Any())
+        p.AbordagensTerapeuticas = dto.Abordagens?.ToList() ?? p.AbordagensTerapeuticas;
+        p.CondicoesTerapeuticas = dto.Condicoes?.ToList() ?? p.CondicoesTerapeuticas;
+        p.TiposPacientes = dto.TiposPacientes?.ToList() ?? p.TiposPacientes;
+        return new PsicologoUpdateDto
         {
-            p.TiposPacientes = dto.TiposPacientes.ToList();
-        }
-        return MapearPsicologoDto(p);
+            Descricao = p.Descricao,
+            ModalidadeDeAtendimento = p.ModalidadeDeAtendimento,
+            Condicoes = [.. p.CondicoesTerapeuticas],
+            Abordagens = [.. p.AbordagensTerapeuticas],
+            TiposPacientes = [.. p.TiposPacientes]
+        };
     }
 
     public async Task CriarPsicologoAuto(Usuario usuario)

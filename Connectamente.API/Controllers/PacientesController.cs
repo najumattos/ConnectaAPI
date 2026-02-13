@@ -34,7 +34,7 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
     [HttpPut("{id}")]
     
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> PutPaciente(string id, [FromForm] ProntuarioPacienteDto pacienteUpdateDto)
+    public async Task<IActionResult> PutPaciente(string id, [FromForm] PacienteUpdateDto pacienteUpdateDto)
     {
         var paciente = await _pacienteService.AtualizarPaciente(id, pacienteUpdateDto);
 

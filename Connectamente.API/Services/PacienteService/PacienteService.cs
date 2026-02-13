@@ -1,5 +1,6 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.DTOs.PacienteDTOs;
+using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Models;
 using Connectamente.API.Models.PacienteModel;
 using Microsoft.AspNetCore.Identity;
@@ -31,7 +32,7 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
         return pacienteDto;
     }
    
-    public async Task<ProntuarioPacienteDto> AtualizarPaciente(string idPaciente, ProntuarioPacienteDto pacienteUpdateDto)
+    public async Task<PacienteUpdateDto> AtualizarPaciente(string idPaciente, PacienteUpdateDto pacienteUpdateDto)
     {
         var paciente = await ObterDadosPaciente(idPaciente);
         if (paciente == null) return null;
@@ -75,20 +76,20 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
          .FirstOrDefaultAsync(p => p.UsuarioId == id);
     }
 
-    private static ProntuarioPacienteDto AtualizarCamposPaciente(Paciente p, ProntuarioPacienteDto pacienteUpdateDto)
+    private static PacienteUpdateDto AtualizarCamposPaciente(Paciente p, PacienteUpdateDto pacienteUpdateDto)
     {
+        if (!string.IsNullOrWhiteSpace(pacienteUpdateDto.ContatoEmergencia))
+            p.ContatoEmergencia = pacienteUpdateDto.ContatoEmergencia;
 
-        p.ContatoEmergencia = pacienteUpdateDto.ContatoEmergencia;
-        p.HistoricoPaciente = pacienteUpdateDto.HistoricoPaciente;
-        p.PsicologoResponsavelId = pacienteUpdateDto.PsicologoResponsavel;   
-        return new ProntuarioPacienteDto
+        if (!string.IsNullOrWhiteSpace(pacienteUpdateDto.HistoricoPaciente))
+            p.HistoricoPaciente = pacienteUpdateDto.HistoricoPaciente;  
+        return new PacienteUpdateDto
         {
 
 
             ContatoEmergencia = p.ContatoEmergencia,
             HistoricoPaciente = p.HistoricoPaciente,
-            PsicologoResponsavel = p.PsicologoResponsavel?.Usuario?.Nome ?? "Psicólogo não vinculado"
-        };
+            };
     
         
     }

@@ -10,7 +10,7 @@ public interface IPsicologoService
 {
     Task<IEnumerable<PsicologoDto>> ObterTodosPsicologos();
     Task<PsicologoDto> ObterPsicologoPorId(string idPsicologo);
-    Task<PsicologoDto> AtualizarPsicologo(string idpsicologo, PsicologoDto psicologoDto);
+    Task<PsicologoUpdateDto> AtualizarPsicologo(string idpsicologo, PsicologoUpdateDto psicologoDto);
     Task<Psicologo> DeletarPsicologo(string idPsicologo);
     PsicologoDto MapearPsicologoDto(Psicologo psicologo);
     Task CriarPsicologoAuto(Usuario usuario);

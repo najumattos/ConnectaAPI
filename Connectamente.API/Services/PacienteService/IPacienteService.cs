@@ -8,7 +8,7 @@ public interface IPacienteService
 {
     Task<IEnumerable<ProntuarioPacienteDto>> ObterTodosPacientes();
     Task<ProntuarioPacienteDto> ObterPacientePorId(string idPaciente);
-    Task<ProntuarioPacienteDto> AtualizarPaciente(string idPaciente, ProntuarioPacienteDto pacienteUpdateDto);
+    Task<PacienteUpdateDto> AtualizarPaciente(string idPaciente, PacienteUpdateDto pacienteUpdateDto);
     Task<Paciente> DeletarPaciente(string idPaciente);
     ProntuarioPacienteDto MapearUserPacienteDto(Paciente paciente, string nomePsicoManual = null);
     Task CriarPacienteAuto(Usuario usuario);
