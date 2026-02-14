@@ -1,0 +1,9 @@
+﻿
+LIGAR O BANCO DE DADOS
+docker-compose up -d db
+
+NOVA MIGRATION
+dotnet ef migrations add NovaMigration
+
+INSTALAR .NET 9x
+winget install Microsoft.DotNet.SDK.9

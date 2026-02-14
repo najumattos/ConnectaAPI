@@ -1,19 +1,30 @@
 using Connectamente.API.Data;
 using Connectamente.API.Middleware;
 using Connectamente.API.Models;
-using Connectamente.API.Services.Implementations;
-using Connectamente.API.Services.Interfaces;
+using Connectamente.API.Services.AuthService;
+using Connectamente.API.Services.PsicologoService;
+using Connectamente.API.Services.PacienteService;
+using Connectamente.API.Services.FileService;
+using Connectamente.API.Services.JwtService;
+using Connectamente.API.Services.UsuarioService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
+using Connectamente.API.Services.PacientesVinculados;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    // Isso força a conversão de todos os Enums para String no JSON
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+}); ;
 
 // Serviço de Conexão com o Banco
 string conexao = builder.Configuration.GetConnectionString("Conexao");
@@ -80,6 +91,13 @@ builder.Services.AddScoped<IFileService, FileService>();
 // Registro dos Serviços Customizados
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IPacienteService, PacienteService>();
+builder.Services.AddScoped<IPacientesVinculados, PacientesVinculados>();
+
+builder.Services.AddScoped<IPsicologoService, PsicologoService>();
+
+
 
 // Configuração do CORS
 builder.Services.AddCors(options =>
@@ -127,7 +145,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    // Isso limpa as redes conhecidas para que ele aceite os headers do proxy (comum em Docker/Hospedagens)
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 var app = builder.Build();
+
+// 1. Deve ser o primeiro para entender o protocolo original
+app.UseForwardedHeaders();
 
 // Garantir que o banco exista ao executar o projeto
 using (var scope = app.Services.CreateScope())
@@ -147,7 +175,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-//app.UseHttpsRedirection();  Se redireciona a autenticação da errado
+app.UseHttpsRedirection();  //Se redireciona a autenticação da errado
 
 app.UseStaticFiles();
 
