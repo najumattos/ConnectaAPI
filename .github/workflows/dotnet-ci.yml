@@ -29,4 +29,4 @@ jobs:
 
     - name: Rodar Testes Unitários
       # Rodando dotnet test na solução, ele executa todos os projetos de teste que ela tiver
-      run: dotnet test Connectamente.sln --no-build --verbosity normal
+      run: dotnet test Connectamente.sln --configuration Release --verbosity normal

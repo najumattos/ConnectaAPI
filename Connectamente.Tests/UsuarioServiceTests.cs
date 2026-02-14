@@ -38,73 +38,79 @@ public class UsuarioServiceTests
             _psicologoMock.Object
         );
     }
-
-    [Fact]
-    public async Task ObterUsuarioPorId_DeveRetornarUserDto_QuandoUsuarioExiste()
+    public class ObterUsuarioPorId : UsuarioServiceTests
     {
-        // Arrange (Preparar)
-        var usuarioId = "123";
-        var usuario = new Usuario { Id = usuarioId, Nome = "Ana", Sobrenome = "Julia", Email = "ana@rock.com" };
-        _context.Usuarios.Add(usuario);
-        await _context.SaveChangesAsync();
-
-        // Act (Ação)
-        var resultado = await _service.ObterUsuarioPorId(usuarioId);
-
-        // Assert (Verificação)
-        Assert.NotNull(resultado);
-        Assert.Equal("Ana Julia", resultado.NomeCompleto);
-        Assert.Equal(usuarioId, resultado.Id);
-    }
-
-    [Fact]
-    public async Task ObterUsuarioPorId_DeveRetornarNulo_QuandoUsuarioNaoExiste()
-    {
-        // Act
-        var resultado = await _service.ObterUsuarioPorId("id-inexistente");
-
-        // Assert
-        Assert.Null(resultado);
-    }
-
-    [Fact]
-    public async Task DeletarUsuario_DeveRemoverUsuario_QuandoIdExiste()
-    {
-        // Arrange (Preparar)
-        var idExistente = "user-123";
-        var usuario = new Usuario
+        [Fact]
+        public async Task ObterUsuarioPorId_DeveRetornarUserDto_QuandoUsuarioExiste()
         {
-            Id = idExistente,
-            Nome = "Andre",
-            Sobrenome = "Matos",
-            Email = "shaman@test.com"
-        };
+            // Arrange (Preparar)
+            var usuarioId = "123";
+            var usuario = new Usuario { Id = usuarioId, Nome = "Ana", Sobrenome = "Julia", Email = "ana@rock.com" };
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
 
-        _context.Usuarios.Add(usuario);
-        await _context.SaveChangesAsync();
+            // Act (Ação)
+            var resultado = await _service.ObterUsuarioPorId(usuarioId);
 
-        // Act (Ação)
-        var resultado = await _service.DeletarUsuario(idExistente);
+            // Assert (Verificação)
+            Assert.NotNull(resultado);
+            Assert.Equal("Ana Julia", resultado.NomeCompleto);
+            Assert.Equal(usuarioId, resultado.Id);
+        }
 
-        // Assert (Verificação)
-        Assert.NotNull(resultado); // Garante que o método retornou o objeto deletado
-        Assert.Equal(idExistente, resultado.Id);
+        [Fact]
+        public async Task ObterUsuarioPorId_DeveRetornarNulo_QuandoUsuarioNaoExiste()
+        {
+            // Act
+            var resultado = await _service.ObterUsuarioPorId("id-inexistente");
 
-        // O "Pulo do Gato": Verificar se ele sumiu do banco de verdade
-        var usuarioNoBanco = await _context.Usuarios.FindAsync(idExistente);
-        Assert.Null(usuarioNoBanco);
+            // Assert
+            Assert.Null(resultado);
+        }
     }
 
-    [Fact]
-    public async Task DeletarUsuario_DeveRetornarNulo_QuandoIdNaoExiste()
+    public class DeletarUsuario : UsuarioServiceTests
     {
-        // Act
-        var resultado = await _service.DeletarUsuario("id-que-nao-existe");
+        [Fact]
+        public async Task DeletarUsuario_DeveRemoverUsuario_QuandoIdExiste()
+        {
+            // Arrange (Preparar)
+            var idExistente = "user-123";
+            var usuario = new Usuario
+            {
+                Id = idExistente,
+                Nome = "Andre",
+                Sobrenome = "Matos",
+                Email = "shaman@test.com"
+            };
 
-        // Assert
-        Assert.Null(resultado);
+            _context.Usuarios.Add(usuario);
+            await _context.SaveChangesAsync();
+
+            // Act (Ação)
+            var resultado = await _service.DeletarUsuario(idExistente);
+
+            // Assert (Verificação)
+            Assert.NotNull(resultado); // Garante que o método retornou o objeto deletado
+            Assert.Equal(idExistente, resultado.Id);
+
+            // O "Pulo do Gato": Verificar se ele sumiu do banco de verdade
+            var usuarioNoBanco = await _context.Usuarios.FindAsync(idExistente);
+            Assert.Null(usuarioNoBanco);
+        }
+
+        [Fact]
+        public async Task DeletarUsuario_DeveRetornarNulo_QuandoIdNaoExiste()
+        {
+            // Act
+            var resultado = await _service.DeletarUsuario("id-que-nao-existe");
+
+            // Assert
+            Assert.Null(resultado);
+        }
     }
-
+  
+    public class ObterTodosUsuarios : UsuarioServiceTests{
     [Fact]
     public async Task ObterTodosUsuarios_DeveRetornarListaDeUserDto_QuandoExistiremUsuarios()
     {
@@ -128,44 +134,48 @@ public class UsuarioServiceTests
         Assert.Contains(resultado, u => u.Nome == "Ronnie"); // Verifica se o Dio está na lista
     }
 
-    [Fact]
-    public async Task ObterTodosUsuarios_DeveRetornarListaVazia_QuandoNaoExistiremUsuarios()
+        [Fact]
+        public async Task ObterTodosUsuarios_DeveRetornarListaVazia_QuandoNaoExistiremUsuarios()
+        {
+            // Act
+            var resultado = await _service.ObterTodosUsuarios();
+
+            // Assert
+            Assert.Empty(resultado); // Verifica se retorna uma lista vazia (e não null)
+        }
+}
+
+    public class AtualizarUsuario : UsuarioServiceTests
     {
-        // Act
-        var resultado = await _service.ObterTodosUsuarios();
+        [Fact]
+        public async Task AtualizarUsuario_DeveAtualizarDadosEFoto_QuandoUsuarioExisteEArquivoEnviado()
+        {
+            // Arrange (Preparar)
+            var usuarioId = "user-update-123";
+            var usuarioOld = new Usuario { Id = usuarioId, Nome = "Antigo", Sobrenome = "Nome", Foto = "foto_antiga.jpg" };
+            _context.Usuarios.Add(usuarioOld);
+            await _context.SaveChangesAsync();
 
-        // Assert
-        Assert.Empty(resultado); // Verifica se retorna uma lista vazia (e não null)
-    }
+            // Simulando o arquivo de imagem (IFormFile)
+            var arquivoMock = new Mock<IFormFile>();
 
-    [Fact]
-    public async Task AtualizarUsuario_DeveAtualizarDadosEFoto_QuandoUsuarioExisteEArquivoEnviado()
-    {
-        // Arrange (Preparar)
-        var usuarioId = "user-update-123";
-        var usuarioOld = new Usuario { Id = usuarioId, Nome = "Antigo", Sobrenome = "Nome", Foto = "foto_antiga.jpg" };
-        _context.Usuarios.Add(usuarioOld);
-        await _context.SaveChangesAsync();
+            // Simulando o DTO com novos dados
+            var updateDto = new UserUpdateDto { Nome = "Novo", Sobrenome = "Sobrenome" };
 
-        // Simulando o arquivo de imagem (IFormFile)
-        var arquivoMock = new Mock<IFormFile>();
+            // Configurando o Mock do FileService para retornar um caminho fictício
+            _fileMock.Setup(f => f.SaveFileAsync(It.IsAny<IFormFile>(), It.IsAny<string>()))
+                     .ReturnsAsync("img/usuarios/nova_foto.jpg");
 
-        // Simulando o DTO com novos dados
-        var updateDto = new UserUpdateDto { Nome = "Novo", Sobrenome = "Sobrenome" };
+            // Act (Ação)
+            var resultado = await _service.AtualizarUsuario(usuarioId, arquivoMock.Object, updateDto);
 
-        // Configurando o Mock do FileService para retornar um caminho fictício
-        _fileMock.Setup(f => f.SaveFileAsync(It.IsAny<IFormFile>(), It.IsAny<string>()))
-                 .ReturnsAsync("img/usuarios/nova_foto.jpg");
+            // Assert (Verificação)
+            Assert.NotNull(resultado);
+            Assert.Equal("Novo", resultado.Nome);
+            Assert.Equal("img/usuarios/nova_foto.jpg", resultado.Foto);
 
-        // Act (Ação)
-        var resultado = await _service.AtualizarUsuario(usuarioId, arquivoMock.Object, updateDto);
-
-        // Assert (Verificação)
-        Assert.NotNull(resultado);
-        Assert.Equal("Novo", resultado.Nome);
-        Assert.Equal("img/usuarios/nova_foto.jpg", resultado.Foto);
-
-        // Verifica se o FileService tentou deletar a foto antiga
-        _fileMock.Verify(f => f.DeleteFileAsync("foto_antiga.jpg"), Times.Once);
+            // Verifica se o FileService tentou deletar a foto antiga
+            _fileMock.Verify(f => f.DeleteFileAsync("foto_antiga.jpg"), Times.Once);
+        }
     }
 }
