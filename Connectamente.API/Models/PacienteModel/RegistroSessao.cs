@@ -13,9 +13,8 @@ public class RegistroSessao
 
     [Required] public TimeSpan DuracaoSessao { get; set; }
 
-    [Display(Name = "Resumo da Sessão", Prompt = "Adicione aqui suas anotações sobre a sessão")]
-    [StringLength(1000)]
-    [Required(ErrorMessage = "Campo obrigatório")]
+    [Display(Name = "Resumo da Sessão", Prompt = "Adicione aqui suas anotações sobre a sessão"),
+    StringLength(1000), Required(ErrorMessage = "Campo obrigatório")]
     public string ResumoSessao { get; set; }
 
     public string PacienteId { get; set; }

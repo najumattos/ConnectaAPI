@@ -17,25 +17,24 @@ public class Psicologo
     [Required(ErrorMessage = "O CRP é obrigatório")]
     public string CRP { get; set; }
 
-    [Display(Name = "Sobre o Psicologo", Prompt = "Descreva você e seu trabalho")]
-    [StringLength(1000)]
-    [Required(ErrorMessage = "Campo obrigatório")]
+    [Display(Name = "Sobre o Psicologo", Prompt = "Descreva você e seu trabalho"),
+    StringLength(1000), Required(ErrorMessage = "Campo obrigatório")]
     public string Descricao { get; set; }
 
-    [Display(Name = "Modalidades de Atendimento", Prompt = "Insira as modalidades de atendiemnto")]
-    [Required(ErrorMessage = "Campo obrigatório")]
+    [Display(Name = "Modalidades de Atendimento", Prompt = "Insira as modalidades de atendiemnto"),
+    Required(ErrorMessage = "Campo obrigatório")]
     public ModalidadeAtendimento ModalidadeDeAtendimento { get; set; }
 
-    [Display(Name = "Tipo paciente que você atende")]
-    [Required(ErrorMessage = "Campo obrigatório")]
+    [Display(Name = "Tipo paciente que você atende"),
+    Required(ErrorMessage = "Campo obrigatório")]
     public List<TipoPaciente> TiposPacientes { get; set; }
     
-    [Display(Name = "Tipo de condições que você trata")]
-    [Required(ErrorMessage = "Campo obrigatório")]
+    [Display(Name = "Tipo de condições que você trata"),
+    Required(ErrorMessage = "Campo obrigatório")]
     public List<CondicaoTerapeutica> CondicoesTerapeuticas { get; set; }
 
-    [Display(Name = "Abordagens Terapeuticas", Prompt = "Insira suas Abordagens Terapeuticas")]
-    [Required(ErrorMessage = "Campo obrigatório")]
+    [Display(Name = "Abordagens Terapeuticas", Prompt = "Insira suas Abordagens Terapeuticas"),
+    Required(ErrorMessage = "Campo obrigatório")]
     public List<AbordagemTerapeutica> AbordagensTerapeuticas { get; set; }
     public ICollection<Paciente> PacientesVinculados { get; set; }
 }

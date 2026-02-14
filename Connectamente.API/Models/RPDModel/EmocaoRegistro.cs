@@ -14,16 +14,16 @@ public class EmocaoRegistro
     [Display(Name = "Emoção", Prompt = "Emoção")]
     public Emocao Emocao { get; set; }
 
-    [Display(Name = "Intensidade Inicial")]
-    [Required(ErrorMessage = "Campo Obrigatório")]
-    [Range(0, 100, ErrorMessage = "A intensidade deve ser entre 0 e 100")]
-    [RegularExpression(@"^(0|10|20|30|40|50|60|70|80|90|100)$", ErrorMessage = "A intensidade deve ser múltipla de 10 (ex: 10, 20...)")]
+    [Display(Name = "Intensidade Inicial"),
+    Required(ErrorMessage = "Campo Obrigatório"),
+   Range(0, 100, ErrorMessage = "A intensidade deve ser entre 0 e 100"),
+    RegularExpression(@"^(0|10|20|30|40|50|60|70|80|90|100)$", ErrorMessage = "A intensidade deve ser múltipla de 10 (ex: 10, 20...)")]
     public int IntensidadeInicial { get; set; }
 
-    [Display(Name = "Intensidade Final")]
-    [Required(ErrorMessage = "Campo Obrigatório")]
-    [Range(0, 100, ErrorMessage = "A intensidade deve ser entre 0 e 100")]
-    [RegularExpression(@"^(0|10|20|30|40|50|60|70|80|90|100)$", ErrorMessage = "A intensidade deve ser múltipla de 10 (ex: 10, 20...)")]
+    [Display(Name = "Intensidade Final"),
+    Required(ErrorMessage = "Campo Obrigatório"),
+    Range(0, 100, ErrorMessage = "A intensidade deve ser entre 0 e 100"),
+    RegularExpression(@"^(0|10|20|30|40|50|60|70|80|90|100)$", ErrorMessage = "A intensidade deve ser múltipla de 10 (ex: 10, 20...)")]
     public int IntensidadeFinal { get; set; }
 
     public int RegistroPensamentoId { get; set; }
