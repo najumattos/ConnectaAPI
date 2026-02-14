@@ -71,3 +71,9 @@ public class InicializacaoTests
 }
 
 Como esse teste sempre vai dar "igual", ele serve para confirmar que o seu Pipeline consegue encontrar o projeto de testes, compilar e rodar com sucesso. Se esse teste passar, a "estrada" está pavimentada para escrever testes reais da API.
+
+7.Rodar na raiz para instalar o pacote de simulação no projeto de testes
+dotnet add Connectamente.Tests/Connectamente.Tests.csproj package Moq
+dotnet add Connectamente.Tests/Connectamente.Tests.csproj package 
+Nuget solution: Microsoft.EntityFrameworkCore.InMemory
+
