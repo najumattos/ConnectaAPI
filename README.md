@@ -1,3 +1,5 @@
+[![.NET CI - Testes Unitários](https://github.com/najumattos/Connectamente/actions/workflows/dotnet-ci.yml/badge.svg)](https://github.com/najumattos/Connectamente/actions/workflows/dotnet-ci.yml)
+
 # 🧠 API de Gestão de Consultas (Psicologia)
 Trabalho de Conclusão de Curso Curso Desenvolvimento de Sistemas pela Etec Comendador João Rays
 
