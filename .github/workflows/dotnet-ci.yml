@@ -22,10 +22,11 @@ jobs:
         cache-dependency-path: '**/*.csproj' 
 
     - name: Restaurar dependências
-      run: dotnet restore Connectamente.API/Connectamente.API.csproj
+      run: dotnet restore Connectamente.sln
 
     - name: Build do projeto
-      run: dotnet build Connectamente.API/Connectamente.API.csproj --no-restore --configuration Release
+      run: dotnet build Connectamente.sln --no-restore --configuration Release
 
-    - name: Rodar Testes Unitários    
-      run: dotnet test Connectamente.API/Connectamente.API.csproj --no-build --verbosity normal
+    - name: Rodar Testes Unitários
+      # Rodando dotnet test na solução, ele executa todos os projetos de teste que ela tiver
+      run: dotnet test Connectamente.sln --configuration Release --verbosity normal

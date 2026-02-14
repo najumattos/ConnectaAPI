@@ -1,0 +1,79 @@
+1. Criar um arquivo em .github/workflows/dotnet-ci.yml na raiz da raiz do projeto
+name: .NET CI - Testes Unitários
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v4
+
+    - name: Configurar .NET 9 com Cache
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        cache: true
+        cache-dependency-path: '**/*.csproj' 
+
+    - name: Restaurar dependências
+      run: dotnet restore Connectamente.sln
+
+    - name: Build do projeto
+      run: dotnet build Connectamente.sln --no-restore --configuration Release
+
+    - name: Rodar Testes Unitários
+      # Rodando dotnet test na solução, ele executa todos os projetos de teste que ela tiver
+      run: dotnet test Connectamente.sln --no-build --verbosity normal
+
+
+2. Commit e push
+git add .
+git commit -m "chore: adiciona workflow de CI para .NET 9"
+git push origin main
+
+3. Ir para o Github Actions do projeto e ver a mágica. Se aparecer algum erro clique em "Details" ao lado do X vermelho. Ele vai te mostrar exatamente qual linha do código deu erro
+
+4.Criar um README com Status Badge
+Actions -> workflow -> (...) no canto superior direito -> "Create status badge"-> Copiar o código -> colar no topo do arquivo README.md
+
+5.Criar o projeto de testes na raiz da raiz
+dotnet new xunit -n Connectamente.Tests
+dotnet sln add Connectamente.Tests/Connectamente.Tests.csproj
+dotnet add Connectamente.Tests/Connectamente.Tests.csproj reference Connectamente.API/Connectamente.API.csproj
+
+6. Criar primeiro Arquivo de Teste
+Apague o conteúdo padrão de UnitTest1.cs e cole este código simples, que serve apenas para validar se o pipeline está funcionando
+using Xunit;
+
+namespace Connectamente.Tests;
+
+public class InicializacaoTests
+{
+    [Fact]
+    public void Teste_Deve_Passar_Para_Validar_O_Pipeline()
+    {
+        // Arrange (Preparação)
+        var valorEsperado = true;
+
+        // Act (Ação)
+        var valorAtual = true;
+
+        // Assert (Verificação)
+        Assert.Equal(valorEsperado, valorAtual);
+    }
+}
+
+Como esse teste sempre vai dar "igual", ele serve para confirmar que o seu Pipeline consegue encontrar o projeto de testes, compilar e rodar com sucesso. Se esse teste passar, a "estrada" está pavimentada para escrever testes reais da API.
+
+7.Rodar na raiz para instalar o pacote de simulação no projeto de testes
+dotnet add Connectamente.Tests/Connectamente.Tests.csproj package Moq
+dotnet add Connectamente.Tests/Connectamente.Tests.csproj package 
+Nuget solution: Microsoft.EntityFrameworkCore.InMemory
+
