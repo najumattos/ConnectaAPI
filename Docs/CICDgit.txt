@@ -75,5 +75,6 @@ Como esse teste sempre vai dar "igual", ele serve para confirmar que o seu Pipel
 7.Rodar na raiz para instalar o pacote de simulação no projeto de testes
 dotnet add Connectamente.Tests/Connectamente.Tests.csproj package Moq
 dotnet add Connectamente.Tests/Connectamente.Tests.csproj package 
-Nuget solution: Microsoft.EntityFrameworkCore.InMemory
+EM Nuget solution: Microsoft.EntityFrameworkCore.InMemory
 
+8. dotnet test para testar

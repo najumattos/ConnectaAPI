@@ -31,15 +31,15 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
     {
         var psicologo = await ObterDadosPsicologo(idPsicologo);
         var usuario = await userManager.FindByIdAsync(idPsicologo);
-        if (psicologo == null && usuario == null) return null;
+        if (psicologo == null || usuario == null) return null;
 
         if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
         {
-            return null;
-        }
-        context.Psicologos.Remove(psicologo);
+           // context.Psicologos.Remove(psicologo);
 
-        usuario.TipoPerfil = Enums.TipoPerfil.PsicologoDesativado;
+            usuario.TipoPerfil = Enums.TipoPerfil.PsicologoDesativado;
+        }
+       
 
 
         await context.SaveChangesAsync();

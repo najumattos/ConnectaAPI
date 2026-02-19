@@ -109,30 +109,31 @@ public class UsuarioServiceTests
             Assert.Null(resultado);
         }
     }
-  
-    public class ObterTodosUsuarios : UsuarioServiceTests{
-    [Fact]
-    public async Task ObterTodosUsuarios_DeveRetornarListaDeUserDto_QuandoExistiremUsuarios()
+
+    public class ObterTodosUsuarios : UsuarioServiceTests
     {
-        // Arrange (Preparar)
-        var usuarios = new List<Usuario>
+        [Fact]
+        public async Task ObterTodosUsuarios_DeveRetornarListaDeUserDto_QuandoExistiremUsuarios()
+        {
+            // Arrange (Preparar)
+            var usuarios = new List<Usuario>
     {
         new Usuario { Id = "1", Nome = "Ozzy", Sobrenome = "Osbourne", Email = "blacksabbath@teste.com" },
         new Usuario { Id = "2", Nome = "Ronnie", Sobrenome = "Dio", Email = "dio@teste.com" }
     };
 
-        _context.Usuarios.AddRange(usuarios);
-        await _context.SaveChangesAsync();
+            _context.Usuarios.AddRange(usuarios);
+            await _context.SaveChangesAsync();
 
-        // Act (Ação)
-        var resultado = await _service.ObterTodosUsuarios();
+            // Act (Ação)
+            var resultado = await _service.ObterTodosUsuarios();
 
-        // Assert (Verificação)
-        Assert.NotNull(resultado);
-        Assert.Equal(2, resultado.Count()); // Verifica se trouxe os dois
-        Assert.Contains(resultado, u => u.Nome == "Ozzy"); // Verifica se o Ozzy está na lista
-        Assert.Contains(resultado, u => u.Nome == "Ronnie"); // Verifica se o Dio está na lista
-    }
+            // Assert (Verificação)
+            Assert.NotNull(resultado);
+            Assert.Equal(2, resultado.Count()); // Verifica se trouxe os dois
+            Assert.Contains(resultado, u => u.Nome == "Ozzy"); // Verifica se o Ozzy está na lista
+            Assert.Contains(resultado, u => u.Nome == "Ronnie"); // Verifica se o Dio está na lista
+        }
 
         [Fact]
         public async Task ObterTodosUsuarios_DeveRetornarListaVazia_QuandoNaoExistiremUsuarios()
@@ -143,7 +144,7 @@ public class UsuarioServiceTests
             // Assert
             Assert.Empty(resultado); // Verifica se retorna uma lista vazia (e não null)
         }
-}
+    }
 
     public class AtualizarUsuario : UsuarioServiceTests
     {
