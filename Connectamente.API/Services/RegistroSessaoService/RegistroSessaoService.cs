@@ -4,27 +4,26 @@ using Connectamente.API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Services.RegistroSessaoService;
-
+                                        //post e delete nao ta funcionando
 public class RegistroSessaoService(AppDbContext context) : IRegistroSessaoService
 {
     public async Task<RegistroSessaoUpdateDto> AtualizarResumoSessao(int idRegistroSessao, RegistroSessaoUpdateDto registroSessaoUpdateDto)
     {
-        var sessao = await ObterRegistroSessaoPorId(idRegistroSessao);
-        if (!string.IsNullOrWhiteSpace(registroSessaoUpdateDto.ResumoSessao))
+        var sessao = await context.RegistrosSessoes
+         .FirstOrDefaultAsync(r => r.RegistroSessaoId == idRegistroSessao);
+        if (sessao == null) return null;
+        if (!string.IsNullOrWhiteSpace(registroSessaoUpdateDto.ResumoSessao)){
             sessao.ResumoSessao = registroSessaoUpdateDto.ResumoSessao;
-        var registroSessaoAtualizado = new RegistroSessaoUpdateDto
-        {
-            ResumoSessao = sessao.ResumoSessao
-        };
-        await context.SaveChangesAsync();
-        return registroSessaoAtualizado;
+            await context.SaveChangesAsync();
+        }
+        return new RegistroSessaoUpdateDto { ResumoSessao = sessao.ResumoSessao };
     }
 
     public async Task<RegistroSessao> CriarRegistroSessao(RegistroSessaoDto registroSessaoDto)
     {
         var registroSessao = new RegistroSessao
         {
-            //id auto?
+            RegistroSessaoId = registroSessaoDto.RegistroSessaoId,
             ResumoSessao = registroSessaoDto.ResumoSessao,
             DataHoraSessao = registroSessaoDto.DataHoraSessao,
             DuracaoSessao = registroSessaoDto.DuracaoSessao,
@@ -44,7 +43,7 @@ public class RegistroSessaoService(AppDbContext context) : IRegistroSessaoServic
     public RegistroSessaoDto MapearRegistroSessaoDto(RegistroSessao registroSessao)
     {
         return new RegistroSessaoDto
-        {
+        {    RegistroSessaoId = registroSessao.RegistroSessaoId,
             ResumoSessao = registroSessao.ResumoSessao,
             DataHoraSessao = registroSessao.DataHoraSessao,
             DuracaoSessao = registroSessao.DuracaoSessao,
@@ -55,7 +54,7 @@ public class RegistroSessaoService(AppDbContext context) : IRegistroSessaoServic
 
     public async Task<RegistroSessaoDto> ObterRegistroSessaoPorId(int idRegistroSessao)
     {
-        var registroSessao = await context.RegistrosSesoes
+        var registroSessao = await context.RegistrosSessoes
             .AsNoTracking()
             .FirstOrDefaultAsync(registroSessao => registroSessao.RegistroSessaoId == idRegistroSessao);
         if (registroSessao == null) return null;
@@ -65,9 +64,9 @@ public class RegistroSessaoService(AppDbContext context) : IRegistroSessaoServic
 
     public async Task<IEnumerable<RegistroSessaoDto>> ObterTodasSessoes()
     {
-        var sessoes = await context.RegistrosSesoes
-            .Include(s => s.PacienteId)
-            .Include(s => s.PsicologoId)
+        var sessoes = await context.RegistrosSessoes
+            .Include(s => s.Paciente)
+            .Include(s => s.Psicologo)
           .AsNoTracking()
           .ToListAsync();
         return sessoes.Select(s => MapearRegistroSessaoDto(s));

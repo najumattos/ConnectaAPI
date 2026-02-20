@@ -16,6 +16,8 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
 using Connectamente.API.Services.PacientesVinculados;
+using Connectamente.API.Services.RegistroSessaoService;
+using Connectamente.API.Services.RegistroPensamentoService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,8 +96,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
 builder.Services.AddScoped<IPacientesVinculadoService, PacientesVinculadosService>();
-
+builder.Services.AddScoped<IRegistroSessaoService, RegistroSessaoService>();
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
+builder.Services.AddScoped<IRegistroPensamentoService, RegistroPensamentoService>();
 
 
 

@@ -4,6 +4,7 @@ using Connectamente.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Connectamente.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260220121329_RegistrosTerapia")]
+    partial class RegistrosTerapia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,17 +195,6 @@ namespace Connectamente.API.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("RegistroSessao");
-
-                    b.HasData(
-                        new
-                        {
-                            RegistroSessaoId = -1,
-                            DataHoraSessao = new DateTime(2002, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DuracaoSessao = new TimeSpan(0, 0, 50, 0, 0),
-                            PacienteId = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b",
-                            PsicologoId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
-                            ResumoSessao = "Resumo sessao"
-                        });
                 });
 
             modelBuilder.Entity("Connectamente.API.Models.Usuario", b =>

@@ -13,7 +13,7 @@ public class Paciente
     [ForeignKey("UsuarioId")]
     public virtual Usuario Usuario { get; set; }
                                                            
-    [Required] public string ContatoEmergencia { get; set; }
+    [Required] public string ContatoEmergencia { get; set; }             
 
     [Display(Name = "Histórico do Paciente", Prompt = "Informações como se ja faz acompanhamento, uso de medicacao, diagnosticos previos, sono, alimentacao, uso de substancias, atividade fisica"),
     StringLength(1000), Required(ErrorMessage = "Campo obrigatório")]

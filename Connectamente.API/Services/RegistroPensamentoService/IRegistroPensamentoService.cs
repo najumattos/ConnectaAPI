@@ -1,6 +1,5 @@
-﻿namespace Connectamente.API.Services.RegistroPensamentoService
+﻿namespace Connectamente.API.Services.RegistroPensamentoService;
+
+public interface IRegistroPensamentoService
 {
-    public class IRegistroPensamentoService
-    {
-    }
 }

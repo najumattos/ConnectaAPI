@@ -2,7 +2,6 @@
 using Connectamente.API.Models.PacienteModel;
 using Connectamente.API.Models;
 using Connectamente.API.Models.PsicologoModel;
-using Connectamente.API.DTOs.PacienteDTOs;
 
 namespace Connectamente.API.Services.PsicologoService;
 

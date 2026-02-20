@@ -41,7 +41,8 @@ public class RegistroSessaoController(IRegistroSessaoService registroSessaoServi
     // POST: api/RegistroSessao
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<RegistroSessao>> PostRegistroSessao(RegistroSessaoDto registroSessaoDto)
+    [Consumes("multipart/form-data")]
+    public async Task<ActionResult<RegistroSessao>> PostRegistroSessao([FromForm] RegistroSessaoDto registroSessaoDto)
     {
         var sessao = await registroSessaoService.CriarRegistroSessao(registroSessaoDto);
         

@@ -19,7 +19,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
     public DbSet<RegistroPensamento> RegistroPensamentos { get; set; }
     public DbSet<Paciente> Pacientes { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
-    public DbSet<RegistroSessao> RegistrosSesoes { get; set; }
+    public DbSet<RegistroSessao> RegistrosSessoes { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -29,7 +29,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         builder.ApplyConfiguration(new UserConfig());
 
         builder.ApplyConfiguration(new PacienteConfig());
-        //builder.ApplyConfiguration(new RegistroSessaoConfig());
+        builder.ApplyConfiguration(new RegistroSessaoTerapeuticaConfig());
 
         builder.ApplyConfiguration(new PsicoConfig());
         builder.Entity<Psicologo>()
