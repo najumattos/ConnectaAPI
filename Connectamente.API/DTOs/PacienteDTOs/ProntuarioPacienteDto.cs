@@ -1,4 +1,4 @@
-﻿using Connectamente.API.Models.PacienteModel;
+﻿using Connectamente.API.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Connectamente.API.DTOs.PacienteDTOs

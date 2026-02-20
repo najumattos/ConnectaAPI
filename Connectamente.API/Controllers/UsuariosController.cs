@@ -53,28 +53,6 @@ public class UsuariosController(IUsuarioService usuarioService) : ControllerBase
         }
     }
 
-    // POST: api/Usuarios
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    //post é o registro ne, então nao faz sentido ter dois
-    /*[HttpPost]
-    public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
-    {
-        _context.Usuarios.Add(usuario);
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateException)
-        {
-            if (_usuarioService.UsuarioExists(usuario.Id))
-            {
-                return Conflict();
-            }
-        }
-
-        return CreatedAtAction("GetUsuario", new { id = usuario.Id }, usuario);
-    }          */
-
     // DELETE: api/Usuarios/5
 
     [HttpDelete("{id}")]

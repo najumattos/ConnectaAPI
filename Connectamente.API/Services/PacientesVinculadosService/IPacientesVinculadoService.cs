@@ -3,7 +3,7 @@ using Connectamente.API.Models.PacienteModel;
 
 namespace Connectamente.API.Services.PacientesVinculados
 {
-    public interface IPacientesVinculados
+    public interface IPacientesVinculadoService
     {
         Task<IEnumerable<ProntuarioPacienteDto>> ObterPacientesVinculados(string idPsicologo);
         Task DesvincularPaciente(string idPsicologo, string idPaciente);

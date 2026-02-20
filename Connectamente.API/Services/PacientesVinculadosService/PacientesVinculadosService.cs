@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Services.PacientesVinculados
 {
-    public class PacientesVinculados(AppDbContext context, IPsicologoService psicologoService, IPacienteService pacienteService) : IPacientesVinculados
+    public class PacientesVinculadosService(AppDbContext context, IPsicologoService psicologoService, IPacienteService pacienteService) : IPacientesVinculadoService
     {
         public async Task DesvincularPaciente(string psicologoId, string pacienteId)
         {

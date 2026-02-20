@@ -3,7 +3,7 @@ using Connectamente.API.Models.PacienteModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Connectamente.API.Data.Configurations.PacienteConfig;
+namespace Connectamente.API.Data.Configurations;
 
 public class PacienteConfig : IEntityTypeConfiguration<Paciente>
 {

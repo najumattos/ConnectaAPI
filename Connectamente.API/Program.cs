@@ -93,7 +93,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
-builder.Services.AddScoped<IPacientesVinculados, PacientesVinculados>();
+builder.Services.AddScoped<IPacientesVinculadoService, PacientesVinculadosService>();
 
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
 

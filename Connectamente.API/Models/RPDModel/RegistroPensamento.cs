@@ -17,7 +17,4 @@ public class RegistroPensamento
     [ForeignKey("UsuarioId")]
     public virtual Usuario Usuario { get; set; }
 
-    //nao sei o quanto isso aqui ta certo
-    /* public ICollection<EmocaoRegistro> EmocoesIniciais { get; set; }
-     public ICollection<EmocaoRegistro> EmocoesFinais { get; set; }*/
 }

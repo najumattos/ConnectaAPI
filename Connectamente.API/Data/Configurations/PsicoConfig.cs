@@ -4,7 +4,7 @@ using Connectamente.API.Models.PsicologoModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Connectamente.API.Data.Configurations.PsicologoConfig;
+namespace Connectamente.API.Data.Configurations;
 
 public class PsicoConfig : IEntityTypeConfiguration<Psicologo>
 {

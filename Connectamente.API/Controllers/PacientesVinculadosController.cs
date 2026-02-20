@@ -7,7 +7,7 @@ namespace Connectamente.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PacientesVinculadosController(IPacientesVinculados pacientesVinculadosService) : ControllerBase
+    public class PacientesVinculadosController(IPacientesVinculadoService pacientesVinculadosService) : ControllerBase
     {
         // GET: api/PacientesVinculados
         [HttpGet("{psicologoId}")]

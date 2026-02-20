@@ -15,8 +15,7 @@ public class AuthService(
     SignInManager<Usuario> signInManager,
     IJwtService jwtService,
     IFileService fileService,
-    IUsuarioService usuarioService,
-    IPacienteService pacienteService
+    IUsuarioService usuarioService
     ) : IAuthService
 {
 

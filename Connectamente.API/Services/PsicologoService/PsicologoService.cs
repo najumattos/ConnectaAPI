@@ -1,14 +1,10 @@
 ﻿using Connectamente.API.Data;
-using Connectamente.API.DTOs.PacienteDTOs;
 using Connectamente.API.DTOs.PsicologoDTOs;
 using Connectamente.API.Enums;
 using Connectamente.API.Models;
 using Connectamente.API.Models.PsicologoModel;
-using Connectamente.API.Services.PacienteService;
-using Humanizer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
 
 namespace Connectamente.API.Services.PsicologoService;
 

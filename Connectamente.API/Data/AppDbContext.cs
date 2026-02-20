@@ -1,6 +1,4 @@
 ﻿using Connectamente.API.Data.Configurations;
-using Connectamente.API.Data.Configurations.PacienteConfig;
-using Connectamente.API.Data.Configurations.PsicologoConfig;
 using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
 using Connectamente.API.Models;
@@ -31,7 +29,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         builder.ApplyConfiguration(new UserConfig());
 
         builder.ApplyConfiguration(new PacienteConfig());
-        builder.ApplyConfiguration(new RegistroSessaoConfig());
+        //builder.ApplyConfiguration(new RegistroSessaoConfig());
 
         builder.ApplyConfiguration(new PsicoConfig());
         builder.Entity<Psicologo>()

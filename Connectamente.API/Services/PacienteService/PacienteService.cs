@@ -1,6 +1,5 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.DTOs.PacienteDTOs;
-using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Models;
 using Connectamente.API.Models.PacienteModel;
 using Microsoft.AspNetCore.Identity;

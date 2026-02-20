@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Connectamente.API.Models.PacienteModel;
+using Connectamente.API.Models.PsicologoModel;
 
-namespace Connectamente.API.Models.PacienteModel;
+namespace Connectamente.API.Models;
 
 [Table("RegistroSessao")]
 public class RegistroSessao
@@ -20,4 +22,8 @@ public class RegistroSessao
     public string PacienteId { get; set; }
     [ForeignKey("UsuarioId")]
     public virtual Paciente Paciente { get; set; }
+
+    public string PsicologoId { get; set; }
+    [ForeignKey("UsuarioId")]
+    public virtual Psicologo Psicologo { get; set; }
 }

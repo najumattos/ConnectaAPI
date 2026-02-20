@@ -41,7 +41,6 @@ namespace Connectamente.API.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> PutPsicologo(string id, [FromForm] PsicologoUpdateDto psicologoDto)
         {        
-            //OS CAMPOS OBRIGATORIOS
             var psicologo = await psicologoService.AtualizarPsicologo(id, psicologoDto);
             if (psicologo == null) return NotFound();
 
