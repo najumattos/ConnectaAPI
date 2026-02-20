@@ -30,7 +30,7 @@ dotnet run
 ```
 ### 5. Acesse o Swagger:
 ```
-https://localhost:5256/
+https://localhost:7238/
 ```
 
 ## 🔐 Autenticação
