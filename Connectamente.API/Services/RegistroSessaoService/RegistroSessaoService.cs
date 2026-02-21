@@ -1,10 +1,11 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.DTOs.RegistroSessaoDTOs;
 using Connectamente.API.Models;
+using Connectamente.API.Models.PacienteModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Services.RegistroSessaoService;
-                                        //post e delete nao ta funcionando
+                                        //delete nao ta funcionando
 public class RegistroSessaoService(AppDbContext context) : IRegistroSessaoService
 {
     public async Task<RegistroSessaoUpdateDto> AtualizarResumoSessao(int idRegistroSessao, RegistroSessaoUpdateDto registroSessaoUpdateDto)
@@ -23,13 +24,13 @@ public class RegistroSessaoService(AppDbContext context) : IRegistroSessaoServic
     {
         var registroSessao = new RegistroSessao
         {
-            RegistroSessaoId = registroSessaoDto.RegistroSessaoId,
             ResumoSessao = registroSessaoDto.ResumoSessao,
             DataHoraSessao = registroSessaoDto.DataHoraSessao,
             DuracaoSessao = registroSessaoDto.DuracaoSessao,
             PacienteId = registroSessaoDto.PacienteId,
             PsicologoId = registroSessaoDto.PsicologoId
         };
+        context.RegistrosSessoes.Add(registroSessao);
         await context.SaveChangesAsync();
         return registroSessao;
     }
@@ -43,7 +44,7 @@ public class RegistroSessaoService(AppDbContext context) : IRegistroSessaoServic
     public RegistroSessaoDto MapearRegistroSessaoDto(RegistroSessao registroSessao)
     {
         return new RegistroSessaoDto
-        {    RegistroSessaoId = registroSessao.RegistroSessaoId,
+        {
             ResumoSessao = registroSessao.ResumoSessao,
             DataHoraSessao = registroSessao.DataHoraSessao,
             DuracaoSessao = registroSessao.DuracaoSessao,
@@ -62,13 +63,37 @@ public class RegistroSessaoService(AppDbContext context) : IRegistroSessaoServic
         return MapearRegistroSessaoDto(registroSessao);
     }
 
-    public async Task<IEnumerable<RegistroSessaoDto>> ObterTodasSessoes()
+    public async Task<IEnumerable<RegistroSessaoDto>> ObterTodasSessoesPorPsicologo(string psicologoId)
     {
         var sessoes = await context.RegistrosSessoes
             .Include(s => s.Paciente)
             .Include(s => s.Psicologo)
           .AsNoTracking()
           .ToListAsync();
-        return sessoes.Select(s => MapearRegistroSessaoDto(s));
+        return sessoes.Select(s => new RegistroSessaoDto
+        {
+            ResumoSessao = s.ResumoSessao,
+            DataHoraSessao = s.DataHoraSessao,
+            DuracaoSessao = s.DuracaoSessao,
+            PacienteId = s.PacienteId,
+            PsicologoId = psicologoId
+        });
+    }
+
+    public async Task<IEnumerable<RegistroSessaoDto>> ObterTodasSessoesPorPaciente(string pacienteId)
+    {
+        var sessoes = await context.RegistrosSessoes
+            .Include(s => s.Paciente)
+            .Include(s => s.Psicologo)
+          .AsNoTracking()
+          .ToListAsync();
+        return sessoes.Select(s => new RegistroSessaoDto
+        {
+            ResumoSessao = s.ResumoSessao,
+            DataHoraSessao = s.DataHoraSessao,
+            DuracaoSessao = s.DuracaoSessao,
+            PacienteId = pacienteId,
+            PsicologoId = s.PsicologoId
+        });
     }
 }

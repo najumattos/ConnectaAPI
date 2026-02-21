@@ -52,11 +52,11 @@ public class PacienteService(AppDbContext context, UserManager<Usuario> userMana
       
             if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
             {
-                return null;
-            }
-            _context.Pacientes.Remove(paciente);
+            //_context.Pacientes.Remove(paciente);
 
             usuario.TipoPerfil = Enums.TipoPerfil.PacienteDesativado;
+        }
+           
            
 
             await _context.SaveChangesAsync();

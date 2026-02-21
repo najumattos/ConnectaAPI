@@ -2,7 +2,6 @@
 {
     public class RegistroSessaoDto
     {
-        public int RegistroSessaoId { get; set; }
         public DateTime DataHoraSessao { get; set; }
         public TimeSpan DuracaoSessao { get; set; }
         public string ResumoSessao { get; set; }

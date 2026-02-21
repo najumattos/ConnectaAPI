@@ -6,6 +6,7 @@ namespace Connectamente.API.Services.RegistroSessaoService;
 public interface IRegistroSessaoService
 {
     Task<IEnumerable<RegistroSessaoDto>> ObterTodasSessoes();
+    Task<IEnumerable<RegistroSessaoDto>> ObterTodasSessoesPorPaciente(string idPaciente);
     Task<RegistroSessaoDto> ObterRegistroSessaoPorId(int idRegistroSessao);
     Task<RegistroSessaoUpdateDto> AtualizarResumoSessao(int idRegistroSessao, RegistroSessaoUpdateDto registroSessaoUpdateDto);
     Task<RegistroSessao> DeletarRegistroSessao(int idRegistroSessao);
