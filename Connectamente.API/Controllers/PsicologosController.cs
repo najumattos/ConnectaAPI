@@ -55,7 +55,7 @@ namespace Connectamente.API.Controllers
             {
                 return NotFound();
             }
-            await psicologoService.DeletarPsicologo(id);
+            await psicologoService.DesativarPerfilPsicologo(id);
             return NoContent();
         }
 

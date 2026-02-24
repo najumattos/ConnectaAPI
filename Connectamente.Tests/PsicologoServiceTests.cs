@@ -115,7 +115,7 @@ public class PsicologoServiceTests
             _userManagerMock.Setup(u => u.FindByIdAsync(id)).ReturnsAsync(usuario);
 
             // Act
-            var resultado = await _service.DeletarPsicologo(id);
+            var resultado = await _service.DesativarPerfilPsicologo(id);
 
             
           // Assert.NotNull(resultado); 

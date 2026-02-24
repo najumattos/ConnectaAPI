@@ -23,7 +23,7 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         return psicologoDtoAtualizado;
     }
 
-    public async Task<Psicologo> DeletarPsicologo(string idPsicologo)
+    public async Task<Psicologo> DesativarPerfilPsicologo(string idPsicologo)
     {
         var psicologo = await ObterDadosPsicologo(idPsicologo);
         var usuario = await userManager.FindByIdAsync(idPsicologo);

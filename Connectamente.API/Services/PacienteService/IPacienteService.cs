@@ -6,7 +6,7 @@ namespace Connectamente.API.Services.PacienteService;
 
 public interface IPacienteService
 {
-    Task<IEnumerable<ProntuarioPacienteDto>> ObterTodosPacientes();
+    Task<IEnumerable<ProntuarioPacienteDto>> ObterTodosPacientes(); //metodo inutil? deveria ser obtertodospacientespor psicologo?
     Task<ProntuarioPacienteDto> ObterPacientePorId(string idPaciente);
     Task<PacienteUpdateDto> AtualizarPaciente(string idPaciente, PacienteUpdateDto pacienteUpdateDto);
     Task<Paciente> DeletarPaciente(string idPaciente);

@@ -14,4 +14,6 @@ public interface IUsuarioService
     Task<Usuario> DeletarUsuario(string idUsuario);
     UserDto MapearUserDto(Usuario usuario);
     Task CriarPerfilAuto(Usuario usuario);
+    //quando um usuario se cadastra, ele preenche se é tipo Paciente/Psicologo
+   
 }

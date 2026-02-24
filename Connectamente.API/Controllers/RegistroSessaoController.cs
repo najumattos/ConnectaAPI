@@ -10,13 +10,13 @@ public class RegistroSessaoController(IRegistroSessaoService registroSessaoServi
 {        
 
     // GET: api/RegistroSessao
-    [HttpGet]
+ /*   [HttpGet]
     public async Task<ActionResult<IEnumerable<RegistroSessao>>> GetRegistrosSesoes()
     {
         var resultado = await registroSessaoService.ObterTodasSessoes();
 
         return Ok(resultado);
-    }
+    }                      */
 
     // GET: api/RegistroSessao/5
     [HttpGet("{id}")]
