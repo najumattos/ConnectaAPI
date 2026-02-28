@@ -18,8 +18,13 @@ using System.Text.Json.Serialization;
 using Connectamente.API.Services.PacientesVinculados;
 using Connectamente.API.Services.RegistroSessaoService;
 using Connectamente.API.Services.RegistroPensamentoService;
+using dotenv.net;
+
+DotEnv.Load();                         //Lê o arquivo .env
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables(); //adiciona variaveis de ambiente
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -29,8 +34,13 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 }); ;
 
 // Serviço de Conexão com o Banco
-string conexao = builder.Configuration.GetConnectionString("Conexao");
+string conexao = builder.Configuration.GetConnectionString("DB_CONNECTION_STRING");
+if (string.IsNullOrEmpty(conexao))
+{    
+    throw new Exception("A string de conexão não foi carregada. Verifique o arquivo .env!");
+}
 var versao = ServerVersion.AutoDetect(conexao);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(conexao, versao)
 );

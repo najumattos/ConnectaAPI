@@ -9,14 +9,7 @@ namespace Connectamente.API.Controllers;
 public class RegistroSessaoController(IRegistroSessaoService registroSessaoService) : ControllerBase
 {        
 
-    // GET: api/RegistroSessao
- /*   [HttpGet]
-    public async Task<ActionResult<IEnumerable<RegistroSessao>>> GetRegistrosSesoes()
-    {
-        var resultado = await registroSessaoService.ObterTodasSessoes();
-
-        return Ok(resultado);
-    }                      */
+                    
 
     // GET: api/RegistroSessao/5
     [HttpGet("{id}")]
