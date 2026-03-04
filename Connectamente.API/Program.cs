@@ -20,7 +20,7 @@ using Connectamente.API.Services.RegistroSessaoService;
 using Connectamente.API.Services.RegistroPensamentoService;
 using dotenv.net;
 
-DotEnv.Load();                         //Lê o arquivo .env
+//DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { "../.env" }));                      //Lê o arquivo .env
 
 var builder = WebApplication.CreateBuilder(args);
 
