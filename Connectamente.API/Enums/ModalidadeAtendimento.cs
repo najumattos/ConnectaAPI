@@ -2,9 +2,9 @@
 {
     public enum ModalidadeAtendimento
     {
-        Presencial = 1,
-        Online = 2,
-        Hibrido = 3,
-        ModalidadeAtendimento = 4
+        Presencial = 0,
+        Online = 1,
+        Hibrido = 2,
+        ModalidadeAtendimento = 3
     }
 }

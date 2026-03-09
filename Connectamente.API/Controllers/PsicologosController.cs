@@ -14,21 +14,34 @@ namespace Connectamente.API.Controllers
     [ApiController]
     public class PsicologosController(IPsicologoService psicologoService) : ControllerBase
     {
-        
 
-        // GET: api/Psicologos
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Psicologo>>> GetPsicologos()
+
+        // GET: api/Psicologos/filtros
+        [HttpGet("filtros")]
+        public async Task<ActionResult<IEnumerable<PsicologoDto>>> GetPsicologosFiltrados(
+           [FromQuery] List<int> modalidadeIds, 
+    [FromQuery] List<int> abordagemIds,
+    [FromQuery] List<int> condicaoIds,
+    [FromQuery] List<int> publicoIds)
         {
-            var resultado = await psicologoService.ObterTodosPsicologos();
+            var resultado = await psicologoService.ObterPsicologoFiltrados(modalidadeIds, abordagemIds, condicaoIds, publicoIds);
 
             return Ok(resultado);
         }
-       
+
+        // GET: api/Psicologos/nomeOuCRP
+        [HttpGet("buscar")]
+        public async Task<ActionResult<IEnumerable<PsicologoDto>>> GetPsicologosPorNomeOuCRP([FromQuery] string nomeOuCRP)
+        {
+            var resultado = await psicologoService.ObterPsicologoPorNomeOuCRP(nomeOuCRP);
+
+            return Ok(resultado);
+        }
+
 
         // GET: api/Psicologo/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Psicologo>> GetPsicologo(string id)
+        public async Task<ActionResult<PsicologoDto>> GetPsicologo(string id)
         {
             var psicologo = await psicologoService.ObterPsicologoPorId(id);
             if (psicologo == null) return NotFound();
