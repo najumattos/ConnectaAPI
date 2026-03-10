@@ -8,14 +8,7 @@ namespace Connectamente.API.Controllers;
 [ApiController]
 public class PacientesController(IPacienteService pacienteService) : ControllerBase
 {
-    private readonly IPacienteService _pacienteService = pacienteService;
-    // GET: api/Pacientes
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<ProntuarioPacienteDto>>> GetPacientes()
-    {      
-        var resultado = await _pacienteService.ObterTodosPacientes();
-        return Ok(resultado);
-    }
+    private readonly IPacienteService _pacienteService = pacienteService;     
 
     // GET: api/Pacientes/5
     [HttpGet("{id}")]
@@ -27,7 +20,7 @@ public class PacientesController(IPacienteService pacienteService) : ControllerB
             return NotFound();
         }
         return Ok(pacienteDto);
-    }
+    }         
 
      // PUT: api/Pacientes/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

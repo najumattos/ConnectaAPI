@@ -63,11 +63,11 @@ public class AuthController : ControllerBase
         if (string.IsNullOrEmpty(userId))
             return Unauthorized();
 
-        var user = await _authService.GetUserByIdAsync(userId);
-        if (user == null)
+        var userDto = await _authService.GetUserByIdAsync(userId);
+        if (userDto == null)
             return NotFound(new { message = "Usuário não encontrado." });
 
-        return Ok(user);
+        return Ok(userDto);
     }
 
     /// <summary>

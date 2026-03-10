@@ -1,4 +1,5 @@
-﻿using Connectamente.API.DTOs;
+﻿using Connectamente.API.Data;
+using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Helpers;
 using Connectamente.API.Models;
@@ -15,7 +16,8 @@ public class AuthService(
     SignInManager<Usuario> signInManager,
     IJwtService jwtService,
     IFileService fileService,
-    IUsuarioService usuarioService
+    IUsuarioService usuarioService,
+    AppDbContext context
     ) : IAuthService
 {
 
@@ -32,11 +34,12 @@ public class AuthService(
         {
             throw new UnauthorizedAccessException("Senha Inválida.");
         }
+        user.QtdAcessos++;
+        await context.SaveChangesAsync();
         var userDto = usuarioService.MapearUserDto(user);       
         var token = jwtService.GenerateToken(userDto);
         var AuthDtoMapeado = MapearAuthDto(userDto, token);
-        user.QtdAcessos++;
-        //contador de acessos
+        
 
         return AuthDtoMapeado;       
     }
@@ -109,7 +112,8 @@ public class AuthService(
             DataNascimento = registerDto.DataNascimento,
             PhoneNumber = registerDto.Celular,
             Foto = fotoPath,
-            TipoPerfil = registerDto.TipoPerfil
+            TipoPerfil = registerDto.TipoPerfil,
+            QtdAcessos = 1
         };
     }
    
