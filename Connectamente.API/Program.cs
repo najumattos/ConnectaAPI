@@ -1,12 +1,6 @@
 using Connectamente.API.Data;
 using Connectamente.API.Middleware;
-using Connectamente.API.Models;
-using Connectamente.API.Services.AuthService;
-using Connectamente.API.Services.PsicologoService;
-using Connectamente.API.Services.PacienteService;
 using Connectamente.API.Services.FileService;
-using Connectamente.API.Services.JwtService;
-using Connectamente.API.Services.UsuarioService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
@@ -15,48 +9,78 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
-using Connectamente.API.Services.PacientesVinculados;
+using dotenv.net;
+using Connectamente.API.Usuario;
+using Connectamente.API.Usuario.UsuarioService;
+using Connectamente.API.Psicologo.PsicologoService;
+using Connectamente.API.Auth.AuthService;
+using Connectamente.API.Paciente.PacienteService;
+using Connectamente.API.RegistroConsulta.Services;
+using Connectamente.API.PacientesPsicologia.Service;
+using Connectamente.API.Auth.JwtService;
+using Connectamente.API.Paciente.Service;
+using Connectamente.API.Psicologo.Service;
 
+DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { "../.env" }));                            //LÃª o arquivo .env
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables(); //adiciona variaveis de ambiente
+
+//chama o front
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("MinhaPolitica", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // URL do seu React
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    // Isso força a conversão de todos os Enums para String no JSON
+    // Isso forÃ§a a conversÃ£o de todos os Enums para String no JSON
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 }); ;
 
-// Serviço de Conexão com o Banco
-string conexao = builder.Configuration.GetConnectionString("Conexao");
+// ServiÃ§o de ConexÃ£o com o Banco
+string conexao = builder.Configuration.GetConnectionString("DB_CONNECTION_STRING");
+if (string.IsNullOrEmpty(conexao))
+{    
+    throw new Exception("A string de conexÃ£o nÃ£o foi carregada. Verifique o arquivo .env!");
+}
 var versao = ServerVersion.AutoDetect(conexao);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(conexao, versao)
 );
 
-// Serviço de Autenticação e Autorização - Identity
-builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
+// ServiÃ§o de AutenticaÃ§Ã£o e AutorizaÃ§Ã£o - Identity
+builder.Services.AddIdentity<UsuarioModel, IdentityRole>(options =>
 {
     // Configurar Senha
     options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 0;
 
-    // Configurações de Bloqueio
+    // ConfiguraÃ§Ãµes de Bloqueio
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
 
-    // Configuração Usuário
+    // ConfiguraÃ§Ã£o UsuÃ¡rio
     options.User.RequireUniqueEmail = true;
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// Serviço JWT
+// ServiÃ§o JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"];
 if (string.IsNullOrEmpty(secretKey))
 {
-    throw new InvalidOperationException("A chave secreta do JWT (SecretKey) não foi configurada no appsettings.json!");
+    throw new InvalidOperationException("A chave secreta do JWT (SecretKey) nÃ£o foi configurada no appsettings.json!");
 }
 
 builder.Services.AddAuthentication(options =>
@@ -81,34 +105,24 @@ builder.Services.AddAuthentication(options =>
    
 });
 
-// Adicionar a Autorização
+// Adicionar a AutorizaÃ§Ã£o
 builder.Services.AddAuthorization();
 
-// Serviço de Arquivos
+// ServiÃ§o de Arquivos
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileService, FileService>();
 
-// Registro dos Serviços Customizados
+// Registro dos ServiÃ§os Customizados
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
-builder.Services.AddScoped<IPacientesVinculados, PacientesVinculados>();
-
+builder.Services.AddScoped<IPacientesPsicologiaService, PacientesPsicologiaService>();
+builder.Services.AddScoped<IRegistroConsultaService, RegistroConsultaService>();
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
 
 
 
-// Configuração do CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -122,11 +136,11 @@ builder.Services.AddSwaggerGen(c =>
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Cabeçalho da Autorização JWT. Exemplo: \"Authorization: Bearer {token}\"",
+        Description = "CabeÃ§alho da AutorizaÃ§Ã£o JWT. Exemplo: \"Authorization: Bearer {token}\"",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
-        Scheme = "bearer" //Type = SecuritySchemeType.Http, o campo Scheme deve ser escrito em minúsculo
+        Scheme = "bearer" //Type = SecuritySchemeType.Http, o campo Scheme deve ser escrito em minÃºsculo
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -155,8 +169,8 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 var app = builder.Build();
 
 // 1. Deve ser o primeiro para entender o protocolo original
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseForwardedHeaders();
-
 // Garantir que o banco exista ao executar o projeto
 using (var scope = app.Services.CreateScope())
 {
@@ -175,13 +189,14 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();  //Se redireciona a autenticação da errado
+app.UseHttpsRedirection();  //Se redireciona a autenticaï¿½ï¿½o da errado
 
 app.UseStaticFiles();
 
-app.UseCors("AllowAll");
+app.UseCors("MinhaPolitica"); 
 
-app.UseMiddleware<ErrorHandlingMiddleware>();
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();

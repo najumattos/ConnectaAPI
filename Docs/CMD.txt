@@ -7,3 +7,14 @@ dotnet ef migrations add NovaMigration
 
 INSTALAR .NET 9x
 winget install Microsoft.DotNet.SDK.9
+
+CRIAR CONTROLLERS
+dotnet aspnet-codegenerator controller -name RegistroSessaoController -async -api -m RegistroSessao -dc AppDbContext -outDir Controllers
+
+GIT CONFIG
+git config --global user.name "Ana Julia Mattos"
+git config --global user.email anajuliamattos02@gmail.com
+
+
+git config --global user.name "Tainara Santos"
+git config --global user.email "tainaravit.santos28@gmail.com"

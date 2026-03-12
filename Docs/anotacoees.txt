@@ -1,6 +1,5 @@
-git config --global user.name "Ana Julia Mattos"
-git config --global user.email anajuliamattos02@gmail.com
+Tem que estar autenticado pra conseguir interagir com essas coisas todas?
+dependendo do tipo perfil, a permissao de acesso muda?
 
 
-git config --global user.name "Tainara Santos"
-git config --global user.email "tainaravit.santos28@gmail.com"
+PsicologoResponsavel, como fazer? Perguntar pra Nathalia?

@@ -1,19 +1,20 @@
 ﻿using Moq;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
-using Connectamente.API.Models;
-using Connectamente.API.Models.PsicologoModel;
-using Connectamente.API.Services.PsicologoService;
-using Connectamente.API.DTOs.PsicologoDTOs;
+using Connectamente.API.Psicologo.Service;
+using Connectamente.API.Psicologo.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Connectamente.API.Enums;
+using Connectamente.API.Usuario;
+using Connectamente.API.Psicologo.PsicologoService;
+using Connectamente.API.Psicologo;
 
 namespace Connectamente.Tests;
 
 public class PsicologoServiceTests
 {
     private readonly AppDbContext _context;
-    private readonly Mock<UserManager<Usuario>> _userManagerMock;
+    private readonly Mock<UserManager<UsuarioModel>> _userManagerMock;
     private readonly PsicologoService _service;
 
     public PsicologoServiceTests()
@@ -25,8 +26,8 @@ public class PsicologoServiceTests
         _context = new AppDbContext(options);
 
         // Mock do UserManager (necessário para o construtor)
-        var store = new Mock<IUserStore<Usuario>>();
-        _userManagerMock = new Mock<UserManager<Usuario>>(store.Object, null!, null!, null!, null!, null!, null!, null!, null!);
+        var store = new Mock<IUserStore<UsuarioModel>>();
+        _userManagerMock = new Mock<UserManager<UsuarioModel>>(store.Object, null!, null!, null!, null!, null!, null!, null!, null!);
 
         _service = new PsicologoService(_context, _userManagerMock.Object);
     }
@@ -38,8 +39,8 @@ public class PsicologoServiceTests
         {
             // Arrange
             var id = "psico-1";
-            var usuario = new Usuario { Id = id, Nome = "Bruce", Sobrenome = "Dickinson" };
-            var psicologo = new Psicologo
+            var usuario = new UsuarioModel { Id = id, Nome = "Bruce", Sobrenome = "Dickinson" };
+            var psicologo = new PsicologoModel
 
             {
 
@@ -84,8 +85,8 @@ public class PsicologoServiceTests
         {
             // Arrange
             var id = "psico-delete";
-            var usuario = new Usuario { Id = id, TipoPerfil = TipoPerfil.Psicologo, Nome="Ana", Sobrenome="Julia" };
-            var psicologo = new Psicologo
+            var usuario = new UsuarioModel { Id = id, TipoPerfil = TipoPerfil.Psicologo, Nome="Ana", Sobrenome="Julia" };
+            var psicologo = new PsicologoModel
 
             {
 
@@ -115,11 +116,11 @@ public class PsicologoServiceTests
             _userManagerMock.Setup(u => u.FindByIdAsync(id)).ReturnsAsync(usuario);
 
             // Act
-            var resultado = await _service.DeletarPsicologo(id);
+            var resultado = await _service.DesativarPerfilPsicologo(id);
 
             
           // Assert.NotNull(resultado); 
-            Assert.Equal(TipoPerfil.PsicologoDesativado, usuario.TipoPerfil);
+            Assert.Equal(TipoPerfil.Desativado, usuario.TipoPerfil);
 
             // Verifica se removeu da tabela de Psicologos
          /*  var existeNoBanco = await _context.Psicologos.AnyAsync(p => p.UsuarioId == id);

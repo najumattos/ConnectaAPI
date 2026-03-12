@@ -1,18 +1,18 @@
 ﻿using Connectamente.API.Helpers;
-using Connectamente.API.Models;
+using Connectamente.API.Usuario;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Data.Configurations
 {
-    public class UserConfig : IEntityTypeConfiguration<Usuario>
+    public class UserConfig : IEntityTypeConfiguration<UsuarioModel>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Usuario> builder)
+        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<UsuarioModel> builder)
         {
 
             string hashFixo = "AQAAAAIAAYagAAAAEJ9FzXF/zP/9q8m6sF3jKx5T6P6lB6m1z2x3c4v5b6n7m8==";
             #region Populate Usuário
-            List<Usuario> usuarios = [
-                new Usuario(){
+            List<UsuarioModel> usuarios = [
+                new UsuarioModel(){
                 Id = SeedDataConstants.USER_ANA_JULIA_ID,
                 UserName = "anajuliamattos02@gmail.com",
                 Email = "anajuliamattos02@gmail.com",
@@ -34,7 +34,7 @@ namespace Connectamente.API.Data.Configurations
                 TwoFactorEnabled = false,
                                               QtdAcessos = 0, //contar automaticamente
             },
-             new Usuario(){
+             new UsuarioModel(){
                 Id = SeedDataConstants.USER_TAINARA_ID,
                 UserName = "tainaravitsantos28@gmail.com",
                 Email = "tainaravitsantos28@gmail.com",
@@ -43,7 +43,7 @@ namespace Connectamente.API.Data.Configurations
                 Sobrenome = " dos Santos",
                 PhoneNumber = "14988060308",
                 DataNascimento = new DateOnly(2001, 12, 19),
-                TipoPerfil = Enums.TipoPerfil.Paciente,
+                TipoPerfil = Enums.TipoPerfil.Estudante,
                 Foto = "/img/usuarios/paciente.png",
                 PasswordHash = hashFixo,
                 NormalizedEmail = "TAINARAVITSANTOS28@GMAIL.COM",
