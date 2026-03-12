@@ -11,7 +11,7 @@ namespace Connectamente.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(
-                table: "Psicologo",
+                table: "PsicologoModel",
                 keyColumn: "UsuarioId",
                 keyValue: "70f93f27-32b1-4de5-bee3-b0de2cf80047",
                 column: "ModalidadeDeAtendimento",
@@ -22,7 +22,7 @@ namespace Connectamente.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(
-                table: "Psicologo",
+                table: "PsicologoModel",
                 keyColumn: "UsuarioId",
                 keyValue: "70f93f27-32b1-4de5-bee3-b0de2cf80047",
                 column: "ModalidadeDeAtendimento",

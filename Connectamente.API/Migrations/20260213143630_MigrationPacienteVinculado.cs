@@ -208,7 +208,7 @@ namespace Connectamente.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Psicologo",
+                name: "PsicologoModel",
                 columns: table => new
                 {
                     UsuarioId = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -261,7 +261,7 @@ namespace Connectamente.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Paciente",
+                name: "PacienteModel",
                 columns: table => new
                 {
                     UsuarioId = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -285,7 +285,7 @@ namespace Connectamente.API.Migrations
                     table.ForeignKey(
                         name: "FK_Paciente_Psicologo_PsicologoResponsavelId",
                         column: x => x.PsicologoResponsavelId,
-                        principalTable: "Psicologo",
+                        principalTable: "PsicologoModel",
                         principalColumn: "UsuarioId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -314,7 +314,7 @@ namespace Connectamente.API.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "RegistroSessao",
+                name: "RegistroConsultaModel",
                 columns: table => new
                 {
                     RegistroSessaoId = table.Column<int>(type: "int", nullable: false)
@@ -334,7 +334,7 @@ namespace Connectamente.API.Migrations
                     table.ForeignKey(
                         name: "FK_RegistroSessao_Paciente_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Paciente",
+                        principalTable: "PacienteModel",
                         principalColumn: "UsuarioId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -344,8 +344,8 @@ namespace Connectamente.API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0b44ca04-f6b0-4a8f-a953-1f2330d30894", null, "Psicologo", "PSICOLOGO" },
-                    { "ddf093a6-6cb5-4ff7-9a64-83da34aee005", null, "Paciente", "PACIENTE" }
+                    { "0b44ca04-f6b0-4a8f-a953-1f2330d30894", null, "PsicologoModel", "PSICOLOGO" },
+                    { "ddf093a6-6cb5-4ff7-9a64-83da34aee005", null, "PacienteModel", "PACIENTE" }
                 });
 
             migrationBuilder.InsertData(
@@ -358,7 +358,7 @@ namespace Connectamente.API.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "RegistroSessao",
+                table: "RegistroConsultaModel",
                 columns: new[] { "RegistroSessaoId", "DataHoraSessao", "DuracaoSessao", "PacienteId", "ResumoSessao", "UsuarioId" },
                 values: new object[,]
                 {
@@ -376,12 +376,12 @@ namespace Connectamente.API.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Psicologo",
+                table: "PsicologoModel",
                 columns: new[] { "UsuarioId", "AbordagensTerapeuticas", "CRP", "CondicoesTerapeuticas", "Descricao", "ModalidadeDeAtendimento", "TiposPacientes" },
                 values: new object[] { "70f93f27-32b1-4de5-bee3-b0de2cf80047", "1,2", "12345", "2,1", "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.", 1, "3,2" });
 
             migrationBuilder.InsertData(
-                table: "Paciente",
+                table: "PacienteModel",
                 columns: new[] { "UsuarioId", "ContatoEmergencia", "HistoricoPaciente", "PsicologoResponsavelId" },
                 values: new object[] { "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", "14999009858", "historico paciente", "70f93f27-32b1-4de5-bee3-b0de2cf80047" });
 
@@ -429,7 +429,7 @@ namespace Connectamente.API.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Paciente_PsicologoResponsavelId",
-                table: "Paciente",
+                table: "PacienteModel",
                 column: "PsicologoResponsavelId");
 
             migrationBuilder.CreateIndex(
@@ -439,7 +439,7 @@ namespace Connectamente.API.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_RegistroSessao_UsuarioId",
-                table: "RegistroSessao",
+                table: "RegistroConsultaModel",
                 column: "UsuarioId");
         }
 
@@ -465,7 +465,7 @@ namespace Connectamente.API.Migrations
                 name: "EmocaoRegistro");
 
             migrationBuilder.DropTable(
-                name: "RegistroSessao");
+                name: "RegistroConsultaModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -474,10 +474,10 @@ namespace Connectamente.API.Migrations
                 name: "RegistroPensamento");
 
             migrationBuilder.DropTable(
-                name: "Paciente");
+                name: "PacienteModel");
 
             migrationBuilder.DropTable(
-                name: "Psicologo");
+                name: "PsicologoModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

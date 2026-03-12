@@ -4,19 +4,19 @@ namespace Connectamente.API.Enums
 {
     public enum TipoPaciente
     {
-        [Description("Tipos Paciente")]
+        [Description("Tipos PacienteModel")]
         TiposPacientes = 0,
 
-        [Description("Paciente na primeira infância (0 a 12 anos).")]
+        [Description("PacienteModel na primeira infância (0 a 12 anos).")]
         Infantil = 1,
 
         [Description("Indivíduo na fase da adolescência (13 a 18 anos).")]
         Adolescente = 2,
 
-        [Description("Paciente adulto (19 a 60 anos).")]
+        [Description("PacienteModel adulto (19 a 60 anos).")]
         Adulto = 3,
 
-        [Description("Paciente idoso (acima de 60 anos).")]
+        [Description("PacienteModel idoso (acima de 60 anos).")]
         Geriatrico = 4,
 
         [Description("Atendimento realizado no domicílio do paciente.")]
@@ -28,7 +28,7 @@ namespace Connectamente.API.Enums
         [Description("Casal em processo terapêutico conjunto.")]
         Casal = 7,
 
-        [Description("Paciente encaminhado por medidas socioeducativas ou judiciais.")]
+        [Description("PacienteModel encaminhado por medidas socioeducativas ou judiciais.")]
         Juridico = 8,
 
         [Description("Atendimento para funcionários de empresas conveniadas.")]

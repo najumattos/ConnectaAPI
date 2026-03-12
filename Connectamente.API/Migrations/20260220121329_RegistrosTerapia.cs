@@ -14,18 +14,18 @@ namespace Connectamente.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
-                table: "RegistroSessao",
+                table: "RegistroConsultaModel",
                 keyColumn: "RegistroSessaoId",
                 keyValue: -2);
 
             migrationBuilder.DeleteData(
-                table: "RegistroSessao",
+                table: "RegistroConsultaModel",
                 keyColumn: "RegistroSessaoId",
                 keyValue: -1);
 
             migrationBuilder.AddColumn<string>(
                 name: "PsicologoId",
-                table: "RegistroSessao",
+                table: "RegistroConsultaModel",
                 type: "longtext",
                 nullable: true)
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -46,9 +46,9 @@ namespace Connectamente.API.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_RegistroSessao_Psicologo_UsuarioId",
-                table: "RegistroSessao",
+                table: "RegistroConsultaModel",
                 column: "UsuarioId",
-                principalTable: "Psicologo",
+                principalTable: "PsicologoModel",
                 principalColumn: "UsuarioId");
         }
 
@@ -57,11 +57,11 @@ namespace Connectamente.API.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_RegistroSessao_Psicologo_UsuarioId",
-                table: "RegistroSessao");
+                table: "RegistroConsultaModel");
 
             migrationBuilder.DropColumn(
                 name: "PsicologoId",
-                table: "RegistroSessao");
+                table: "RegistroConsultaModel");
 
             migrationBuilder.DropColumn(
                 name: "Cor",
@@ -72,7 +72,7 @@ namespace Connectamente.API.Migrations
                 table: "EmocaoRegistro");
 
             migrationBuilder.InsertData(
-                table: "RegistroSessao",
+                table: "RegistroConsultaModel",
                 columns: new[] { "RegistroSessaoId", "DataHoraSessao", "DuracaoSessao", "PacienteId", "ResumoSessao", "UsuarioId" },
                 values: new object[,]
                 {
