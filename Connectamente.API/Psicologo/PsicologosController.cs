@@ -2,10 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
-using Connectamente.API.Models;
-using Connectamente.API.Models.PacienteModel;
 using Connectamente.API.Psicologo.DTOs;
 using Connectamente.API.Psicologo.PsicologoService;
+using Connectamente.API.Psicologo.Service;
 
 namespace Connectamente.API.Psicologo
 {

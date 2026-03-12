@@ -1,5 +1,6 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.Paciente.DTOs;
+using Connectamente.API.Paciente.Service;
 using Connectamente.API.Prontuarios.ProntuariosPsicologia.DTOs;
 using Connectamente.API.Usuario;
 using Microsoft.AspNetCore.Identity;
