@@ -1,4 +1,6 @@
-﻿namespace Connectamente.API.Prontuarios.ProntuariosPsicologia.DTOs
+﻿using Connectamente.API.Psicologo;
+
+namespace Connectamente.API.Prontuarios.ProntuariosPsicologia.DTOs
 {
     public class ProntuarioPacienteDto
     {

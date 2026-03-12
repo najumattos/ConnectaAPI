@@ -1,5 +1,4 @@
-﻿using Connectamente.API.RegistroConsulta;
-using Connectamente.API.RegistroConsulta.DTOs;
+﻿using Connectamente.API.RegistroConsulta.DTOs;
 
 namespace Connectamente.API.RegistroConsulta.Services;
 

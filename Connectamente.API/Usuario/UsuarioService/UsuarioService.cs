@@ -1,7 +1,5 @@
 ﻿using Connectamente.API.Data;
-using Connectamente.API.Paciente.PacienteService;
 using Connectamente.API.Paciente.Service;
-using Connectamente.API.Psicologo.PsicologoService;
 using Connectamente.API.Psicologo.Service;
 using Connectamente.API.Services.FileService;
 using Connectamente.API.Usuario.DTOs;
