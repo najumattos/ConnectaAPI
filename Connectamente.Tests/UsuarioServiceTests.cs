@@ -2,12 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
 using Connectamente.API.Services.FileService;
-using Connectamente.API.DTOs.UsersDTOs;
 using Microsoft.AspNetCore.Http;
 using Connectamente.API.Usuario;
 using Connectamente.API.Usuario.UsuarioService;
-using Connectamente.API.Psicologo.PsicologoService;
-using Connectamente.API.Paciente.PacienteService;
+using Connectamente.API.Psicologo.Service;
+using Connectamente.API.Paciente.Service;
+using Connectamente.API.Usuario.DTOs;
 
 namespace Connectamente.Tests;
 

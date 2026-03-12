@@ -1,12 +1,13 @@
 ﻿using Moq;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
-using Connectamente.API.Models.PsicologoModel;
-using Connectamente.API.DTOs.PsicologoDTOs;
+using Connectamente.API.Psicologo.Service;
+using Connectamente.API.Psicologo.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Connectamente.API.Enums;
 using Connectamente.API.Usuario;
 using Connectamente.API.Psicologo.PsicologoService;
+using Connectamente.API.Psicologo;
 
 namespace Connectamente.Tests;
 
@@ -39,7 +40,7 @@ public class PsicologoServiceTests
             // Arrange
             var id = "psico-1";
             var usuario = new UsuarioModel { Id = id, Nome = "Bruce", Sobrenome = "Dickinson" };
-            var psicologo = new Psicologo
+            var psicologo = new PsicologoModel
 
             {
 
@@ -85,7 +86,7 @@ public class PsicologoServiceTests
             // Arrange
             var id = "psico-delete";
             var usuario = new UsuarioModel { Id = id, TipoPerfil = TipoPerfil.Psicologo, Nome="Ana", Sobrenome="Julia" };
-            var psicologo = new Psicologo
+            var psicologo = new PsicologoModel
 
             {
 
@@ -119,7 +120,7 @@ public class PsicologoServiceTests
 
             
           // Assert.NotNull(resultado); 
-            Assert.Equal(TipoPerfil.PsicologoDesativado, usuario.TipoPerfil);
+            Assert.Equal(TipoPerfil.Desativado, usuario.TipoPerfil);
 
             // Verifica se removeu da tabela de Psicologos
          /*  var existeNoBanco = await _context.Psicologos.AnyAsync(p => p.UsuarioId == id);

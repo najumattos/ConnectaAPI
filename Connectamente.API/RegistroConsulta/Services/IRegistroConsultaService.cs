@@ -15,7 +15,7 @@ public interface IRegistroConsultaService
     Task<IEnumerable<RegistroConsultaDto>> ObterTodasSessoesPorPaciente(string idPaciente);
     Task<RegistroConsultaDto> ObterRegistroSessaoPorId(int idRegistroSessao);
     Task<RegistroSessaoConsultaDto> AtualizarResumoSessao(int idRegistroSessao, RegistroSessaoConsultaDto registroSessaoUpdateDto);
-    Task<RegistroConsultaModel.RegistroConsulta> DeletarRegistroSessao(int idRegistroSessao);
-    RegistroConsultaDto MapearRegistroSessaoDto(RegistroConsultaModel.RegistroConsulta registroSessao);    
-    Task<RegistroConsultaModel.RegistroConsulta> CriarRegistroSessao(RegistroConsultaDto registroSessaoDto);
+    Task<RegistroConsultaModel> DeletarRegistroSessao(int idRegistroSessao);
+    RegistroConsultaDto MapearRegistroSessaoDto(RegistroConsultaModel registroSessao);    
+    Task<RegistroConsultaModel> CriarRegistroSessao(RegistroConsultaDto registroSessaoDto);
 }

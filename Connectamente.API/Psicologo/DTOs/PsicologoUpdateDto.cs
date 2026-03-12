@@ -1,5 +1,4 @@
 ﻿using Connectamente.API.Enums;
-using Connectamente.API.Models.PacienteModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Connectamente.API.Psicologo.DTOs

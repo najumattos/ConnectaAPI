@@ -8,7 +8,7 @@ public class RegistroConsultaService(AppDbContext context) : IRegistroConsultaSe
 {
     public async Task<RegistroSessaoConsultaDto> AtualizarResumoSessao(int idRegistroSessao, RegistroSessaoConsultaDto registroSessaoUpdateDto)
     {
-        var sessao = await context.RegistrosSessoes
+        var sessao = await context.RegistrosConsultas
          .FirstOrDefaultAsync(r => r.RegistroSessaoId == idRegistroSessao);
         if (sessao == null) return null;
         if (!string.IsNullOrWhiteSpace(registroSessaoUpdateDto.ResumoSessao)){
@@ -28,7 +28,7 @@ public class RegistroConsultaService(AppDbContext context) : IRegistroConsultaSe
             PacienteId = registroSessaoDto.PacienteId,
             PsicologoId = registroSessaoDto.PsicologoId
         };
-        context.RegistrosSessoes.Add(registroConsulta);
+        context.RegistrosConsultas.Add(registroConsulta);
         await context.SaveChangesAsync();
         return registroConsulta;
     }
@@ -53,7 +53,7 @@ public class RegistroConsultaService(AppDbContext context) : IRegistroConsultaSe
 
     public async Task<RegistroConsultaDto> ObterRegistroSessaoPorId(int idRegistroSessao)
     {
-        var registroSessao = await context.RegistrosSessoes
+        var registroSessao = await context.RegistrosConsultas
             .AsNoTracking()
             .FirstOrDefaultAsync(registroSessao => registroSessao.RegistroSessaoId == idRegistroSessao);
         if (registroSessao == null) return null;
@@ -63,7 +63,7 @@ public class RegistroConsultaService(AppDbContext context) : IRegistroConsultaSe
 
     public async Task<IEnumerable<RegistroConsultaDto>> ObterTodasSessoesPorPsicologo(string psicologoId)
     {
-        var sessoes = await context.RegistrosSessoes
+        var sessoes = await context.RegistrosConsultas
             .Include(s => s.Paciente)
             .Include(s => s.Psicologo)
           .AsNoTracking()
@@ -80,7 +80,7 @@ public class RegistroConsultaService(AppDbContext context) : IRegistroConsultaSe
 
     public async Task<IEnumerable<RegistroConsultaDto>> ObterTodasSessoesPorPaciente(string pacienteId)
     {
-        var sessoes = await context.RegistrosSessoes
+        var sessoes = await context.RegistrosConsultas
             .Include(s => s.Paciente)
             .Include(s => s.Psicologo)
           .AsNoTracking()

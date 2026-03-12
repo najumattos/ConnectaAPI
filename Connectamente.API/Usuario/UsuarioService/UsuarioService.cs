@@ -130,12 +130,12 @@ public class UsuarioService(
         if (usuario.TipoPerfil == Enums.TipoPerfil.Estudante)
         {
             await pacienteService.CriarPacienteAuto(usuario);
-            await _userManager.AddToRoleAsync(usuario, "PacienteModel");
+            await _userManager.AddToRoleAsync(usuario, "Paciente");
         }
         if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
         {
             await psicologoService.CriarPsicologoAuto(usuario);
-            await _userManager.AddToRoleAsync(usuario, "PsicologoModel");
+            await _userManager.AddToRoleAsync(usuario, "Psicologo");
         }
     }
     #endregion
