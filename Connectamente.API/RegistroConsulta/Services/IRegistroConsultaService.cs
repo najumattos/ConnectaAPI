@@ -13,7 +13,7 @@ public interface IRegistroConsultaService
     //Task<IEnumerable<RegistroConsultaDto>> ObterTodasSessoes();
     Task<IEnumerable<RegistroConsultaDto>> ObterTodasSessoesPorPaciente(string idPaciente);
     Task<RegistroConsultaDto> ObterRegistroSessaoPorId(int idRegistroSessao);
-    Task<RegistroSessaoConsultaDto> AtualizarResumoSessao(int idRegistroSessao, RegistroSessaoConsultaDto registroSessaoUpdateDto);
+    Task<RegistroConsultaDto> AtualizarResumoSessao(int idRegistroSessao, RegistroConsultaDto registroSessaoUpdateDto);
     Task<RegistroConsultaModel> DeletarRegistroSessao(int idRegistroSessao);
     RegistroConsultaDto MapearRegistroSessaoDto(RegistroConsultaModel registroSessao);    
     Task<RegistroConsultaModel> CriarRegistroSessao(RegistroConsultaDto registroSessaoDto);

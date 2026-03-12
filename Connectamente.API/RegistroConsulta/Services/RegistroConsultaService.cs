@@ -6,7 +6,7 @@ namespace Connectamente.API.RegistroConsulta.Services;
                                         //delete nao ta funcionando
 public class RegistroConsultaService(AppDbContext context) : IRegistroConsultaService
 {
-    public async Task<RegistroSessaoConsultaDto> AtualizarResumoSessao(int idRegistroSessao, RegistroSessaoConsultaDto registroSessaoUpdateDto)
+    public async Task<RegistroConsultaDto> AtualizarResumoSessao(int idRegistroSessao, RegistroConsultaDto registroSessaoUpdateDto)
     {
         var sessao = await context.RegistrosConsultas
          .FirstOrDefaultAsync(r => r.RegistroSessaoId == idRegistroSessao);
@@ -15,7 +15,7 @@ public class RegistroConsultaService(AppDbContext context) : IRegistroConsultaSe
             sessao.ResumoSessao = registroSessaoUpdateDto.ResumoSessao;
             await context.SaveChangesAsync();
         }
-        return new RegistroSessaoConsultaDto { ResumoSessao = sessao.ResumoSessao };
+        return new RegistroConsultaDto { ResumoSessao = sessao.ResumoSessao };
     }
 
     public async Task<RegistroConsultaModel> CriarRegistroSessao(RegistroConsultaDto registroSessaoDto)
