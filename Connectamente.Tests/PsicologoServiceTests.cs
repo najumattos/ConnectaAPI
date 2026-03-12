@@ -1,19 +1,19 @@
 ﻿using Moq;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
-using Connectamente.API.Models;
 using Connectamente.API.Models.PsicologoModel;
-using Connectamente.API.Services.PsicologoService;
 using Connectamente.API.DTOs.PsicologoDTOs;
 using Microsoft.AspNetCore.Identity;
 using Connectamente.API.Enums;
+using Connectamente.API.Usuario;
+using Connectamente.API.Psicologo.PsicologoService;
 
 namespace Connectamente.Tests;
 
 public class PsicologoServiceTests
 {
     private readonly AppDbContext _context;
-    private readonly Mock<UserManager<Usuario>> _userManagerMock;
+    private readonly Mock<UserManager<UsuarioModel>> _userManagerMock;
     private readonly PsicologoService _service;
 
     public PsicologoServiceTests()
@@ -25,8 +25,8 @@ public class PsicologoServiceTests
         _context = new AppDbContext(options);
 
         // Mock do UserManager (necessário para o construtor)
-        var store = new Mock<IUserStore<Usuario>>();
-        _userManagerMock = new Mock<UserManager<Usuario>>(store.Object, null!, null!, null!, null!, null!, null!, null!, null!);
+        var store = new Mock<IUserStore<UsuarioModel>>();
+        _userManagerMock = new Mock<UserManager<UsuarioModel>>(store.Object, null!, null!, null!, null!, null!, null!, null!, null!);
 
         _service = new PsicologoService(_context, _userManagerMock.Object);
     }
@@ -38,7 +38,7 @@ public class PsicologoServiceTests
         {
             // Arrange
             var id = "psico-1";
-            var usuario = new Usuario { Id = id, Nome = "Bruce", Sobrenome = "Dickinson" };
+            var usuario = new UsuarioModel { Id = id, Nome = "Bruce", Sobrenome = "Dickinson" };
             var psicologo = new Psicologo
 
             {
@@ -84,7 +84,7 @@ public class PsicologoServiceTests
         {
             // Arrange
             var id = "psico-delete";
-            var usuario = new Usuario { Id = id, TipoPerfil = TipoPerfil.Psicologo, Nome="Ana", Sobrenome="Julia" };
+            var usuario = new UsuarioModel { Id = id, TipoPerfil = TipoPerfil.Psicologo, Nome="Ana", Sobrenome="Julia" };
             var psicologo = new Psicologo
 
             {

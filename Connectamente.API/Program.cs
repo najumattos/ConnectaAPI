@@ -1,12 +1,6 @@
 using Connectamente.API.Data;
 using Connectamente.API.Middleware;
-using Connectamente.API.Models;
-using Connectamente.API.Services.AuthService;
-using Connectamente.API.Services.PsicologoService;
-using Connectamente.API.Services.PacienteService;
 using Connectamente.API.Services.FileService;
-using Connectamente.API.Services.JwtService;
-using Connectamente.API.Services.UsuarioService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
@@ -15,11 +9,17 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
-using Connectamente.API.Services.PacientesVinculados;
-using Connectamente.API.Services.RegistroSessaoService;
 using Connectamente.API.Services.RegistroPensamentoService;
 using dotenv.net;
 using Connectamente.API.Services.FileService;
+using Connectamente.API.Usuario;
+using Connectamente.API.Usuario.UsuarioService;
+using Connectamente.API.Psicologo.PsicologoService;
+using Connectamente.API.Auth.AuthService;
+using Connectamente.API.Paciente.PacienteService;
+using Connectamente.API.RegistroConsulta.Services;
+using Connectamente.API.PacientesPsicologia.Service;
+using Connectamente.API.Auth.JwtService;
 
 DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { "../.env" }));                            //Lê o arquivo .env
 var builder = WebApplication.CreateBuilder(args);
@@ -58,7 +58,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 // Serviço de Autenticação e Autorização - Identity
-builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
+builder.Services.AddIdentity<UsuarioModel, IdentityRole>(options =>
 {
     // Configurar Senha
     options.Password.RequiredLength = 6;
@@ -117,8 +117,8 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
-builder.Services.AddScoped<IPacientesVinculadoService, PacientesVinculadosService>();
-builder.Services.AddScoped<IRegistroSessaoService, RegistroSessaoService>();
+builder.Services.AddScoped<IPacientesPsicologiaService, PacientesPsicologiaService>();
+builder.Services.AddScoped<IRegistroConsultaService, RegistroConsultaService>();
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
 builder.Services.AddScoped<IRegistroPensamentoService, RegistroPensamentoService>();
 

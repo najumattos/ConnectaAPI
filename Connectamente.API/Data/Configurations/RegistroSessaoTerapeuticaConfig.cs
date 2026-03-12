@@ -1,17 +1,16 @@
 ﻿using Connectamente.API.Helpers;
-using Connectamente.API.Models;
-using Connectamente.API.Models.PsicologoModel;
+using Connectamente.API.RegistroConsulta;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Connectamente.API.Data.Configurations
 {
-    public class RegistroSessaoTerapeuticaConfig : IEntityTypeConfiguration<RegistroSessao>
+    public class RegistroSessaoTerapeuticaConfig : IEntityTypeConfiguration<RegistroConsultaModel>
     {
-        public void Configure(EntityTypeBuilder<RegistroSessao> builder)
+        public void Configure(EntityTypeBuilder<RegistroConsultaModel> builder)
         {
             builder.HasData(
-                new RegistroSessao { 
+                new RegistroConsultaModel { 
                 RegistroSessaoId = -1,
                 ResumoSessao = "Resumo sessao",
                 DataHoraSessao = new DateTime(2002, 4, 1),

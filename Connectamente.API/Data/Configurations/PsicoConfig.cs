@@ -1,17 +1,17 @@
 ﻿using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
-using Connectamente.API.Models.PsicologoModel;
+using Connectamente.API.Psicologo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Connectamente.API.Data.Configurations;
 
-public class PsicoConfig : IEntityTypeConfiguration<Psicologo>
+public class PsicoConfig : IEntityTypeConfiguration<PsicologoModel>
 {
-    public void Configure(EntityTypeBuilder<Psicologo> builder)
+    public void Configure(EntityTypeBuilder<PsicologoModel> builder)
     {
         builder.HasData(
- new Psicologo
+ new PsicologoModel
  {
      UsuarioId = SeedDataConstants.USER_ANA_JULIA_ID,
      CRP = "12345",

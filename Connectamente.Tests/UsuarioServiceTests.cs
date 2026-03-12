@@ -1,13 +1,13 @@
 ﻿using Moq;
 using Microsoft.EntityFrameworkCore;
-using Connectamente.API.Services.UsuarioService;
 using Connectamente.API.Data;
-using Connectamente.API.Models;
 using Connectamente.API.Services.FileService;
-using Connectamente.API.Services.PacienteService;
-using Connectamente.API.Services.PsicologoService;
 using Connectamente.API.DTOs.UsersDTOs;
 using Microsoft.AspNetCore.Http;
+using Connectamente.API.Usuario;
+using Connectamente.API.Usuario.UsuarioService;
+using Connectamente.API.Psicologo.PsicologoService;
+using Connectamente.API.Paciente.PacienteService;
 
 namespace Connectamente.Tests;
 
@@ -45,7 +45,7 @@ public class UsuarioServiceTests
         {
             // Arrange (Preparar)
             var usuarioId = "123";
-            var usuario = new Usuario { Id = usuarioId, Nome = "Ana", Sobrenome = "Julia", Email = "ana@rock.com" };
+            var usuario = new UsuarioModel { Id = usuarioId, Nome = "Ana", Sobrenome = "Julia", Email = "ana@rock.com" };
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
@@ -76,7 +76,7 @@ public class UsuarioServiceTests
         {
             // Arrange (Preparar)
             var idExistente = "user-123";
-            var usuario = new Usuario
+            var usuario = new UsuarioModel
             {
                 Id = idExistente,
                 Nome = "Andre",
@@ -116,10 +116,10 @@ public class UsuarioServiceTests
         public async Task ObterTodosUsuarios_DeveRetornarListaDeUserDto_QuandoExistiremUsuarios()
         {
             // Arrange (Preparar)
-            var usuarios = new List<Usuario>
+            var usuarios = new List<UsuarioModel>
     {
-        new Usuario { Id = "1", Nome = "Ozzy", Sobrenome = "Osbourne", Email = "blacksabbath@teste.com" },
-        new Usuario { Id = "2", Nome = "Ronnie", Sobrenome = "Dio", Email = "dio@teste.com" }
+        new UsuarioModel { Id = "1", Nome = "Ozzy", Sobrenome = "Osbourne", Email = "blacksabbath@teste.com" },
+        new UsuarioModel { Id = "2", Nome = "Ronnie", Sobrenome = "Dio", Email = "dio@teste.com" }
     };
 
             _context.Usuarios.AddRange(usuarios);
@@ -153,7 +153,7 @@ public class UsuarioServiceTests
         {
             // Arrange (Preparar)
             var usuarioId = "user-update-123";
-            var usuarioOld = new Usuario { Id = usuarioId, Nome = "Antigo", Sobrenome = "Nome", Foto = "foto_antiga.jpg" };
+            var usuarioOld = new UsuarioModel { Id = usuarioId, Nome = "Antigo", Sobrenome = "Nome", Foto = "foto_antiga.jpg" };
             _context.Usuarios.Add(usuarioOld);
             await _context.SaveChangesAsync();
 

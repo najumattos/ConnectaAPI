@@ -1,10 +1,11 @@
 ﻿using Connectamente.API.Data.Configurations;
 using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
-using Connectamente.API.Models;
 using Connectamente.API.Models.PacienteModel;
-using Connectamente.API.Models.PsicologoModel;
 using Connectamente.API.Models.RPD;
+using Connectamente.API.Psicologo;
+using Connectamente.API.RegistroConsulta;
+using Connectamente.API.Usuario;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,14 +13,12 @@ using System.Reflection.Emit;
 
 namespace Connectamente.API.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<Usuario>(options)
+public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbContext<UsuarioModel>(options)
 {
-   public DbSet<EmocaoRegistro> EmocoesRegistro { get; set; }
-    public DbSet<Psicologo> Psicologos { get; set; }
-    public DbSet<RegistroPensamento> RegistroPensamentos { get; set; }
-    public DbSet<Paciente> Pacientes { get; set; }
-    public DbSet<Usuario> Usuarios { get; set; }
-    public DbSet<RegistroSessao> RegistrosSessoes { get; set; }
+    public DbSet<PsicologoModel> Psicologos { get; set; }
+    public DbSet<PacienteModel> Pacientes { get; set; }
+    public DbSet<UsuarioModel> Usuarios { get; set; }
+    public DbSet<RegistroConsultaConsulta> RegistrosSessoes { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -62,12 +61,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         [
             new IdentityRole() {
                Id = SeedDataConstants.ROLE_PSICOLOGO_ID,
-               Name = "Psicologo",
+               Name = "PsicologoModel",
                NormalizedName = "PSICOLOGO"
             },
             new IdentityRole() {
                Id = SeedDataConstants.ROLE_PACIENTE_ID,
-               Name = "Paciente",
+               Name = "PacienteModel",
                NormalizedName = "PACIENTE"
             },
         ];
