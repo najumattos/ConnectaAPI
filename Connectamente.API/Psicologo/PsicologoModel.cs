@@ -1,5 +1,5 @@
 ﻿using Connectamente.API.Enums;
-using Connectamente.API.Models.PacienteModel;
+using Connectamente.API.Paciente;
 using Connectamente.API.Usuario;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -37,5 +37,5 @@ public class PsicologoModel
     [Display(Name = "Abordagens Terapeuticas", Prompt = "Insira suas Abordagens Terapeuticas"),
     Required(ErrorMessage = "Campo obrigatório")]
     public List<AbordagemTerapeutica> AbordagensTerapeuticas { get; set; }
-    public ICollection<Paciente> PacientesVinculados { get; set; }
+    public ICollection<PacienteModel> PacientesVinculados { get; set; }
 }

@@ -1,13 +1,15 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.Enums;
 using Connectamente.API.Psicologo.DTOs;
+using Connectamente.API.Psicologo.Service;
+using Connectamente.API.Usuario;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Connectamente.API.Psicologo.PsicologoService;
 
-public class PsicologoService(AppDbContext context, UserManager<Usuario> userManager) : IPsicologoService
+public class PsicologoService(AppDbContext context, UserManager<UsuarioModel> userManager) : IPsicologoService
 {
     public async Task<PsicologoUpdateDto> AtualizarPsicologo(string idPsicologo, PsicologoUpdateDto psicologoDto)
     {
@@ -22,7 +24,7 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         return psicologoDtoAtualizado;
     }
 
-    public async Task<Psicologo> DesativarPerfilPsicologo(string idPsicologo)
+    public async Task<PsicologoModel> DesativarPerfilPsicologo(string idPsicologo)
     {
         var psicologo = await ObterDadosPsicologo(idPsicologo);
         var usuario = await userManager.FindByIdAsync(idPsicologo);
@@ -32,7 +34,7 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         {
            // context.Psicologos.Remove(psicologo);
 
-            usuario.TipoPerfil = Enums.TipoPerfil.PsicologoDesativado;
+            usuario.TipoPerfil = Enums.TipoPerfil.Desativado;
         }
        
 
@@ -41,7 +43,7 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         return psicologo;
     }
 
-    public PsicologoDto MapearPsicologoDto(Psicologo p)
+    public PsicologoDto MapearPsicologoDto(PsicologoModel p)
     {        
         return new PsicologoDto
         {
@@ -94,7 +96,7 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         return psicologos.Select(p => MapearPsicologoDto(p));
     }
 
-    public async Task<Psicologo> ObterDadosPsicologo(string psicologoId)
+    public async Task<PsicologoModel> ObterDadosPsicologo(string psicologoId)
     {
         return await context.Psicologos
         .Include(p => p.Usuario)             // Para o nome do Psico)
@@ -103,7 +105,7 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         .FirstOrDefaultAsync(p => p.UsuarioId == psicologoId);
     }
 
-    private PsicologoUpdateDto AtualizarCamposPsicologo(Psicologo p, PsicologoUpdateDto dto)
+    private PsicologoUpdateDto AtualizarCamposPsicologo(PsicologoModel p, PsicologoUpdateDto dto)
     {
         if (!string.IsNullOrWhiteSpace(dto.Descricao))
             p.Descricao = dto.Descricao;
@@ -129,9 +131,9 @@ public class PsicologoService(AppDbContext context, UserManager<Usuario> userMan
         };
     }
 
-    public async Task CriarPsicologoAuto(Usuario usuario)
+    public async Task CriarPsicologoAuto(UsuarioModel usuario)
     {
-        var psicologoCriadoAuto = new Psicologo
+        var psicologoCriadoAuto = new PsicologoModel
         {
             UsuarioId = usuario.Id,
             CRP = string.Empty,

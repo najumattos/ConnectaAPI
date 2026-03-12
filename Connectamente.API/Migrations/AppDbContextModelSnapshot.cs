@@ -22,7 +22,7 @@ namespace Connectamente.API.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Connectamente.API.Models.PacienteModel.PacienteModel", b =>
+            modelBuilder.Entity("Connectamente.API.Paciente.PacienteModel", b =>
                 {
                     b.Property<string>("UsuarioId")
                         .HasColumnType("varchar(255)");
@@ -55,7 +55,7 @@ namespace Connectamente.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.PsicologoModel", b =>
+            modelBuilder.Entity("Connectamente.API.Psicologo.PsicologoModel", b =>
                 {
                     b.Property<string>("UsuarioId")
                         .HasColumnType("varchar(255)");
@@ -101,65 +101,7 @@ namespace Connectamente.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.RPD.EmocaoRegistro", b =>
-                {
-                    b.Property<int>("EmocaoRegistroId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("EmocaoRegistroId"));
-
-                    b.Property<string>("Cor")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Emocao")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Emoji")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("IntensidadeFinal")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IntensidadeInicial")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RegistroPensamentoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmocaoRegistroId");
-
-                    b.HasIndex("RegistroPensamentoId");
-
-                    b.ToTable("EmocaoRegistro");
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.RPD.RegistroPensamento", b =>
-                {
-                    b.Property<int>("RegistroId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("RegistroId"));
-
-                    b.Property<string>("CaminhoArquivoRegistro")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<DateTime>("DataHora")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("RegistroId");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("RegistroPensamento");
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.RegistroConsultaModel", b =>
+            modelBuilder.Entity("Connectamente.API.RegistroConsulta.RegistroConsultaModel", b =>
                 {
                     b.Property<int>("RegistroSessaoId")
                         .ValueGeneratedOnAdd()
@@ -205,7 +147,7 @@ namespace Connectamente.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.Usuario", b =>
+            modelBuilder.Entity("Connectamente.API.Usuario.UsuarioModel", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -498,13 +440,13 @@ namespace Connectamente.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.PacienteModel.PacienteModel", b =>
+            modelBuilder.Entity("Connectamente.API.Paciente.PacienteModel", b =>
                 {
-                    b.HasOne("Connectamente.API.Models.PsicologoModel.PsicologoModel", "PsicologoResponsavel")
+                    b.HasOne("Connectamente.API.Psicologo.PsicologoModel", "PsicologoResponsavel")
                         .WithMany("PacientesVinculados")
                         .HasForeignKey("PsicologoResponsavelId");
 
-                    b.HasOne("Connectamente.API.Models.Usuario", "Usuario")
+                    b.HasOne("Connectamente.API.Usuario.UsuarioModel", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -515,9 +457,9 @@ namespace Connectamente.API.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.PsicologoModel", b =>
+            modelBuilder.Entity("Connectamente.API.Psicologo.PsicologoModel", b =>
                 {
-                    b.HasOne("Connectamente.API.Models.Usuario", "Usuario")
+                    b.HasOne("Connectamente.API.Usuario.UsuarioModel", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -526,39 +468,19 @@ namespace Connectamente.API.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.RPD.EmocaoRegistro", b =>
+            modelBuilder.Entity("Connectamente.API.RegistroConsulta.RegistroConsultaModel", b =>
                 {
-                    b.HasOne("Connectamente.API.Models.RPD.RegistroPensamento", "RegistroPensamento")
-                        .WithMany()
-                        .HasForeignKey("RegistroPensamentoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RegistroPensamento");
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.RPD.RegistroPensamento", b =>
-                {
-                    b.HasOne("Connectamente.API.Models.Usuario", "Usuario")
+                    b.HasOne("Connectamente.API.Paciente.PacienteModel", "Paciente")
                         .WithMany()
                         .HasForeignKey("UsuarioId");
 
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Connectamente.API.Models.RegistroConsultaModel", b =>
-                {
-                    b.HasOne("Connectamente.API.Models.PacienteModel.PacienteModel", "PacienteModel")
+                    b.HasOne("Connectamente.API.Psicologo.PsicologoModel", "Psicologo")
                         .WithMany()
                         .HasForeignKey("UsuarioId");
 
-                    b.HasOne("Connectamente.API.Models.PsicologoModel.PsicologoModel", "PsicologoModel")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
+                    b.Navigation("Paciente");
 
-                    b.Navigation("PacienteModel");
-
-                    b.Navigation("PsicologoModel");
+                    b.Navigation("Psicologo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -572,7 +494,7 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Connectamente.API.Models.Usuario", null)
+                    b.HasOne("Connectamente.API.Usuario.UsuarioModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -581,7 +503,7 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Connectamente.API.Models.Usuario", null)
+                    b.HasOne("Connectamente.API.Usuario.UsuarioModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -596,7 +518,7 @@ namespace Connectamente.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Connectamente.API.Models.Usuario", null)
+                    b.HasOne("Connectamente.API.Usuario.UsuarioModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -605,14 +527,14 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Connectamente.API.Models.Usuario", null)
+                    b.HasOne("Connectamente.API.Usuario.UsuarioModel", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Connectamente.API.Models.PsicologoModel.PsicologoModel", b =>
+            modelBuilder.Entity("Connectamente.API.Psicologo.PsicologoModel", b =>
                 {
                     b.Navigation("PacientesVinculados");
                 });

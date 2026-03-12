@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Connectamente.API.Migrations
 {
     /// <inheritdoc />
-    public partial class MigrationPacienteVinculado : Migration
+    public partial class RefactorConnectamente1103 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -227,36 +227,13 @@ namespace Connectamente.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Psicologo", x => x.UsuarioId);
+                    table.PrimaryKey("PK_PsicologoModel", x => x.UsuarioId);
                     table.ForeignKey(
-                        name: "FK_Psicologo_AspNetUsers_UsuarioId",
+                        name: "FK_PsicologoModel_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "RegistroPensamento",
-                columns: table => new
-                {
-                    RegistroId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    DataHora = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    CaminhoArquivoRegistro = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    UsuarioId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegistroPensamento", x => x.RegistroId);
-                    table.ForeignKey(
-                        name: "FK_RegistroPensamento_AspNetUsers_UsuarioId",
-                        column: x => x.UsuarioId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -275,41 +252,18 @@ namespace Connectamente.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Paciente", x => x.UsuarioId);
+                    table.PrimaryKey("PK_PacienteModel", x => x.UsuarioId);
                     table.ForeignKey(
-                        name: "FK_Paciente_AspNetUsers_UsuarioId",
+                        name: "FK_PacienteModel_AspNetUsers_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Paciente_Psicologo_PsicologoResponsavelId",
+                        name: "FK_PacienteModel_PsicologoModel_PsicologoResponsavelId",
                         column: x => x.PsicologoResponsavelId,
                         principalTable: "PsicologoModel",
                         principalColumn: "UsuarioId");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "EmocaoRegistro",
-                columns: table => new
-                {
-                    EmocaoRegistroId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Emocao = table.Column<int>(type: "int", nullable: false),
-                    IntensidadeInicial = table.Column<int>(type: "int", nullable: false),
-                    IntensidadeFinal = table.Column<int>(type: "int", nullable: false),
-                    RegistroPensamentoId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EmocaoRegistro", x => x.EmocaoRegistroId);
-                    table.ForeignKey(
-                        name: "FK_EmocaoRegistro_RegistroPensamento_RegistroPensamentoId",
-                        column: x => x.RegistroPensamentoId,
-                        principalTable: "RegistroPensamento",
-                        principalColumn: "RegistroId",
-                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -326,15 +280,22 @@ namespace Connectamente.API.Migrations
                     PacienteId = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UsuarioId = table.Column<string>(type: "varchar(255)", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PsicologoId = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RegistroSessao", x => x.RegistroSessaoId);
+                    table.PrimaryKey("PK_RegistroConsultaModel", x => x.RegistroSessaoId);
                     table.ForeignKey(
-                        name: "FK_RegistroSessao_Paciente_UsuarioId",
+                        name: "FK_RegistroConsultaModel_PacienteModel_UsuarioId",
                         column: x => x.UsuarioId,
                         principalTable: "PacienteModel",
+                        principalColumn: "UsuarioId");
+                    table.ForeignKey(
+                        name: "FK_RegistroConsultaModel_PsicologoModel_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "PsicologoModel",
                         principalColumn: "UsuarioId");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -359,12 +320,8 @@ namespace Connectamente.API.Migrations
 
             migrationBuilder.InsertData(
                 table: "RegistroConsultaModel",
-                columns: new[] { "RegistroSessaoId", "DataHoraSessao", "DuracaoSessao", "PacienteId", "ResumoSessao", "UsuarioId" },
-                values: new object[,]
-                {
-                    { -2, new DateTime(2026, 5, 1, 16, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(50), "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", "Resumo Sessao 2", null },
-                    { -1, new DateTime(2026, 4, 1, 16, 30, 0, 0, DateTimeKind.Unspecified), new TimeSpan(50), "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", "Resumo Sessao 1", null }
-                });
+                columns: new[] { "RegistroSessaoId", "DataHoraSessao", "DuracaoSessao", "PacienteId", "PsicologoId", "ResumoSessao", "UsuarioId" },
+                values: new object[] { -1, new DateTime(2002, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 50, 0, 0), "59de1fac-5ba6-49b0-8849-c97e3c7ba11b", "70f93f27-32b1-4de5-bee3-b0de2cf80047", "Resumo sessao", null });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -378,7 +335,7 @@ namespace Connectamente.API.Migrations
             migrationBuilder.InsertData(
                 table: "PsicologoModel",
                 columns: new[] { "UsuarioId", "AbordagensTerapeuticas", "CRP", "CondicoesTerapeuticas", "Descricao", "ModalidadeDeAtendimento", "TiposPacientes" },
-                values: new object[] { "70f93f27-32b1-4de5-bee3-b0de2cf80047", "1,2", "12345", "2,1", "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.", 1, "3,2" });
+                values: new object[] { "70f93f27-32b1-4de5-bee3-b0de2cf80047", "1,2", "12345", "2,1", "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental.", 0, "3,2" });
 
             migrationBuilder.InsertData(
                 table: "PacienteModel",
@@ -423,22 +380,12 @@ namespace Connectamente.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmocaoRegistro_RegistroPensamentoId",
-                table: "EmocaoRegistro",
-                column: "RegistroPensamentoId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Paciente_PsicologoResponsavelId",
+                name: "IX_PacienteModel_PsicologoResponsavelId",
                 table: "PacienteModel",
                 column: "PsicologoResponsavelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RegistroPensamento_UsuarioId",
-                table: "RegistroPensamento",
-                column: "UsuarioId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RegistroSessao_UsuarioId",
+                name: "IX_RegistroConsultaModel_UsuarioId",
                 table: "RegistroConsultaModel",
                 column: "UsuarioId");
         }
@@ -462,16 +409,10 @@ namespace Connectamente.API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "EmocaoRegistro");
-
-            migrationBuilder.DropTable(
                 name: "RegistroConsultaModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "RegistroPensamento");
 
             migrationBuilder.DropTable(
                 name: "PacienteModel");
