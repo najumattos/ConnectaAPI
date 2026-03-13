@@ -8,6 +8,9 @@ dotnet ef migrations add NovaMigration
 INSTALAR .NET 9x
 winget install Microsoft.DotNet.SDK.9
 
+CERTIFICADO HTTPS
+dotnet dev-certs https --trust
+
 CRIAR CONTROLLERS
 dotnet aspnet-codegenerator controller -name RegistroSessaoController -async -api -m RegistroSessao -dc AppDbContext -outDir Controllers
 
