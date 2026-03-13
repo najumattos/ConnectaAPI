@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Connectamente.API.Paciente.Service;
 using Connectamente.API.Prontuarios.ProntuariosPsicologia.DTOs;
-using Connectamente.API.Paciente.DTOs;
+using Connectamente.API.PacientesPsicologia.DTOs;
 
-namespace Connectamente.API.Paciente;
+namespace Connectamente.API.PacientesPsicologia;
 
 [Route("api/[controller]")]
 [ApiController]

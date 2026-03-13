@@ -1,5 +1,5 @@
 ﻿using Connectamente.API.Helpers;
-using Connectamente.API.Paciente;
+using Connectamente.API.PacientesPsicologia;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

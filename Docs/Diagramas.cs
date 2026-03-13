@@ -56,6 +56,7 @@ class Usuario
         }
     }
 }
+
 class Paciente
 {
     PacienteModel()

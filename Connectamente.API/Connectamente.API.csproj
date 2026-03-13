@@ -29,9 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Prontuarios\ProntuariosPsicologia\Models\" />
     <Folder Include="Psicologo\Service\" />
-    <Folder Include="Paciente\Service\" />
   </ItemGroup>
 
 </Project>
