@@ -8,6 +8,7 @@ using Connectamente.API.Enums;
 using Connectamente.API.Usuario;
 using Connectamente.API.Psicologo.PsicologoService;
 using Connectamente.API.Psicologo;
+using Connectamente.API.Prontuarios.ProntuariosPsicologia;
 
 namespace Connectamente.Tests;
 
@@ -58,7 +59,7 @@ public class PsicologoServiceTests
 
                 CondicoesTerapeuticas = new List<CondicaoTerapeutica>(),
 
-                TiposPacientes = new List<TipoPaciente>()
+                TiposPacientes = new List<TipoProntuarioEnum>()
 
             };
 
@@ -85,7 +86,7 @@ public class PsicologoServiceTests
         {
             // Arrange
             var id = "psico-delete";
-            var usuario = new UsuarioModel { Id = id, TipoPerfil = TipoPerfil.Psicologo, Nome="Ana", Sobrenome="Julia" };
+            var usuario = new UsuarioModel { Id = id, TipoPerfil = TipoPerfilEnum.Psicologo, Nome="Ana", Sobrenome="Julia" };
             var psicologo = new PsicologoModel
 
             {
@@ -104,7 +105,7 @@ public class PsicologoServiceTests
 
                 CondicoesTerapeuticas = new List<CondicaoTerapeutica>(),
 
-                TiposPacientes = new List<TipoPaciente>()
+                TiposPacientes = new List<TipoProntuarioEnum>()
 
             };
 
@@ -120,7 +121,7 @@ public class PsicologoServiceTests
 
             
           // Assert.NotNull(resultado); 
-            Assert.Equal(TipoPerfil.Desativado, usuario.TipoPerfil);
+            Assert.Equal(TipoPerfilEnum.Desativado, usuario.TipoPerfil);
 
             // Verifica se removeu da tabela de Psicologos
          /*  var existeNoBanco = await _context.Psicologos.AnyAsync(p => p.UsuarioId == id);

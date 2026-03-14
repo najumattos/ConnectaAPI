@@ -1,5 +1,6 @@
 ﻿using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
+using Connectamente.API.Prontuarios.ProntuariosPsicologia;
 using Connectamente.API.Psicologo;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -29,10 +30,9 @@ public class PsicoConfig : IEntityTypeConfiguration<PsicologoModel>
         CondicaoTerapeutica.Depressao
     },
 
-     TiposPacientes = new List<TipoPaciente>
+     TiposPacientes = new List<TipoProntuarioEnum>
     {
-        TipoPaciente.Adulto,
-        TipoPaciente.Adolescente
+        TipoProntuarioEnum.Adulto
     }
  }
         );

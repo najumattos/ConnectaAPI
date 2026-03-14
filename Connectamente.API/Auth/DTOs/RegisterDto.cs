@@ -1,4 +1,4 @@
-﻿using Connectamente.API.Enums;
+﻿using Connectamente.API.Usuario;
 using System.ComponentModel.DataAnnotations;
 
 namespace Connectamente.API.Auth.DTOs;
@@ -15,7 +15,7 @@ public class RegisterDto
 
     [Required] public DateOnly DataNascimento { get; set; }
 
-    [Required] public TipoPerfil TipoPerfil { get; set; }
+    [Required] public TipoPerfilEnum TipoPerfil { get; set; }
 
     [Required][Phone] public string Celular { get; set; }
 

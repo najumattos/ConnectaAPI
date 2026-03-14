@@ -16,7 +16,7 @@ public class PacienteModel
 
     [Required(ErrorMessage = "O contato de emergência é obrigatório.")]
     [RegularExpression(@"^\d{10,11}$", ErrorMessage = "O contato deve ter entre 10 e 11 dígitos numéricos.")]
-    public int ContatoEmergencia { get; set; }
+    public long ContatoEmergencia { get; set; }
 
     [MaxLength(2000, ErrorMessage = "O histórico não pode exceder 2000 caracteres.")]
     public string HistoricoPaciente { get; set; }

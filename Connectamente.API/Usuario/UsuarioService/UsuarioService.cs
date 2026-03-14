@@ -1,5 +1,5 @@
 ﻿using Connectamente.API.Data;
-using Connectamente.API.Paciente.Service;
+using Connectamente.API.Pacientes.Service;
 using Connectamente.API.Psicologo;
 using Connectamente.API.Psicologo.Service;
 using Connectamente.API.Services.FileService;
@@ -14,7 +14,7 @@ public class UsuarioService(
     AppDbContext context,
     IFileService fileService,
     UserManager<UsuarioModel> userManager,
-    IPacienteService pacienteService,
+    IPacientesPsicologiaService pacienteService,
     IPsicologoService psicologoService) : IUsuarioService
 {
     private readonly AppDbContext _context = context;
@@ -126,16 +126,16 @@ public class UsuarioService(
 
     public async Task CriarPerfilAuto(UsuarioModel usuario)
     {
-        if (usuario.TipoPerfil == Enums.TipoPerfil.Estudante)
+       /* if (usuario.TipoPerfil == TipoPerfilEnum.Estudante)
         {
             await pacienteService.CriarPacienteAuto(usuario);
             await _userManager.AddToRoleAsync(usuario, "Paciente");
         }
-        if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
+        if (usuario.TipoPerfil == TipoPerfilEnum.Psicologo)
         {
             await psicologoService.CriarPsicologoAuto(usuario);
             await _userManager.AddToRoleAsync(usuario, "Psicologo");
-        }
+        }  */
     }
 
     public async Task<string> DesativarPerfil(string idUsuario)

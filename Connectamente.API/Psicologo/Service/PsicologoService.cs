@@ -1,5 +1,6 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.Enums;
+using Connectamente.API.Prontuarios.ProntuariosPsicologia;
 using Connectamente.API.Psicologo.DTOs;
 using Connectamente.API.Psicologo.Service;
 using Connectamente.API.Usuario;
@@ -29,11 +30,11 @@ public class PsicologoService(AppDbContext context, UserManager<UsuarioModel> us
         var usuario = await userManager.FindByIdAsync(idPsicologo);
         if (psicologo == null || usuario == null) return null;
 
-        if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
+        if (usuario.TipoPerfil == TipoPerfilEnum.Psicologo)
         {
            // context.Psicologos.Remove(psicologo);
 
-            usuario.TipoPerfil = Enums.TipoPerfil.Desativado;
+            usuario.TipoPerfil = TipoPerfilEnum.Desativado;
         }
        
 
@@ -140,7 +141,7 @@ public class PsicologoService(AppDbContext context, UserManager<UsuarioModel> us
             ModalidadeDeAtendimento = ModalidadeAtendimento.ModalidadeAtendimento,
             AbordagensTerapeuticas = new List<AbordagemTerapeutica>(),
             CondicoesTerapeuticas = new List<CondicaoTerapeutica>(),
-            TiposPacientes = new List<TipoPaciente>()
+            TiposPacientes = new List<TipoProntuarioEnum>()
         };
         context.Psicologos.Add(psicologoCriadoAuto);
         await context.SaveChangesAsync();
@@ -181,7 +182,7 @@ public async Task<IEnumerable<PsicologoDto>> ObterPsicologoFiltrados(
     // 4. Filtragem por Público
     if (publicoIds != null && publicoIds.Any())
     {
-        var publicosEnum = publicoIds.Select(id => (TipoPaciente)id).ToList();
+        var publicosEnum = publicoIds.Select(id => (TipoProntuarioEnum)id).ToList();
         query = query.Where(p => p.TiposPacientes.Any(t => publicosEnum.Contains(t)));
     }
 

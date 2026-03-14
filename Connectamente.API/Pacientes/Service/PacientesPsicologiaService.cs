@@ -1,8 +1,5 @@
 ﻿using Connectamente.API.Data;
-using Connectamente.API.Paciente.PacienteService;
-using Connectamente.API.Paciente.Service;
 using Connectamente.API.Pacientes.DTOs;
-using Connectamente.API.Prontuarios.ProntuariosPsicologia.DTOs;
 using Connectamente.API.Psicologo.PsicologoService;
 using Connectamente.API.Psicologo.Service;
 using Connectamente.API.Usuario;
@@ -10,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Pacientes.Service;
 
-public class PacientesPsicologiaService(AppDbContext context, IPsicologoService psicologoService, IPacienteService pacienteService) : IPacientesPsicologiaService
+public class PacientesPsicologiaService(AppDbContext context, IPsicologoService psicologoService, IPacientesPsicologiaService pacienteService) : IPacientesPsicologiaService
 {
-    public async Task DesvincularPaciente(string psicologoId, string pacienteId)
+   /* public async Task DesvincularPaciente(string psicologoId, string pacienteId)
     {
         var psicologo = await psicologoService.ObterDadosPsicologo(psicologoId);
         var paciente = await pacienteService.ObterDadosPaciente(pacienteId);
@@ -98,11 +95,11 @@ public class PacientesPsicologiaService(AppDbContext context, IPsicologoService 
         var usuario = await _userManager.FindByIdAsync(id);
         if (paciente == null && usuario == null) return null;
 
-        if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
+        if (usuario.TipoPerfil == TipoPerfilEnum.Psicologo)
         {
             //_context.Pacientes.Remove(paciente);
 
-            usuario.TipoPerfil = Enums.TipoPerfil.Desativado;
+            usuario.TipoPerfil = TipoPerfilEnum.Desativado;
         }
 
 
@@ -166,5 +163,5 @@ public class PacientesPsicologiaService(AppDbContext context, IPsicologoService 
         await _context.SaveChangesAsync();
     }
     #endregion
-
+    */
 }

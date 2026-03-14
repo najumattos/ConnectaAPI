@@ -2,6 +2,7 @@
 using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
 using Connectamente.API.Pacientes;
+using Connectamente.API.Prontuarios.ProntuariosPsicologia;
 using Connectamente.API.Psicologo;
 using Connectamente.API.RegistroConsulta;
 using Connectamente.API.Usuario;
@@ -48,7 +49,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
        .HasConversion(
            v => string.Join(',', v.Select(e => (int)e)), // Salva como "1,2,3"
            v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                 .Select(val => (TipoPaciente)int.Parse(val)).ToList() // Volta como Lista
+                 .Select(val => (TipoProntuarioEnum)int.Parse(val)).ToList() // Volta como Lista
        );
 
     }

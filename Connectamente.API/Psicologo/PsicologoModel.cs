@@ -1,5 +1,6 @@
 ﻿using Connectamente.API.Enums;
 using Connectamente.API.Pacientes;
+using Connectamente.API.Prontuarios.ProntuariosPsicologia;
 using Connectamente.API.Usuario;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,7 +29,7 @@ public class PsicologoModel
 
     [Display(Name = "Tipo paciente que você atende"),
     Required(ErrorMessage = "Campo obrigatório")]
-    public List<TipoPaciente> TiposPacientes { get; set; }
+    public List<TipoProntuarioEnum> TiposPacientes { get; set; }
     
     [Display(Name = "Tipo de condições que você trata"),
     Required(ErrorMessage = "Campo obrigatório")]

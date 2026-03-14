@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Connectamente.API.Usuario;
 using Connectamente.API.Usuario.UsuarioService;
 using Connectamente.API.Psicologo.Service;
-using Connectamente.API.Paciente.Service;
 using Connectamente.API.Usuario.DTOs;
+using Connectamente.API.Pacientes.Service;
 
 namespace Connectamente.Tests;
 
@@ -15,7 +15,7 @@ public class UsuarioServiceTests
 {
     private readonly AppDbContext _context;
     private readonly Mock<IFileService> _fileMock = new();
-    private readonly Mock<IPacienteService> _pacienteMock = new();
+    private readonly Mock<IPacientesPsicologiaService> _pacienteMock = new();
     private readonly Mock<IPsicologoService> _psicologoMock = new();
     // Para o UserManager, costumamos usar um mock mais complexo ou passar null se não for usado no método testado
     private readonly UsuarioService _service;
