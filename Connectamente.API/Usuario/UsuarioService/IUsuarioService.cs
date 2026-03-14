@@ -8,7 +8,8 @@ public interface IUsuarioService
     Task<UserDto> ObterUsuarioPorId(string idUsuario);
     Task<UserDto> AtualizarUsuario(string idUsuario, IFormFile arquivoFoto, UserUpdateDto usuarioUpdateDto);
     Task<UsuarioModel> DeletarUsuario(string idUsuario);
+
     UserDto MapearUserDto(UsuarioModel usuario);
     Task CriarPerfilAuto(UsuarioModel usuario);
-   
+    Task<string> DesativarPerfil(string idUsuario);
 }

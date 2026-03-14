@@ -1,7 +1,7 @@
 ﻿using Connectamente.API.Data.Configurations;
 using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
-using Connectamente.API.PacientesPsicologia;
+using Connectamente.API.Pacientes;
 using Connectamente.API.Psicologo;
 using Connectamente.API.RegistroConsulta;
 using Connectamente.API.Usuario;

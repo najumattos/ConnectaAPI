@@ -2,8 +2,10 @@
 {
     public enum TipoPerfil
     {
-        Estudante = 1,
-        Psicologo = 2,
-        Desativado = 3
+        Coordenador = 1,
+        Psicologo = 2, // estudante
+        Paciente = 2,
+        ResponsavelCrianca = 3,
+        Desativado = 4
     }
 }

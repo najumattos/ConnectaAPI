@@ -1,5 +1,5 @@
 ﻿using Connectamente.API.Enums;
-using Connectamente.API.PacientesPsicologia;
+using Connectamente.API.Pacientes;
 using Connectamente.API.Usuario;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

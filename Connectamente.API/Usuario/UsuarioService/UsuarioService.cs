@@ -1,9 +1,11 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.Paciente.Service;
+using Connectamente.API.Psicologo;
 using Connectamente.API.Psicologo.Service;
 using Connectamente.API.Services.FileService;
 using Connectamente.API.Usuario.DTOs;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Usuario.UsuarioService;
@@ -28,7 +30,7 @@ public class UsuarioService(
 
 
     }
-    
+
     public async Task<UserDto> ObterUsuarioPorId(string id)
     {
         var u = await _context.Usuarios
@@ -38,7 +40,7 @@ public class UsuarioService(
 
         return MapearUserDto(u);
     }
-    
+
     public async Task<UserDto> AtualizarUsuario(string idUsuario, IFormFile arquivo, UserUpdateDto usuarioUpdateDto)
     {
         var usuarioBanco = await _context.Usuarios.FindAsync(idUsuario);
@@ -53,7 +55,7 @@ public class UsuarioService(
         await _context.SaveChangesAsync();
         return MapearUserDto(usuarioBanco);
     }
-        
+
     public async Task<UsuarioModel> DeletarUsuario(string id)
     {
         var usuario = await _context.Usuarios.FindAsync(id);
@@ -88,7 +90,7 @@ public class UsuarioService(
         // 4. Retornamos a URL completa para o Front-end já exibir a imagem
         return _fileService.GetFileUrl(novoPath);
     }
-    
+
     private static void AtualizarCampos(UsuarioModel u, UserUpdateDto userUpdateDto)
     {
         // Só atualiza se o que veio do DTO não for nulo ou vazio
@@ -117,8 +119,7 @@ public class UsuarioService(
             Foto = u.Foto,
             Celular = u.PhoneNumber,
             DataNascimento = u.DataNascimento.ToString("dd/MM/yyyy"),
-            TipoPerfil = u.TipoPerfil.ToString(),
-            QtdAcessos = u.QtdAcessos
+            TipoPerfil = u.TipoPerfil.ToString()
 
         };
     }
@@ -136,5 +137,18 @@ public class UsuarioService(
             await _userManager.AddToRoleAsync(usuario, "Psicologo");
         }
     }
+
+    public async Task<string> DesativarPerfil(string idUsuario)
+    {
+        var usuario = await ObterUsuarioPorId(idUsuario);
+        if (usuario == null || usuario == null) return null;
+
+        // context.Psicologos.Remove(psicologo);
+
+        usuario.PerfilAtivo = false;
+        await context.SaveChangesAsync();
+        return "Perfil Desativado";
+    }
+
     #endregion
 }

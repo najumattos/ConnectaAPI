@@ -1,14 +1,14 @@
 ﻿using Connectamente.API.Data;
 using Connectamente.API.Paciente.PacienteService;
 using Connectamente.API.Paciente.Service;
-using Connectamente.API.PacientesPsicologia.DTOs;
+using Connectamente.API.Pacientes.DTOs;
 using Connectamente.API.Prontuarios.ProntuariosPsicologia.DTOs;
 using Connectamente.API.Psicologo.PsicologoService;
 using Connectamente.API.Psicologo.Service;
 using Connectamente.API.Usuario;
 using Microsoft.EntityFrameworkCore;
 
-namespace Connectamente.API.PacientesPsicologia.Service;
+namespace Connectamente.API.Pacientes.Service;
 
 public class PacientesPsicologiaService(AppDbContext context, IPsicologoService psicologoService, IPacienteService pacienteService) : IPacientesPsicologiaService
 {

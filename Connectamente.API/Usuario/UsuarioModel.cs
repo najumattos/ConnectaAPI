@@ -32,4 +32,6 @@ namespace Connectamente.API.Usuario;
     public TipoPerfil TipoPerfil { get; set; }
 
     public int QtdAcessos { get; set; }
+
+    public bool PerfilAtivo { get; set; } = true;
 }

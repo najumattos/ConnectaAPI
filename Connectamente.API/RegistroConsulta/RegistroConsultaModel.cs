@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using Connectamente.API.Psicologo;
-using Connectamente.API.PacientesPsicologia;
+using Connectamente.API.Pacientes;
 
 namespace Connectamente.API.RegistroConsulta;
 

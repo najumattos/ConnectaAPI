@@ -1,4 +1,4 @@
-﻿namespace Connectamente.API.PacientesPsicologia.DTOs
+﻿namespace Connectamente.API.Pacientes.DTOs
 {
     public class PacienteUpdateDto
     {

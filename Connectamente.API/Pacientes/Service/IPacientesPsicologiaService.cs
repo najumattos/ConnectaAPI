@@ -1,8 +1,8 @@
-﻿using Connectamente.API.PacientesPsicologia.DTOs;
+﻿using Connectamente.API.Pacientes.DTOs;
 using Connectamente.API.Prontuarios.ProntuariosPsicologia.DTOs;
 using Connectamente.API.Usuario;
 
-namespace Connectamente.API.PacientesPsicologia.Service
+namespace Connectamente.API.Pacientes.Service
 {
     public interface IPacientesPsicologiaService
     {

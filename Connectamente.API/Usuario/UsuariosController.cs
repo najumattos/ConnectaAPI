@@ -11,13 +11,14 @@ public class UsuariosController(IUsuarioService usuarioService) : ControllerBase
     private readonly IUsuarioService _usuarioService = usuarioService;
 
     // GET: api/Usuarios
+    /*
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetUsuarios()
     {
         var resultado = await _usuarioService.ObterTodosUsuarios();
 
         return Ok(resultado);
-    }
+    }*/
 
     // GET: api/Usuarios/5
     [HttpGet("{id}")]
@@ -50,17 +51,30 @@ public class UsuariosController(IUsuarioService usuarioService) : ControllerBase
             return BadRequest(ex.Message);
         }
     }
-
-    // DELETE: api/Usuarios/5
-
+    // Delete: api/Usuarios/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUsuario(string id)
+    public async Task<IActionResult> DesativarPerfil(string id)
     {
-        var usuario = await _usuarioService.DeletarUsuario(id);
+        var usuario = await _usuarioService.DesativarPerfil(id);
         if (usuario == null)
         {
             return NotFound();
         }
         return NoContent();
     }
+
+    // DELETE: api/Usuarios/5
+
+    /*  [HttpDelete("{id}")]
+      public async Task<IActionResult> DeleteUsuario(string id)
+      {
+          var usuario = await _usuarioService.DeletarUsuario(id);
+          if (usuario == null)
+          {
+              return NotFound();
+          }
+          return NoContent();
+      }*/
+
+
 }

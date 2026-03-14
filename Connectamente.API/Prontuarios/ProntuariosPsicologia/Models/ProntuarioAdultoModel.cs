@@ -1,6 +1,6 @@
-﻿using Connectamente.API.PacientesPsicologia;
+﻿using Connectamente.API.Pacientes;
 using Connectamente.API.Psicologo;
-using Connectamente.API.Usuario;
+using Connectamente.API.RegistroConsulta;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -28,6 +28,8 @@ public class ProntuarioAdultoModel
     [Required]
     [Display(Name = "Última Atualização")]
     public DateTime DataUltimaAtualizacao { get; set; } = DateTime.Now;
+
+    public List<RegistroConsultaModel> Consultas { get; set; }
     //log datatime e quem atualizou
 
     //adicionar campos relacionados ao prontuario adulto

@@ -1,10 +1,9 @@
-﻿using Connectamente.API.Psicologo;
-using Connectamente.API.RegistroConsulta;
+﻿using Connectamente.API.RegistroConsulta;
 using Connectamente.API.Usuario;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Connectamente.API.PacientesPsicologia;
+namespace Connectamente.API.Pacientes;
 //renomear pacientesPsicologia para Pacientes. Um paciente pode ter varios prontuarios
 //Essa tabela de paciente serve para controle do psicologo.
 [Table("PacienteModel")]
@@ -14,8 +13,6 @@ public class PacienteModel
     public string UsuarioId { get; set; }
     [ForeignKey("UsuarioId")]
     public virtual UsuarioModel Usuario { get; set; }         
-   
-    public List<RegistroConsultaModel> Consultas { get; set; }
 
     [Required(ErrorMessage = "O contato de emergência é obrigatório.")]
     [RegularExpression(@"^\d{10,11}$", ErrorMessage = "O contato deve ter entre 10 e 11 dígitos numéricos.")]
