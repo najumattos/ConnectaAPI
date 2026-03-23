@@ -67,7 +67,7 @@ public class PacientesController(IPacienteService service) : MainController
     /// Arquiva Paciente
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [HttpDelete("{id}")]
+    [HttpPatch("{id}")]
     public async Task<ActionResult> ArquivarPaciente(string id)
     {
         var sucesso = await service.ArquivarPaciente(id);

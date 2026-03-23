@@ -26,12 +26,12 @@ public class UsuarioService() : IUsuarioService
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<FichaUsuarioDto>> ObterTodosUsuarios()
+    public Task<IEnumerable<FichaUsuarioDto>> BuscarTodosUsuarios()
     {
         throw new NotImplementedException();
     }
 
-    public Task<UserDto> ObterUsuarioPorId(string idUsuario)
+    public Task<UserDto> BuscarUsuarioPorId(string idUsuario)
     {
         throw new NotImplementedException();
     }

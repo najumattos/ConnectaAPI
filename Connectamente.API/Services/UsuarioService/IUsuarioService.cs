@@ -8,8 +8,8 @@ namespace Connectamente.API.Services.UsuarioService;
 
 public interface IUsuarioService
 {
-    Task<IEnumerable<FichaUsuarioDto>> ObterTodosUsuarios();
-    Task<UserDto> ObterUsuarioPorId(string idUsuario);
+    Task<IEnumerable<FichaUsuarioDto>> BuscarTodosUsuarios();
+    Task<UserDto> BuscarUsuarioPorId(string idUsuario);
     Task<bool> AtualizarUsuario(string idUsuario, IFormFile arquivoFoto, UserUpdateDto usuarioUpdateDto);
     Task<bool> DesativarPerfil(string idUsuario);
 
