@@ -415,3 +415,5 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+# Local Migrations (Cuidado: Migrations de produção devem ser versionadas)
+**/Migrations/*
