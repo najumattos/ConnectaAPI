@@ -1,13 +1,12 @@
 ﻿using Connectamente.API.Data.Configurations;
 using Connectamente.API.Enums;
 using Connectamente.API.Helpers;
-using Connectamente.API.Paciente;
-using Connectamente.API.Psicologo;
-using Connectamente.API.RegistroConsulta;
+using Connectamente.API.Models;
 using Connectamente.API.Usuario;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace Connectamente.API.Data;
 
@@ -16,40 +15,21 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
     public DbSet<PsicologoModel> Psicologos { get; set; }
     public DbSet<PacienteModel> Pacientes { get; set; }
     public DbSet<UsuarioModel> Usuarios { get; set; }
-    public DbSet<RegistroConsultaModel> RegistrosConsultas { get; set; }
-
+    public DbSet<ConsultaModel> Consultas { get; set; }
+    public DbSet<ProntuarioModel> Prontuarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         PopulateRoles(builder);
         builder.ApplyConfiguration(new UserConfig());
-
+        builder.ApplyConfiguration(new ProntuarioConfig());
         builder.ApplyConfiguration(new PacienteConfig());
-        builder.ApplyConfiguration(new RegistroSessaoTerapeuticaConfig());
+        builder.ApplyConfiguration(new ConsultaConfig());
+        builder.ApplyConfiguration(new PsicologoConfig());
+        //tem que vincular paciente  e psicologo no prontuario? (um prontuario tem um paciente e um psicologo mas um psicologo pode ter varios prontuarios)
+        //tem que vincular pronturio na consula?  (uma consulta tem um prontuario mas um prontuario pode ter varias consultas)
 
-        builder.ApplyConfiguration(new PsicoConfig());
-        builder.Entity<PsicologoModel>()
-        .Property(p => p.AbordagensTerapeuticas)
-        .HasConversion(
-            v => string.Join(',', v.Select(e => (int)e)), // Salva como "1,2,3"
-            v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                  .Select(val => (AbordagemTerapeutica)int.Parse(val)).ToList() // Volta como Lista
-        );
-        builder.Entity<PsicologoModel>()
-       .Property(p => p.CondicoesTerapeuticas)
-       .HasConversion(
-           v => string.Join(',', v.Select(e => (int)e)), // Salva como "1,2,3"
-           v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                 .Select(val => (CondicaoTerapeutica)int.Parse(val)).ToList() // Volta como Lista
-       );
-        builder.Entity<PsicologoModel>()
-       .Property(p => p.TiposPacientes)
-       .HasConversion(
-           v => string.Join(',', v.Select(e => (int)e)), // Salva como "1,2,3"
-           v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                 .Select(val => (TipoPaciente)int.Parse(val)).ToList() // Volta como Lista
-       );
 
     }
 
@@ -58,14 +38,19 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         List<IdentityRole> roles =
         [
             new IdentityRole() {
-               Id = SeedDataConstants.ROLE_PSICOLOGO_ID,
-               Name = "PsicologoModel",
-               NormalizedName = "PSICOLOGO"
+               Id = SeedDataConstants.USER_ESTUDANTE_ID,
+               Name = "Estudante",
+               NormalizedName = "ESTUDANTE"
+            },
+                       new IdentityRole() {
+               Id = SeedDataConstants.USER_ADMINISTRADOR_ID,
+               Name = "Coordendor",
+               NormalizedName = "COORDENADOR"
             },
             new IdentityRole() {
-               Id = SeedDataConstants.ROLE_PACIENTE_ID,
-               Name = "PacienteModel",
-               NormalizedName = "PACIENTE"
+               Id = SeedDataConstants.ROLE_CLINICA_ID,
+               Name = "Clinica",
+               NormalizedName = "CLINICA"
             },
         ];
         builder.Entity<IdentityRole>().HasData(roles);
@@ -74,12 +59,16 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         List<IdentityUserRole<string>> userRoles =
         [
             new IdentityUserRole<string>() {
-                UserId =SeedDataConstants.USER_ANA_JULIA_ID,
+                UserId =SeedDataConstants.USER_ESTUDANTE_ID,
                 RoleId = roles[0].Id
             },
             new IdentityUserRole<string>() {
-                UserId = SeedDataConstants.USER_TAINARA_ID,
+                UserId = SeedDataConstants.USER_ADMINISTRADOR_ID,
                 RoleId = roles[1].Id
+            },
+            new IdentityUserRole<string>() {
+                UserId = SeedDataConstants.USER_CLINICA_ID,
+                RoleId = roles[2].Id
             }
         ];
         builder.Entity<IdentityUserRole<string>>().HasData(userRoles);

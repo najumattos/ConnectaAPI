@@ -11,15 +11,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 using dotenv.net;
 using Connectamente.API.Usuario;
-using Connectamente.API.Usuario.UsuarioService;
-using Connectamente.API.Psicologo.PsicologoService;
-using Connectamente.API.Auth.AuthService;
-using Connectamente.API.Paciente.PacienteService;
-using Connectamente.API.RegistroConsulta.Services;
-using Connectamente.API.PacientesPsicologia.Service;
-using Connectamente.API.Auth.JwtService;
-using Connectamente.API.Paciente.Service;
-using Connectamente.API.Psicologo.Service;
+using Connectamente.API.Services.JwtService;
+using Connectamente.API.Services.AuthService;
+using Connectamente.API.Services.UsuarioService;
+using Connectamente.API.Services.PacienteService;
+using Connectamente.API.Services.PsicologoService;
+using Connectamente.API.Services.ProntuarioService;
+using Connectamente.API.Services.ConsultaService;
 
 DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { "../.env" }));                            //Lê o arquivo .env
 var builder = WebApplication.CreateBuilder(args);
@@ -117,9 +115,9 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
-builder.Services.AddScoped<IPacientesPsicologiaService, PacientesPsicologiaService>();
-builder.Services.AddScoped<IRegistroConsultaService, RegistroConsultaService>();
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
+builder.Services.AddScoped<IProntuarioService, ProntuarioService>();
+builder.Services.AddScoped<IConsultaService, ConsultaService>();
 
 
 
