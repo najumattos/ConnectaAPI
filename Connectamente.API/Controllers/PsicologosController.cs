@@ -3,75 +3,83 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Connectamente.API.Data;
 using Connectamente.API.Models;
-using Connectamente.API.Models.PsicologoModel;
-using Connectamente.API.DTOs.PsicologoDTOs;
 using Connectamente.API.Services.PsicologoService;
-using Connectamente.API.Models.PacienteModel;
+using Connectamente.API.DTOs;
+using Connectamente.API.DTOs.UsersDTOs;
+using Connectamente.API.Attributes;
 
-namespace Connectamente.API.Controllers
+namespace Connectamente.API.Controllers;
+
+public class PsicologosController(IPsicologoService service) : MainController
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PsicologosController(IPsicologoService psicologoService) : ControllerBase
+
+    /// <summary>
+    /// Busca Todos Psicologos
+    /// </summary>
+    [ProducesResponseType(typeof(IEnumerable<FichaUsuarioDto>), StatusCodes.Status200OK)]
+    [HttpGet("Buscar")]
+    public async Task<ActionResult<IEnumerable<FichaUsuarioDto>>> GetPsicologos()
     {
+        var resposta = await service.BuscarTodosPsicologos();
 
-
-        // GET: api/Psicologos/filtros
-        [HttpGet("filtros")]
-        public async Task<ActionResult<IEnumerable<PsicologoDto>>> GetPsicologosFiltrados(
-           [FromQuery] List<int> modalidadeIds, 
-    [FromQuery] List<int> abordagemIds,
-    [FromQuery] List<int> condicaoIds,
-    [FromQuery] List<int> publicoIds)
+        if (resposta == null || !resposta.Any())
         {
-            var resultado = await psicologoService.ObterPsicologoFiltrados(modalidadeIds, abordagemIds, condicaoIds, publicoIds);
-
-            return Ok(resultado);
+            return NotFound("Nenhum psicologo encontrado");
         }
+        return Ok(resposta);
 
-        // GET: api/Psicologos/nomeOuCRP
-        [HttpGet("buscar")]
-        public async Task<ActionResult<IEnumerable<PsicologoDto>>> GetPsicologosPorNomeOuCRP([FromQuery] string nomeOuCRP)
-        {
-            var resultado = await psicologoService.ObterPsicologoPorNomeOuCRP(nomeOuCRP);
-
-            return Ok(resultado);
-        }
-
-
-        // GET: api/Psicologo/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PsicologoDto>> GetPsicologo(string id)
-        {
-            var psicologo = await psicologoService.ObterPsicologoPorId(id);
-            if (psicologo == null) return NotFound();
-            return Ok(psicologo);
-        }
-
-        // PUT: api/Psicologos/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> PutPsicologo(string id, [FromForm] PsicologoUpdateDto psicologoDto)
-        {        
-            var psicologo = await psicologoService.AtualizarPsicologo(id, psicologoDto);
-            if (psicologo == null) return NotFound();
-
-            return Ok(psicologo);
-        }
-
-        // DELETE: api/Psicologos/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePsicologo(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            await psicologoService.DesativarPerfilPsicologo(id);
-            return NoContent();
-        }
-
-                                      
     }
+
+    /// <summary>
+    /// Exibe Dados do Psicologo
+    /// </summary>     
+    [ProducesResponseType(typeof(PsicologoDto), StatusCodes.Status200OK)]
+    [HttpGet("{id}")]
+    public async Task<ActionResult<PsicologoDto>> GetPsicologo(string id)
+    {
+        var resposta = await service.BuscarPsicologoPorId(id);
+        return resposta switch
+        {
+            null => NotFound("Psicologo não encontrado"),
+            _ => Ok(resposta)
+        };
+    }
+
+    /// <summary>
+    /// Adiciona Novo Psicologo
+    /// </summary> 
+    //POST CADE???
+
+    /// <summary>
+    /// Edita Dados Do Psicologo
+    /// </summary> 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [Consumes("multipart/form-data")]
+    [ValidarIdRoute] //somente o usuario pode editar seu proprio perfil
+    [HttpPut("{id}")]
+    public async Task<ActionResult> PutPsicologo(string id, PsicologoDto psicologoDto)
+    {
+        var sucesso = await service.AtualizarPsicologo(id, psicologoDto);
+        return sucesso switch
+        {
+            false => NotFound("Psicologo não encontrado"),
+            true => NoContent()
+        };
+    }
+
+    /// <summary>
+    /// Desativar Perfil Psicologo
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DesativarPerfilPaciente(string id)
+    {
+        var sucesso = await service.DesativarPerfilPsicologo(id);
+        return sucesso switch
+        {
+            false => NotFound("Psicologo não encontrado"),
+            true => NoContent()
+        };
+    }
+
 }

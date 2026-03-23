@@ -1,50 +1,81 @@
 using Microsoft.AspNetCore.Mvc;
-using Connectamente.API.DTOs.PacienteDTOs;
 using Connectamente.API.Services.PacienteService;
+using Connectamente.API.DTOs;
+using Connectamente.API.DTOs.UsersDTOs;
+using Connectamente.API.Attributes;
 
 namespace Connectamente.API.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class PacientesController(IPacienteService pacienteService) : ControllerBase
+public class PacientesController(IPacienteService service) : MainController
 {
-    private readonly IPacienteService _pacienteService = pacienteService;     
 
-    // GET: api/Pacientes/5
+    /// <summary>
+    /// Busca Todos Pacientes
+    /// </summary>
+    [ProducesResponseType(typeof(IEnumerable<FichaUsuarioDto>), StatusCodes.Status200OK)]
+    [HttpGet("Buscar")]
+    public async Task<ActionResult<IEnumerable<FichaUsuarioDto>>> GetPacientes()
+    {
+        var resposta = await service.BuscarTodosPacientes();
+
+        if (resposta == null || !resposta.Any())
+        {
+            return NotFound("Nenhum paciente encontrado");
+        }
+        return Ok(resposta);
+
+    }
+
+    /// <summary>
+    /// Exibe Dados do Paciente
+    /// </summary>     
+    [ProducesResponseType(typeof(PacienteDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
-    public async Task<ActionResult<ProntuarioPacienteDto>> GetPaciente(string id)
+    public async Task<ActionResult<PacienteDto>> GetPaciente(string id)
     {
-        var pacienteDto = await _pacienteService.ObterPacientePorId(id);
-        if (pacienteDto == null)
+        var resposta = await service.BuscarPacientePorId(id);
+        return resposta switch
         {
-            return NotFound();
-        }
-        return Ok(pacienteDto);
-    }         
+            null => NotFound("Paciente não encontrado"),
+            _ => Ok(resposta)
+        };
+    }
 
-     // PUT: api/Pacientes/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    
+    /// <summary>
+    /// Adiciona Novo Paciente
+    /// </summary> 
+    //POST CADE???
+
+    /// <summary>
+    /// Edita Dados Do Paciente
+    /// </summary> 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> PutPaciente(string id, [FromForm] PacienteUpdateDto pacienteUpdateDto)
+    [ValidarIdRoute] //somente o usuario pode editar seu proprio perfil
+    [HttpPut("{id}")]
+    public async Task<ActionResult> PutPaciente(string id, PacienteDto pacienteDto)
     {
-        var paciente = await _pacienteService.AtualizarPaciente(id, pacienteUpdateDto);
-
-        if (paciente == null) return NotFound();                                            
-                         
-        return Ok(paciente);
-    }
- 
-    // DELETE: api/Pacientes/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletePaciente(string id)
-    {
-        var paciente = await _pacienteService.DeletarPaciente(id);
-        if (paciente == null)
+        var sucesso = await service.AtualizarPaciente(id, pacienteDto);
+        return sucesso switch
         {
-            return NotFound();
-        }
-        return NoContent();
+            false => NotFound("Paciente não encontrado"),
+            true => NoContent()
+        };
     }
+
+    /// <summary>
+    /// Arquiva Paciente
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> ArquivarPaciente(string id)
+    {
+        var sucesso = await service.ArquivarPaciente(id);
+        return sucesso switch
+        {
+            false => NotFound("Paciente não encontrado"),
+            true => NoContent()         
+        };
+    }
+
 }

@@ -15,11 +15,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using System.Text.Json.Serialization;
-using Connectamente.API.Services.PacientesVinculados;
-using Connectamente.API.Services.RegistroSessaoService;
-using Connectamente.API.Services.RegistroPensamentoService;
 using dotenv.net;
-using Connectamente.API.Services.FileService;
+using Connectamente.API.Services.ConsultaService;
+using Connectamente.API.Services.ProntuarioService;
 
 DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { "../.env" }));                            //Lê o arquivo .env
 var builder = WebApplication.CreateBuilder(args);
@@ -58,7 +56,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 // Serviço de Autenticação e Autorização - Identity
-builder.Services.AddIdentity<Usuario, IdentityRole>(options =>
+builder.Services.AddIdentity<UsuarioModel, IdentityRole>(options =>
 {
     // Configurar Senha
     options.Password.RequiredLength = 6;
@@ -117,10 +115,9 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
-builder.Services.AddScoped<IPacientesVinculadoService, PacientesVinculadosService>();
-builder.Services.AddScoped<IRegistroSessaoService, RegistroSessaoService>();
+builder.Services.AddScoped<IConsultaService, ConsultaService>();
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
-builder.Services.AddScoped<IRegistroPensamentoService, RegistroPensamentoService>();
+builder.Services.AddScoped<IProntuarioService, ProntuarioService>();
 
 
 

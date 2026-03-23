@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\PacienteDTOs\PerfilPaciente.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="dotenv.net" Version="4.0.1" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.10" />
@@ -33,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\PsicologoService\" />
     <Folder Include="Services\PacienteService\" />
   </ItemGroup>
 

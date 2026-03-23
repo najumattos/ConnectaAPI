@@ -1,19 +1,16 @@
 using Connectamente.API.DTOs;
-using Connectamente.API.DTOs.PacienteDTOs;
 using Connectamente.API.DTOs.UsersDTOs;
+using Connectamente.API.Enums;
 using Connectamente.API.Models;
-using Connectamente.API.Models.PacienteModel;
 
 namespace Connectamente.API.Services.UsuarioService;
 
 public interface IUsuarioService
-{    
-    Task<IEnumerable<UserDto>> ObterTodosUsuarios();
+{
+    Task<IEnumerable<FichaUsuarioDto>> ObterTodosUsuarios();
     Task<UserDto> ObterUsuarioPorId(string idUsuario);
-    Task<UserDto> AtualizarUsuario(string idUsuario, IFormFile arquivoFoto, UserUpdateDto usuarioUpdateDto);
-    Task<Usuario> DeletarUsuario(string idUsuario);
-    UserDto MapearUserDto(Usuario usuario);
-    Task CriarPerfilAuto(Usuario usuario);
-    //quando um usuario se cadastra, ele preenche se é tipo Paciente/Psicologo
-   
+    Task<bool> AtualizarUsuario(string idUsuario, IFormFile arquivoFoto, UserUpdateDto usuarioUpdateDto);
+    Task<bool> DesativarPerfil(string idUsuario);
+
+    UserDto MapearUserDto(UsuarioModel usuario);
 }

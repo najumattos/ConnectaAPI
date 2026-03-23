@@ -10,14 +10,8 @@ namespace Connectamente.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
+public class AuthController(IAuthService authService) : ControllerBase
 {
-    private readonly IAuthService _authService;
-
-    public AuthController(IAuthService authService)
-    {
-        _authService = authService;
-    }
 
     /// <summary>
     /// Registra um novo usuário
@@ -29,7 +23,7 @@ public class AuthController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _authService.RegisterAsync(registerDto);
+        var result = await authService.RegisterAsync(registerDto);
         if (result == null)
             return BadRequest(new { message = "Falha ao registrar usuário. Email pode já estar em uso." });
 
@@ -45,7 +39,7 @@ public class AuthController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var result = await _authService.LoginAsync(loginDto);
+        var result = await authService.LoginAsync(loginDto);
         if (result == null)
             return Unauthorized(new { message = "Email ou senha inválidos." });
 
@@ -63,7 +57,7 @@ public class AuthController : ControllerBase
         if (string.IsNullOrEmpty(userId))
             return Unauthorized();
 
-        var userDto = await _authService.GetUserByIdAsync(userId);
+        var userDto = await authService.GetUserByIdAsync(userId);
         if (userDto == null)
             return NotFound(new { message = "Usuário não encontrado." });
 

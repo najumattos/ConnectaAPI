@@ -1,121 +1,43 @@
 ﻿using Connectamente.API.Data;
-using Connectamente.API.DTOs.PacienteDTOs;
+using Connectamente.API.DTOs;
+using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Models;
-using Connectamente.API.Models.PacienteModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Services.PacienteService;
 
-public class PacienteService(AppDbContext context, UserManager<Usuario> userManager) : IPacienteService
+public class PacienteService() : IPacienteService
 {
-    private readonly AppDbContext _context = context;
-    private readonly UserManager<Usuario> _userManager = userManager;
-
-    public async Task<IEnumerable<ProntuarioPacienteDto>> ObterTodosPacientes()
+    //PacienteDto MapearUserPacienteDto(PacienteModel paciente, string nomePsicoManual = null);
+    //Task<PacienteModel> ObterDadosPaciente(string id);
+    public Task<bool> ArquivarPaciente(string idPaciente)
     {
-        var pacientes = await _context.Pacientes
-           .AsNoTracking()
-           .Include(p => p.Usuario)
-           .Include(p => p.PsicologoResponsavel)
-           .ThenInclude(pr => pr.Usuario)
-       .ToListAsync();
-        return pacientes.Select(p => MapearUserPacienteDto(p));
+        throw new NotImplementedException();
     }
 
-    public async Task<ProntuarioPacienteDto> ObterPacientePorId(string idPaciente)
+    public Task<bool> AtualizarPaciente(string idPaciente, PacienteDto pacienteDto)
     {
-        var paciente = await ObterDadosPaciente(idPaciente);
-        if (paciente == null) return null;
-        var pacienteDto = MapearUserPacienteDto(paciente);
-        return pacienteDto;
-    }
-   
-    public async Task<PacienteUpdateDto> AtualizarPaciente(string idPaciente, PacienteUpdateDto pacienteUpdateDto)
-    {
-        var paciente = await ObterDadosPaciente(idPaciente);
-        if (paciente == null) return null;
-
-        var pacienteDtoAtualizado =AtualizarCamposPaciente(paciente, pacienteUpdateDto);
-       
-      await _context.SaveChangesAsync();
-       
-
-        return pacienteDtoAtualizado;
+        throw new NotImplementedException();
     }
 
-   public async Task<Paciente> DeletarPaciente(string id)
+    public Task<PacienteDto> BuscarPacientePorId(string idPaciente)
     {
-        var paciente = await ObterDadosPaciente(id);
-        var usuario = await _userManager.FindByIdAsync(id);
-        if (paciente == null && usuario == null) return null;
-      
-            if (usuario.TipoPerfil == Enums.TipoPerfil.Psicologo)
-            {
-            //_context.Pacientes.Remove(paciente);
-
-            usuario.TipoPerfil = Enums.TipoPerfil.PacienteDesativado;
-        }
-           
-           
-
-            await _context.SaveChangesAsync();
-            return paciente;
-        
+        throw new NotImplementedException();
     }
 
-    #region Métodos Auxiliares
-
-    public async Task<Paciente> ObterDadosPaciente(string id)
+    public Task<IEnumerable<ProntuarioDto>> BuscarProntuarioPorPaciente(string idPaciente)
     {
-        return await _context.Pacientes
-         .Include(p => p.Usuario)
-         .Include(p => p.PsicologoResponsavel)
-         .ThenInclude(pr => pr.Usuario)
-         .FirstOrDefaultAsync(p => p.UsuarioId == id);
+        throw new NotImplementedException();
     }
 
-    private static PacienteUpdateDto AtualizarCamposPaciente(Paciente p, PacienteUpdateDto pacienteUpdateDto)
+    public Task<IEnumerable<FichaUsuarioDto>> BuscarTodosPacientes()
     {
-        if (!string.IsNullOrWhiteSpace(pacienteUpdateDto.ContatoEmergencia))
-            p.ContatoEmergencia = pacienteUpdateDto.ContatoEmergencia;
-
-        if (!string.IsNullOrWhiteSpace(pacienteUpdateDto.HistoricoPaciente))
-            p.HistoricoPaciente = pacienteUpdateDto.HistoricoPaciente;  
-        return new PacienteUpdateDto
-        {
-
-
-            ContatoEmergencia = p.ContatoEmergencia,
-            HistoricoPaciente = p.HistoricoPaciente,
-            };
-    
-        
-    }
-    
-    public ProntuarioPacienteDto MapearUserPacienteDto(Paciente p, string nomePsicoManual = null)
-    {
-        return new ProntuarioPacienteDto
-        {
-            IdPaciente = p.UsuarioId,          
-            ContatoEmergencia = p.ContatoEmergencia,
-            HistoricoPaciente = p.HistoricoPaciente,
-            PsicologoResponsavel = nomePsicoManual ?? p.PsicologoResponsavel?.Usuario?.Nome ?? "Psicólogo não vinculado"
-        };
-
+        throw new NotImplementedException();
     }
 
-    public async Task CriarPacienteAuto(Usuario usuario)
+    public Task<bool> CriarPaciente(PacienteDto pacienteDto)
     {
-              var pacienteCriadoAuto = new Paciente
-        {
-            Usuario = usuario,
-            UsuarioId = usuario.Id,
-            ContatoEmergencia = string.Empty, 
-            HistoricoPaciente = string.Empty
-              };
-         _context.Pacientes.Add(pacienteCriadoAuto);
-        await _context.SaveChangesAsync();       
+        throw new NotImplementedException();
     }
-   #endregion
 }   

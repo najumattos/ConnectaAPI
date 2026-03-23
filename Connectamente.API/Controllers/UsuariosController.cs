@@ -1,68 +1,77 @@
-using Microsoft.AspNetCore.Mvc;
-using Connectamente.API.Data;
+using Connectamente.API.Attributes;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Services.UsuarioService;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Connectamente.API.Controllers;
 
-[Route("api/[controller]")]
-[ApiController]
-public class UsuariosController(IUsuarioService usuarioService) : ControllerBase
+public class UsuariosController(IUsuarioService usuarioService) : MainController
 {
-    private readonly IUsuarioService _usuarioService = usuarioService;
 
-    // GET: api/Usuarios
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetUsuarios()
+    /// <summary>
+    /// Busca Todos Usuarios
+    /// </summary>
+    [AuthPsicologia("AdministradorSistema")] // Somente administradores do sistema podem acessar essa rota para obter a lista completa de usuários.
+    [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
+    [HttpGet("Buscar")]
+    public async Task<ActionResult<IEnumerable<UserDto>>> GetTodosUsuarios()
     {
-        var resultado = await _usuarioService.ObterTodosUsuarios();
+        var usuarios = await usuarioService.ObterTodosUsuarios();
 
-        return Ok(resultado);
+        if (usuarios == null || !usuarios.Any())
+        {
+            return NotFound("Nenhum usuário encontrado");
+        }
+        return Ok(usuarios);
+
     }
 
-    // GET: api/Usuarios/5
+    /// <summary>
+    /// Exibe Dados Cadastrais do Usuario
+    /// </summary>     
+    [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetUsuario(string id)
     {
-        var usuario = await _usuarioService.ObterUsuarioPorId(id);
-
-        if (usuario == null)
+        var usuario = await usuarioService.ObterUsuarioPorId(id);
+        return usuario switch
         {
-            return NotFound();
-        }
-
-        return usuario;
+            null => NotFound("Usuário não encontrado"),      //404 não encontrado
+            _ => Ok(usuario) //200 sucesso com UserDto como parametro  
+        };
     }
 
-    // PUT: api/Usuarios/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    /// <summary>
+    /// Atualiza Cadastro do Usuario
+    /// </summary> 
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Consumes("multipart/form-data")]
-    public async Task<IActionResult> PutUsuario(string id, IFormFile? arquivo, [FromForm] UserUpdateDto usuarioUpdateDto)
+    [HttpPut("{id}")]
+    [ValidarIdRoute] //somente o usuario pode editar seu proprio perfil
+    public async Task<ActionResult> PutUsuario(string id, IFormFile foto, [FromForm] UserUpdateDto usuarioUpdateDto)
     {
-        try
+        var sucesso = await usuarioService.AtualizarUsuario(id, foto, usuarioUpdateDto);
+        return sucesso switch
         {
-            var usuarioAtualizado = await _usuarioService.AtualizarUsuario(id, arquivo, usuarioUpdateDto);
-            return Ok(usuarioAtualizado);
-        }
-        catch (Exception ex)
-        {
-          
-            return BadRequest(ex.Message);
-        }
+            false => NotFound("Usuário não encontrado"),
+            true => NoContent()         // 204 sucesso sem paramtro
+        };
     }
 
-    // DELETE: api/Usuarios/5
-
+    /// <summary>
+    /// Desativa Acesso Usuario
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUsuario(string id)
+    [ValidarIdRoute] //somente o usuario pode desativar seu proprio perfil por essa rota
+    public async Task<ActionResult> DesativarPerfil(string id)
     {
-        var usuario = await _usuarioService.DeletarUsuario(id);
-        if (usuario == null)
+        var sucesso = await usuarioService.DesativarPerfil(id);
+        return sucesso switch
         {
-            return NotFound();
-        }
-        return NoContent();
+            false => NotFound("Usuário não encontrado ou já desativado"),
+            true => NoContent()         // 204 sucesso sem parametro
+        };
     }
 }
