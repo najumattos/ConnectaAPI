@@ -66,7 +66,7 @@ public class ProntuariosController(IProntuarioService service) : MainController
     /// Arquivar Prontuario
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [HttpDelete("{id}")]
+    [HttpPatch("{id}")]
     public async Task<ActionResult> ArquivarProntuario(string id)
     {
         var sucesso = await service.ArquivarProntuario(id);

@@ -81,7 +81,7 @@ public class PsicologosController(IPsicologoService service, IAuthService authSe
     /// Desativar Perfil Psicologo
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [HttpDelete("{id}")]
+    [HttpPatch("{id}")]
     public async Task<ActionResult> DesativarPerfilPaciente(string id)
     {
         var sucesso = await service.DesativarPerfilPsicologo(id);

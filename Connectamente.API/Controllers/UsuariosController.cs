@@ -12,12 +12,12 @@ public class UsuariosController(IUsuarioService usuarioService) : MainController
     /// <summary>
     /// Busca Todos Usuarios
     /// </summary>
-    [AuthPsicologia("AdministradorSistema")] // Somente administradores do sistema podem acessar essa rota para obter a lista completa de usuários.
+   // [Auth("AdministradorSistema")] // Somente administradores do sistema podem acessar essa rota para obter a lista completa de usuários.
     [ProducesResponseType(typeof(IEnumerable<UserDto>), StatusCodes.Status200OK)]
     [HttpGet("Buscar")]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetTodosUsuarios()
     {
-        var usuarios = await usuarioService.ObterTodosUsuarios();
+        var usuarios = await usuarioService.BuscarTodosUsuarios();
 
         if (usuarios == null || !usuarios.Any())
         {
@@ -34,7 +34,7 @@ public class UsuariosController(IUsuarioService usuarioService) : MainController
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetUsuario(string id)
     {
-        var usuario = await usuarioService.ObterUsuarioPorId(id);
+        var usuario = await usuarioService.BuscarUsuarioPorId(id);
         return usuario switch
         {
             null => NotFound("Usuário não encontrado"),      //404 não encontrado
@@ -63,7 +63,7 @@ public class UsuariosController(IUsuarioService usuarioService) : MainController
     /// Desativa Acesso Usuario
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [HttpDelete("{id}")]
+    [HttpPatch("{id}")]
     [ValidarIdRoute] //somente o usuario pode desativar seu proprio perfil por essa rota
     public async Task<ActionResult> DesativarPerfil(string id)
     {

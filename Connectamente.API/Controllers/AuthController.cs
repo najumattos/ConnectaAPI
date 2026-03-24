@@ -16,7 +16,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     /// <summary>
     /// Registra um novo usuário
     /// </summary>
-    [HttpPost("register")]
+    [HttpPost("Register")]
     [Consumes("multipart/form-data")]
     public async Task<ActionResult<AuthResponseDto>> Register([FromForm] RegisterDto registerDto)
     {
@@ -33,7 +33,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     /// <summary>
     /// Autentica um usuário
     /// </summary>
-    [HttpPost("login")]
+    [HttpPost("Login")]
     public async Task<ActionResult<AuthResponseDto>> Login([FromBody] LoginDto loginDto)
     {
         if (!ModelState.IsValid)
@@ -49,7 +49,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     /// <summary>
     /// Obtém informações do usuário atual
     /// </summary>
-    [HttpGet("me")]
+    [HttpGet("Me")]
     [Authorize]
     public async Task<ActionResult<UserDto>> GetCurrentUser()
     {
@@ -67,7 +67,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     /// <summary>
     /// Verifica se o token é válido
     /// </summary>
-    [HttpGet("validate")]
+    [HttpGet("Validate")]
     [Authorize]
     public ActionResult ValidateToken()
     {
