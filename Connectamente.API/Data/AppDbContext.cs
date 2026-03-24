@@ -27,10 +27,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
         builder.ApplyConfiguration(new PacienteConfig());
         builder.ApplyConfiguration(new ConsultaConfig());
         builder.ApplyConfiguration(new PsicologoConfig());
-        //tem que vincular paciente  e psicologo no prontuario? (um prontuario tem um paciente e um psicologo mas um psicologo pode ter varios prontuarios)
-        //tem que vincular pronturio na consula?  (uma consulta tem um prontuario mas um prontuario pode ter varias consultas)
-
-
     }
 
     private static void PopulateRoles(ModelBuilder builder)
@@ -43,7 +39,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
                NormalizedName = "ESTUDANTE"
             },
                        new IdentityRole() {
-               Id = SeedDataConstants.USER_ADMINISTRADOR_ID,
+               Id = SeedDataConstants.USER_COORDENADOR_ID,
                Name = "Coordendor",
                NormalizedName = "COORDENADOR"
             },
@@ -63,7 +59,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : IdentityDbCo
                 RoleId = roles[0].Id
             },
             new IdentityUserRole<string>() {
-                UserId = SeedDataConstants.USER_ADMINISTRADOR_ID,
+                UserId = SeedDataConstants.USER_COORDENADOR_ID,
                 RoleId = roles[1].Id
             },
             new IdentityUserRole<string>() {

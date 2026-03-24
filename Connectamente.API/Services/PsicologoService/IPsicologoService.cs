@@ -10,7 +10,7 @@ public interface IPsicologoService
     Task<PsicologoDto> BuscarPsicologoPorId(string idPsicologo);      
     Task<bool> AtualizarPsicologo(string idpsicologo, PsicologoDto psicologoDto);
     Task<bool> DesativarPerfilPsicologo(string idPsicologo);
-
+    Task<AuthPsicologoDto> CriarUsuarioPsicologo(RegisterPsicologoUsuarioDto registerPsicologoUsuarioDto);
     Task<IEnumerable<ProntuarioDto>> BuscarProntuarioPorPsicologo(string idPsicologo);
    
 

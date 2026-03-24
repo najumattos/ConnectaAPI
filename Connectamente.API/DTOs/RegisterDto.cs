@@ -16,7 +16,7 @@ public class RegisterDto
 
     [Required] public DateOnly DataNascimento { get; set; }
 
-    [Required] public TipoPerfilEnum TipoPerfil { get; set; }
+    [Required] public TipoModuloEnum TipoModulo { get; set; }
 
     [Required][Phone] public string Celular { get; set; }
 

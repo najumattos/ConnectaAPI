@@ -20,11 +20,27 @@ public class PsicologoConfig : IEntityTypeConfiguration<PsicologoModel>
                .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasData(
+ 
+ new PsicologoModel
+ {
+     UsuarioId = SeedDataConstants.USER_COORDENADOR_ID,
+     CRP = "1235545",
+     Descricao = "LET TIME JUST FLYYYYY",
+     TipoPerfil = TipoPerfilEnum.Coordenador
+ },
+ new PsicologoModel
+ {
+     UsuarioId = SeedDataConstants.USER_CLINICA_ID,
+     CRP = "1234555",
+     Descricao = "FOUND MY HOPE AND PRIIIDEEE AGAIIN",
+     TipoPerfil = TipoPerfilEnum.Coordenador
+ },
  new PsicologoModel
  {
      UsuarioId = SeedDataConstants.USER_ESTUDANTE_ID,
      CRP = "12345",
-     Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental."
+     Descricao = "REBIRTH OF A MAN",
+     TipoPerfil = TipoPerfilEnum.Estudante
  }
         //prontuarios e consultas
         );

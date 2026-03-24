@@ -20,6 +20,7 @@ public class PsicologoModel
     [Display(Name = "Sobre o Psicologo", Prompt = "Descreva você e seu trabalho"),
     StringLength(1000), Required(ErrorMessage = "Campo obrigatório")]
     public string Descricao { get; set; }
-   public IEnumerable<ProntuarioModel> Prontuarios { get; set; }
-    public IEnumerable<ConsultaModel> Consultas { get; set; }
+    public TipoPerfilEnum TipoPerfil { get; set; }
+    public IEnumerable<ProntuarioModel> Prontuarios { get; set; }
+    public IEnumerable<ConsultaModel> ConsultasAgendadas { get; set; }
 }

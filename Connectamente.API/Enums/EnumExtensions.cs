@@ -16,7 +16,7 @@ namespace Connectamente.API.Enums
             return attribute != null ? attribute.Description : value.ToString();
         }
 
-        public static string ValidarModulo(this TipoPerfilEnum perfil)
+        public static string ValidarModulo(this TipoModuloEnum perfil)
         {
             return (int)perfil switch
             {

@@ -21,17 +21,29 @@ public class UsuarioService() : IUsuarioService
         throw new NotImplementedException();
     }
 
-    public UserDto MapearUserDto(UsuarioModel usuario)
+    public UserDto MapearUserDto(UsuarioModel u)
+    {        
+        return new UserDto
+        {
+            Id = u.Id,
+            Nome = u.Nome,
+            Email = u.Email,
+            Sobrenome = u.Sobrenome,
+            NomeCompleto = $"{u.Nome} {u.Sobrenome}",
+            Foto = u.Foto,
+            Celular = u.PhoneNumber,
+            DataNascimento = u.DataNascimento.ToString("dd/MM/yyyy"),
+            TipoModulo = u.TipoModulo.ToString()
+        };
+    }
+
+
+    public Task<IEnumerable<FichaUsuarioDto>> BuscarTodosUsuarios()
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<FichaUsuarioDto>> ObterTodosUsuarios()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<UserDto> ObterUsuarioPorId(string idUsuario)
+    public Task<UserDto> BuscarUsuarioPorId(string idUsuario)
     {
         throw new NotImplementedException();
     }

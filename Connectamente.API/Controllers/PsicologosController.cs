@@ -7,10 +7,11 @@ using Connectamente.API.Services.PsicologoService;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Attributes;
+using Connectamente.API.Services.AuthService;
 
 namespace Connectamente.API.Controllers;
 
-public class PsicologosController(IPsicologoService service) : MainController
+public class PsicologosController(IPsicologoService service, IAuthService authService) : MainController
 {
 
     /// <summary>
@@ -46,9 +47,18 @@ public class PsicologosController(IPsicologoService service) : MainController
     }
 
     /// <summary>
-    /// Adiciona Novo Psicologo
+    /// Adiciona Novo Usuario ao modulo de Psicologo
     /// </summary> 
-    //POST CADE???
+    [HttpPost("NovoUsuario")]
+    [Consumes("multipart/form-data")]
+    public async Task<ActionResult<AuthPsicologoDto>> CriarUsuarioPsicologo([FromForm] RegisterPsicologoUsuarioDto registerPsicologoUsuarioDto)
+    {
+       
+
+        var result = await service.CriarUsuarioPsicologo(registerPsicologoUsuarioDto);
+       
+        return Ok(result);
+    }
 
     /// <summary>
     /// Edita Dados Do Psicologo

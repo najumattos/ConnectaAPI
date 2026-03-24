@@ -47,7 +47,6 @@ public class AuthService(
     public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
     {
 
-        //isso nao é aqui
         var existingUser = await userManager.FindByEmailAsync(registerDto.Email);
         if (existingUser != null)
         {
@@ -74,7 +73,7 @@ public class AuthService(
 
         var userDto = usuarioService.MapearUserDto(user);
         var token = jwtService.GenerateToken(userDto);
-        await userManager.AddToRoleAsync(user, userDto.TipoPerfil.ToString());
+       // await userManager.AddToRoleAsync(user, user.TipoPerfil.ToString());
         var AuthDto = MapearAuthDto(userDto, token);
         return AuthDto;
     }
@@ -85,8 +84,7 @@ public class AuthService(
         {
             Token = token,
             Expiration = DateTime.UtcNow.AddMinutes(60),
-            User = userDto,
-            RotaAutorizada = $"{userDto.TipoPerfil}"
+            User = userDto
         };
     }
     private static UsuarioModel CriarUsuario(RegisterDto registerDto, string fotoPath)
@@ -100,7 +98,8 @@ public class AuthService(
             Sobrenome = registerDto.Sobrenome,
             DataNascimento = registerDto.DataNascimento,
             PhoneNumber = registerDto.Celular,
-            Foto = fotoPath
+            Foto = fotoPath,
+            TipoModulo = registerDto.TipoModulo
         };
     }
     private async Task<UsuarioModel> VerificarLogin(LoginDto loginDto)

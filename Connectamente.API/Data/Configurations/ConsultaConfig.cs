@@ -16,7 +16,7 @@ namespace Connectamente.API.Data.Configurations
             builder.HasData(
                 new ConsultaModel { 
                 ConsultaId = SeedDataConstants.CONSULTA_ID,
-                    AnotacoesConsulta = "Resumo sessao",
+                    AnotacoesConsulta = "Resumo sessao resumida",
                     DataHoraConsulta = new DateTime(2002, 4, 1),
                     DuracaoConsulta = TimeSpan.FromMinutes(50),
                     ProntuarioId = SeedDataConstants.PRONTUARIO_ID

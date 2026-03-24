@@ -28,5 +28,5 @@ namespace Connectamente.API.Usuario;
 
     [Display(Prompt = "Escolha uma Foto"), StringLength(300)]
     public string Foto { get; set; }
-    public TipoPerfilEnum TipoPerfil { get; set; } //que viria ser tipomodulo e o tipoperfil vai pro psicologo
+    public TipoModuloEnum TipoModulo { get; set; } 
 }
