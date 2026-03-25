@@ -44,7 +44,7 @@ public class AuthService(
         return userDto;
     }
 
-    public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
+    public async Task<UsuarioModel> RegisterAsync(RegisterDto registerDto)
     {
 
         var existingUser = await userManager.FindByEmailAsync(registerDto.Email);
@@ -60,7 +60,7 @@ public class AuthService(
         {
             fotoPath = await fileService.SaveFileAsync(registerDto.Foto, "img/usuarios");
         }
-        var user = CriarUsuario(registerDto, fotoPath); //eu nao quero salvar o tipomodulo por motivo de seguranca
+        var user = CriarUsuario(registerDto, fotoPath); 
         var result = await userManager.CreateAsync(user, registerDto.Senha);
         if (!result.Succeeded)
         {
@@ -72,10 +72,7 @@ public class AuthService(
         }
 
         var userDto = usuarioService.MapearUserDto(user);
-        var token = jwtService.GenerateToken(userDto);
-       // await userManager.AddToRoleAsync(user, user.TipoPerfil.ToString());
-        var AuthDto = MapearAuthDto(userDto, token);
-        return AuthDto;
+        return user;
     }
     private static AuthResponseDto MapearAuthDto(UserDto userDto, string token)
     {
