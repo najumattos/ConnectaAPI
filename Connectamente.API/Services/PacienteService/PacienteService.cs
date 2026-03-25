@@ -1,4 +1,5 @@
 ﻿using Connectamente.API.Data;
+using Connectamente.API.Domain;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Models;
@@ -9,35 +10,28 @@ namespace Connectamente.API.Services.PacienteService;
 
 public class PacienteService() : IPacienteService
 {
-    //PacienteDto MapearUserPacienteDto(PacienteModel paciente, string nomePsicoManual = null);
-    //Task<PacienteModel> ObterDadosPaciente(string id);
-    public Task<bool> ArquivarPaciente(string idPaciente)
+    public Task<Result> ArquivarPaciente(string idPaciente)
     {
         throw new NotImplementedException();
     }
 
-    public Task<bool> AtualizarPaciente(string idPaciente, PacienteDto pacienteDto)
+    public Task<Result> AtualizarPaciente(string idPaciente, PacienteDto pacienteDto)
     {
         throw new NotImplementedException();
     }
 
-    public Task<PacienteDto> BuscarPacientePorId(string idPaciente)
+    public Task<Result<PacienteDto>> BuscarPacientePorId(string idPaciente)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<ProntuarioDto>> BuscarProntuarioPorPaciente(string idPaciente)
+    public Task<Result<IEnumerable<FichaUsuarioDto>>> BuscarTodosPacientes()
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<FichaUsuarioDto>> BuscarTodosPacientes()
+    public Task<Result> CriarPaciente(PacienteDto pacienteDto)
     {
         throw new NotImplementedException();
     }
-
-    public Task<bool> CriarPaciente(PacienteDto pacienteDto)
-    {
-        throw new NotImplementedException();
-    }
-}   
+}

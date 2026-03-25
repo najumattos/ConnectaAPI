@@ -1,15 +1,16 @@
-﻿using Connectamente.API.DTOs;
+﻿using Connectamente.API.Domain;
+using Connectamente.API.DTOs;
 
 namespace Connectamente.API.Services.ConsultaService
 {
     public class ConsultaService : IConsultaService
     {
-        public Task<bool> AgendarConsulta(ConsultaDto consultaDto)
+        public Task<Result> AgendarConsulta(ConsultaDto consultaDto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ConsultaDto> BuscarConsultaPorId(string idConsulta)
+        public Task<Result<ConsultaDto>> BuscarConsultaPorId(string idConsulta)
         {
             throw new NotImplementedException();
         }
@@ -19,17 +20,17 @@ namespace Connectamente.API.Services.ConsultaService
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<ConsultaDto>> BuscarTodasConsultas()
+        public Task<Result<IEnumerable<ConsultaDto>>> BuscarTodasConsultas()
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeletarConsulta(string idConsulta)
+        public Task<Result> DeletarConsulta(string idConsulta)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> EditarInfosConsulta(string idProntuario, ConsultaDto consultaDto)
+        public Task<Result<bool>> EditarInfosConsulta(string idProntuario, ConsultaDto consultaDto)
         {
             throw new NotImplementedException();
         }

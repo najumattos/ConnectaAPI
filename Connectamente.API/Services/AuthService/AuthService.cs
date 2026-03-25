@@ -1,4 +1,6 @@
-﻿using Connectamente.API.Data;
+﻿using AutoMapper;
+using Connectamente.API.Data;
+using Connectamente.API.Domain;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Enums;
@@ -18,41 +20,52 @@ public class AuthService(
     IJwtService jwtService,
     IFileService fileService,
     IUsuarioService usuarioService,
-    AppDbContext context
+    AppDbContext context,
+    IMapper mapper
     ) : IAuthService
 {
 
-    public async Task<AuthResponseDto> LoginAsync(LoginDto loginDto)
+    /// <summary>
+    /// Login OKAY
+    /// </summary>
+    public async Task<Result<AuthResponseDto>> LoginAsync(LoginDto loginDto)
     {
         var user = await VerificarLogin(loginDto);
-        var userDto = usuarioService.MapearUserDto(user);
+        var userDto = mapper.Map<UserDto>(user);
         var token = jwtService.GenerateToken(userDto);
         await context.SaveChangesAsync();
-        return MapearAuthDto(userDto, token);
+        var authResponseDto = mapper.Map<AuthResponseDto>(userDto);
+        authResponseDto.Token = token;
+        return Result<AuthResponseDto>.Success(authResponseDto);
     }
 
-    public async Task<UserDto> GetUserByIdAsync(string userId)
+    /// <summary>
+    /// Buscar Usuario Por Id OKAY
+    /// </summary>
+    public async Task<Result<UserDto>> GetUserByIdAsync(string userId)
     {
         var user = await userManager.FindByIdAsync(userId);
         if (user == null)
         {
-            throw new KeyNotFoundException("Usuário não encontrado.");
+            Result<UserDto>.Failure("Usuario não encontrado");
         }
 
-        var userDto = usuarioService.MapearUserDto(user);
+        var userDto = mapper.Map<UserDto>(user);
 
-        return userDto;
+        return Result<UserDto>.Success(userDto);
     }
 
-    public async Task<AuthResponseDto> RegisterAsync(RegisterDto registerDto)
+    /// <summary>
+    /// Registrar Usuario REVISAR
+    /// </summary>
+    public async Task<Result<AuthResponseDto>> RegisterAsync(RegisterDto registerDto)
     {
 
         var existingUser = await userManager.FindByEmailAsync(registerDto.Email);
         if (existingUser != null)
         {
-            throw new ArgumentException("Email já está em uso.");
+            Result<AuthResponseDto>.Failure("Email não encontrado");
         }
-
 
         // Salvar a foto se existir
         string fotoPath = null;
@@ -60,7 +73,8 @@ public class AuthService(
         {
             fotoPath = await fileService.SaveFileAsync(registerDto.Foto, "img/usuarios");
         }
-        var user = CriarUsuario(registerDto, fotoPath); //eu nao quero salvar o tipomodulo por motivo de seguranca
+        var user = mapper.Map<UsuarioModel>(registerDto);
+        user.Foto = fotoPath;
         var result = await userManager.CreateAsync(user, registerDto.Senha);
         if (!result.Succeeded)
         {
@@ -68,54 +82,28 @@ public class AuthService(
                 await fileService.DeleteFileAsync(fotoPath);
 
             var errors = string.Join(", ", result.Errors.Select(e => TranslateIdentityErrors.TranslateErrorMessage(e.Code)));
-            throw new ArgumentException($"Falha ao criar usuário: {errors}");
+            Result<AuthResponseDto>.Failure($"Falha ao criar usuário: {errors}");
         }
 
-        var userDto = usuarioService.MapearUserDto(user);
+        var userDto = mapper.Map<UserDto>(registerDto);
         var token = jwtService.GenerateToken(userDto);
        // await userManager.AddToRoleAsync(user, user.TipoPerfil.ToString());
-        var AuthDto = MapearAuthDto(userDto, token);
-        return AuthDto;
+        var authDto = mapper.Map<AuthResponseDto>(userDto);
+        authDto.Token = token;
+        return Result<AuthResponseDto>.Success(authDto);
     }
-    private static AuthResponseDto MapearAuthDto(UserDto userDto, string token)
-    {
 
-        return new AuthResponseDto
-        {
-            Token = token,
-            Expiration = DateTime.UtcNow.AddMinutes(60),
-            User = userDto
-        };
-    }
-    private static UsuarioModel CriarUsuario(RegisterDto registerDto, string fotoPath)
+    /// <summary>
+    /// Verificar Login OKAY
+    /// </summary>
+    private async Task<Result<UsuarioModel>> VerificarLogin(LoginDto loginDto)
     {
-
-        return new UsuarioModel
-        {
-            UserName = registerDto.Email,
-            Email = registerDto.Email,
-            Nome = registerDto.Nome,
-            Sobrenome = registerDto.Sobrenome,
-            DataNascimento = registerDto.DataNascimento,
-            PhoneNumber = registerDto.Celular,
-            Foto = fotoPath,
-            TipoModulo = registerDto.TipoModulo
-        };
-    }
-    private async Task<UsuarioModel> VerificarLogin(LoginDto loginDto)
-    {
-        // 1. Tenta buscar o usuário
         var user = await userManager.FindByEmailAsync(loginDto.Email);
-        // 2. Validação Fail-First: Se o user não existe, interrompe aqui.
-        if (user == null) return null;
-
-        // 3. Valida a senha
+        if (user == null) return Result<UsuarioModel>.Failure("Usuario ou senha incorretos");
         var result = await signInManager.CheckPasswordSignInAsync(user, loginDto.Senha, false);
+        if (!result.Succeeded) return Result<UsuarioModel>.Failure("Usuario ou senha incorretos");
 
-        // 4. Se a senha estiver errada, retorna null (ou você pode lançar uma exception customizada)
-        if (!result.Succeeded) return null;
-
-        return user;
+        return Result<UsuarioModel>.Success(user);
     }
 
 }

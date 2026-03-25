@@ -20,8 +20,10 @@ using Connectamente.API.Services.ProntuarioService;
 using Connectamente.API.Services.ConsultaService;
 
 DotEnv.Load(options: new DotEnvOptions(envFilePaths: new[] { "../.env" }));                            //Lê o arquivo .env
+// Procura por todas as classes que herdam de 'Profile' no projeto
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Configuration.AddEnvironmentVariables(); //adiciona variaveis de ambiente
 
 //chama o front
