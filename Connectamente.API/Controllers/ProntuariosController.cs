@@ -1,5 +1,4 @@
-﻿using Connectamente.API.Attributes;
-using Connectamente.API.DTOs.UsersDTOs;
+﻿using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Connectamente.API.Services.ProntuarioService;
@@ -18,7 +17,7 @@ public class ProntuariosController(IProntuarioService service) : MainController
     {
         var resposta = await service.BuscarTodosProntuarios();
 
-        if (resposta == null || !resposta.Any())
+        if (resposta == null)
         {
             return NotFound("Nenhum prontuario encontrado");
         }
@@ -57,8 +56,8 @@ public class ProntuariosController(IProntuarioService service) : MainController
         var sucesso = await service.AtualizarProntuario(id, prontuarioDto);
         return sucesso switch
         {
-            false => NotFound("Prontuario não encontrado"),
-            true => NoContent()
+            null => NotFound("Prontuario não encontrado"),
+            _ => NoContent()
         };
     }
 
@@ -72,8 +71,8 @@ public class ProntuariosController(IProntuarioService service) : MainController
         var sucesso = await service.ArquivarProntuario(id);
         return sucesso switch
         {
-            false => NotFound("Prontuario não encontrado"),
-            true => NoContent()
+            null => NotFound("Prontuario não encontrado"),
+            _ => NoContent()
         };
     }
 

@@ -15,7 +15,7 @@ public class ConsultasController(IConsultaService service) : MainController
     {
         var resposta = await service.BuscarTodasConsultas();
 
-        if (resposta == null || !resposta.Any())
+        if (resposta == null)
         {
             return NotFound("Nenhuma consulta encontrado");
         }
@@ -54,8 +54,8 @@ public class ConsultasController(IConsultaService service) : MainController
         var sucesso = await service.EditarInfosConsulta(id, consultaDto);
         return sucesso switch
         {
-            false => NotFound("Consulta não encontrada"),
-            true => NoContent()         
+            null => NotFound("Consulta não encontrada"),
+            _ => NoContent()         
         };
     }
 
@@ -69,8 +69,8 @@ public class ConsultasController(IConsultaService service) : MainController
         var sucesso = await service.DeletarConsulta(id);
         return sucesso switch
         {
-            false => NotFound("Agendamento não encontrado"),
-            true => NoContent()         // 204 sucesso sem parametro
+            null => NotFound("Agendamento não encontrado"),
+            _ => NoContent()         // 204 sucesso sem parametro
         };
     }
 }

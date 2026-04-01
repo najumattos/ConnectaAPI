@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Connectamente.API.Services.PacienteService;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
-using Connectamente.API.Attributes;
 
 namespace Connectamente.API.Controllers;
 
@@ -18,7 +17,7 @@ public class PacientesController(IPacienteService service) : MainController
     {
         var resposta = await service.BuscarTodosPacientes();
 
-        if (resposta == null || !resposta.Any())
+        if (resposta == null)
         {
             return NotFound("Nenhum paciente encontrado");
         }
@@ -51,15 +50,14 @@ public class PacientesController(IPacienteService service) : MainController
     /// </summary> 
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Consumes("multipart/form-data")]
-    [ValidarIdRoute] //somente o usuario pode editar seu proprio perfil
     [HttpPut("{id}")]
     public async Task<ActionResult> PutPaciente(string id, PacienteDto pacienteDto)
     {
         var sucesso = await service.AtualizarPaciente(id, pacienteDto);
         return sucesso switch
         {
-            false => NotFound("Paciente não encontrado"),
-            true => NoContent()
+            null => NotFound("Paciente não encontrado"),
+            _ => NoContent()
         };
     }
 
@@ -73,8 +71,8 @@ public class PacientesController(IPacienteService service) : MainController
         var sucesso = await service.ArquivarPaciente(id);
         return sucesso switch
         {
-            false => NotFound("Paciente não encontrado"),
-            true => NoContent()         
+            null => NotFound("Paciente não encontrado"),
+            _ => NoContent()         
         };
     }
 

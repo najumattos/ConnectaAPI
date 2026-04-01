@@ -6,12 +6,10 @@ using Connectamente.API.Models;
 using Connectamente.API.Services.PsicologoService;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
-using Connectamente.API.Attributes;
-using Connectamente.API.Services.AuthService;
 
 namespace Connectamente.API.Controllers;
 
-public class PsicologosController(IPsicologoService service, IAuthService authService) : MainController
+public class PsicologosController(IPsicologoService service) : MainController
 {
 
     /// <summary>
@@ -21,13 +19,25 @@ public class PsicologosController(IPsicologoService service, IAuthService authSe
     [HttpGet("Buscar")]
     public async Task<ActionResult<IEnumerable<FichaUsuarioDto>>> GetPsicologos()
     {
-        var resposta = await service.BuscarTodosPsicologos();
+       /* var resposta = await service.BuscarTodosPsicologos();
 
-        if (resposta == null || !resposta.Any())
+        if (resposta == null)
         {
             return NotFound("Nenhum psicologo encontrado");
         }
-        return Ok(resposta);
+        return Ok(resposta);        */
+        Console.WriteLine("A lista ta aqui sim, eu to vendo");
+        // Mock temporário enquanto o service não nasce
+        var mockLista = new List<FichaUsuarioDto>
+       {
+           new FichaUsuarioDto { UsuarioId = "1", NomeCompleto = "Ana Julia (Mock)" },
+           new FichaUsuarioDto { UsuarioId = "2", NomeCompleto = "Psicólogo de Teste"}
+       };
+        // Simula um delay de rede se quiser ser bem realista
+        await Task.Delay(500);
+
+        return Ok(mockLista);
+
 
     }
 
@@ -38,12 +48,25 @@ public class PsicologosController(IPsicologoService service, IAuthService authSe
     [HttpGet("{id}")]
     public async Task<ActionResult<PsicologoDto>> GetPsicologo(string id)
     {
-        var resposta = await service.BuscarPsicologoPorId(id);
-        return resposta switch
+        /*    var resposta = await service.BuscarPsicologoPorId(id);
+            return resposta switch
+            {
+                null => NotFound("Psicologo não encontrado"),
+                _ => Ok(resposta)
+            };             */
+        Console.WriteLine($"Buscando detalhes do ID: {id}");
+
+        // Mock temporário do objeto completo
+        var mockDetalhe = new PsicologoDto
         {
-            null => NotFound("Psicologo não encontrado"),
-            _ => Ok(resposta)
-        };
+            NomeCompleto = id == "1" ? "Ana Julia (Mock)" : "Psicólogo de Teste",
+            CRP = "12/34567",
+            Descricao = "Especialista em Terapia Cognitivo-Comportamental com foco em ansiedade.",
+             };
+
+        await Task.Delay(500); // Simula o tempo de resposta do banco
+
+        return Ok(mockDetalhe);
     }
 
     /// <summary>
@@ -51,7 +74,7 @@ public class PsicologosController(IPsicologoService service, IAuthService authSe
     /// </summary> 
     [HttpPost("NovoUsuario")]
     [Consumes("multipart/form-data")]
-    public async Task<ActionResult<AuthPsicologoDto>> CriarUsuarioPsicologo([FromForm] RegisterPsicologoUsuarioDto registerPsicologoUsuarioDto)
+    public async Task<ActionResult<AuthResponseDto>> CriarUsuarioPsicologo([FromForm] RegisterPsicologoUsuarioDto registerPsicologoUsuarioDto)
     {
        
 
@@ -65,15 +88,14 @@ public class PsicologosController(IPsicologoService service, IAuthService authSe
     /// </summary> 
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Consumes("multipart/form-data")]
-    [ValidarIdRoute] //somente o usuario pode editar seu proprio perfil
     [HttpPut("{id}")]
     public async Task<ActionResult> PutPsicologo(string id, PsicologoDto psicologoDto)
     {
         var sucesso = await service.AtualizarPsicologo(id, psicologoDto);
         return sucesso switch
         {
-            false => NotFound("Psicologo não encontrado"),
-            true => NoContent()
+            null => NotFound("Psicologo não encontrado"),
+            _ => NoContent()
         };
     }
 
@@ -87,8 +109,8 @@ public class PsicologosController(IPsicologoService service, IAuthService authSe
         var sucesso = await service.DesativarPerfilPsicologo(id);
         return sucesso switch
         {
-            false => NotFound("Psicologo não encontrado"),
-            true => NoContent()
+            null => NotFound("Psicologo não encontrado"),
+            _ => NoContent()
         };
     }
 

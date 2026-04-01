@@ -11,7 +11,7 @@ public interface IPsicologoService
     Task<Result<PsicologoDto>> BuscarPsicologoPorId(string idPsicologo);      
     Task<Result> AtualizarPsicologo(string idpsicologo, PsicologoDto psicologoDto);
     Task<Result> DesativarPerfilPsicologo(string idPsicologo);
-    Task<Result<AuthPsicologoDto>> CriarUsuarioPsicologo(RegisterPsicologoUsuarioDto registerPsicologoUsuarioDto);
+   Task<Result<AuthResponseDto>> CriarUsuarioPsicologo(RegisterPsicologoUsuarioDto registerPsicologoUsuarioDto);
     //Task<Result<IEnumerable<ProntuarioDto>>> BuscarProntuarioPorPsicologo(string idPsicologo);
    
 

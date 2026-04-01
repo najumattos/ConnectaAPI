@@ -1,4 +1,3 @@
-using Connectamente.API.Attributes;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Services.UsuarioService;
@@ -19,7 +18,7 @@ public class UsuariosController(IUsuarioService usuarioService) : MainController
     {
         var usuarios = await usuarioService.BuscarTodosUsuarios();
 
-        if (usuarios == null || !usuarios.Any())
+        if (usuarios == null)
         {
             return NotFound("Nenhum usuário encontrado");
         }
@@ -48,14 +47,13 @@ public class UsuariosController(IUsuarioService usuarioService) : MainController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Consumes("multipart/form-data")]
     [HttpPut("{id}")]
-    [ValidarIdRoute] //somente o usuario pode editar seu proprio perfil
     public async Task<ActionResult> PutUsuario(string id, IFormFile foto, [FromForm] UserUpdateDto usuarioUpdateDto)
     {
         var sucesso = await usuarioService.AtualizarUsuario(id, foto, usuarioUpdateDto);
         return sucesso switch
         {
-            false => NotFound("Usuário não encontrado"),
-            true => NoContent()         // 204 sucesso sem paramtro
+            null => NotFound("Usuário não encontrado"),
+            _ => NoContent()         // 204 sucesso sem paramtro
         };
     }
 
@@ -64,14 +62,13 @@ public class UsuariosController(IUsuarioService usuarioService) : MainController
     /// </summary>
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [HttpPatch("{id}")]
-    [ValidarIdRoute] //somente o usuario pode desativar seu proprio perfil por essa rota
     public async Task<ActionResult> DesativarPerfil(string id)
     {
         var sucesso = await usuarioService.DesativarPerfil(id);
         return sucesso switch
         {
-            false => NotFound("Usuário não encontrado ou já desativado"),
-            true => NoContent()         // 204 sucesso sem parametro
+            null => NotFound("Usuário não encontrado ou já desativado"),
+            _ => NoContent()         // 204 sucesso sem parametro
         };
     }
 }

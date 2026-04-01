@@ -11,8 +11,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 using dotenv.net;
 using Connectamente.API.Usuario;
-using Connectamente.API.Services.JwtService;
-using Connectamente.API.Services.AuthService;
 using Connectamente.API.Services.UsuarioService;
 using Connectamente.API.Services.PacienteService;
 using Connectamente.API.Services.PsicologoService;
@@ -31,7 +29,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("MinhaPolitica", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // URL do seu React
+        policy.WithOrigins("http://localhost:5173") // URL do React
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -75,7 +73,7 @@ builder.Services.AddIdentity<UsuarioModel, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// Serviço JWT
+/* Serviço JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = jwtSettings["SecretKey"];
 if (string.IsNullOrEmpty(secretKey))
@@ -104,7 +102,7 @@ builder.Services.AddAuthentication(options =>
     };
    
 });
-
+                */
 // Adicionar a Autorização
 builder.Services.AddAuthorization();
 
@@ -113,8 +111,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IFileService, FileService>();
 
 // Registro dos Serviços Customizados
-builder.Services.AddScoped<IJwtService, JwtService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
 builder.Services.AddScoped<IPsicologoService, PsicologoService>();
@@ -189,7 +185,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();  //Se redireciona a autentica��o da errado
+//app.UseHttpsRedirection();  //Se redireciona a autentica��o da errado
 
 app.UseStaticFiles();
 
