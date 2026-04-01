@@ -33,7 +33,7 @@ public class JwtService : IJwtService
         new Claim(ClaimTypes.Email, user.Email!),
         new Claim(ClaimTypes.Name, user.Nome),
         new Claim("foto", user.Foto ?? "/Img/Usuarios/no-photo.png"),
-        new Claim(ClaimTypes.Role, user.TipoPerfil.ToString()),  
+        new Claim(ClaimTypes.Role, user.TipoModulo.ToString()),  //MUDAR TA ERRADO VAI DAR ERRO
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64)
     };

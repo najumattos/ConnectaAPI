@@ -56,7 +56,7 @@ namespace Connectamente.API.Migrations
                         new
                         {
                             ConsultaId = "c5f41454-0d00-45f5-a00d-1cce66500694",
-                            AnotacoesConsulta = "Resumo sessao",
+                            AnotacoesConsulta = "Resumo sessao resumida",
                             DataHoraConsulta = new DateTime(2002, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DuracaoConsulta = new TimeSpan(0, 0, 50, 0, 0),
                             ProntuarioId = "68527bd1-63c9-4ce5-90b7-976fef420d8f"
@@ -150,6 +150,9 @@ namespace Connectamente.API.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("varchar(1000)");
 
+                    b.Property<int>("TipoPerfil")
+                        .HasColumnType("int");
+
                     b.HasKey("UsuarioId");
 
                     b.ToTable("Psicologo");
@@ -157,9 +160,24 @@ namespace Connectamente.API.Migrations
                     b.HasData(
                         new
                         {
+                            UsuarioId = "59de1fac-5ba6-49b0-8849-c97e3c7ba11b",
+                            CRP = "1235545",
+                            Descricao = "LET TIME JUST FLYYYYY",
+                            TipoPerfil = 1
+                        },
+                        new
+                        {
+                            UsuarioId = "745baf03-ea33-4020-8959-e060cb422ff3",
+                            CRP = "1234555",
+                            Descricao = "FOUND MY HOPE AND PRIIIDEEE AGAIIN",
+                            TipoPerfil = 1
+                        },
+                        new
+                        {
                             UsuarioId = "70f93f27-32b1-4de5-bee3-b0de2cf80047",
                             CRP = "12345",
-                            Descricao = "Psicóloga dedicada a ajudar pacientes a superar desafios emocionais e alcançar bem-estar mental."
+                            Descricao = "REBIRTH OF A MAN",
+                            TipoPerfil = 2
                         });
                 });
 
@@ -225,7 +243,7 @@ namespace Connectamente.API.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
 
-                    b.Property<int>("TipoPerfil")
+                    b.Property<int>("TipoModulo")
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -265,7 +283,7 @@ namespace Connectamente.API.Migrations
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "15cfe30f-1dac-404e-85e6-02159dbed489",
                             Sobrenome = "Estudante Psicologia",
-                            TipoPerfil = 2,
+                            TipoModulo = 1,
                             TwoFactorEnabled = false,
                             UserName = "estudante@psico.com"
                         },
@@ -287,7 +305,7 @@ namespace Connectamente.API.Migrations
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "5b0faad3-6502-4325-94ee-33aab11905d7",
                             Sobrenome = "Administrador Psicologia",
-                            TipoPerfil = 1,
+                            TipoModulo = 1,
                             TwoFactorEnabled = false,
                             UserName = "admin@psico.com"
                         },
@@ -309,7 +327,7 @@ namespace Connectamente.API.Migrations
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "ddaeca55-d4a8-40bd-8dce-21df6b31d700",
                             Sobrenome = "Clinica Psicologia",
-                            TipoPerfil = 3,
+                            TipoModulo = 1,
                             TwoFactorEnabled = false,
                             UserName = "clinica@psico.com"
                         });
@@ -491,7 +509,7 @@ namespace Connectamente.API.Migrations
                         .HasForeignKey("ProntuarioId");
 
                     b.HasOne("Connectamente.API.Models.PsicologoModel", null)
-                        .WithMany("Consultas")
+                        .WithMany("ConsultasAgendadas")
                         .HasForeignKey("PsicologoModelUsuarioId");
 
                     b.Navigation("Prontuario");
@@ -596,7 +614,7 @@ namespace Connectamente.API.Migrations
 
             modelBuilder.Entity("Connectamente.API.Models.PsicologoModel", b =>
                 {
-                    b.Navigation("Consultas");
+                    b.Navigation("ConsultasAgendadas");
 
                     b.Navigation("Prontuarios");
                 });

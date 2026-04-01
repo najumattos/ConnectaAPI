@@ -14,7 +14,7 @@ public class AuthController(IAuthService authService) : ControllerBase
 {
 
     /// <summary>
-    /// Registra um novo usuário
+    /// Registra um novo usuário pelo sistema
     /// </summary>
     [HttpPost("Register")]
     [Consumes("multipart/form-data")]

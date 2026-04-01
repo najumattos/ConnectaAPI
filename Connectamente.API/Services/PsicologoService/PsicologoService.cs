@@ -1,4 +1,5 @@
 ﻿using Connectamente.API.Data;
+using Connectamente.API.Domain;
 using Connectamente.API.DTOs;
 using Connectamente.API.DTOs.UsersDTOs;
 using Connectamente.API.Enums;
@@ -15,40 +16,29 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Connectamente.API.Services.PsicologoService;
 
-public class PsicologoService(
-    UserManager<UsuarioModel> userManager,
-    AppDbContext context,
-    IJwtService jwtService,
-    IUsuarioService usuarioService,
-    IAuthService authService) : IPsicologoService
-{          //PsicologoDto MapearPsicologoDto(Psicologo psicologo);
-           // Task<Psicologo> ObterDadosPsicologo(string psicologoId);
-    public Task<bool> AtualizarPsicologo(string idpsicologo, PsicologoDto psicologoDto)
+public class PsicologoService() : IPsicologoService
+{
+    public Task<Result> AtualizarPsicologo(string idpsicologo, PsicologoDto psicologoDto)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<ProntuarioDto>> BuscarProntuarioPorPsicologo(string idPsicologo)
+    public Task<Result<PsicologoDto>> BuscarPsicologoPorId(string idPsicologo)
     {
         throw new NotImplementedException();
     }
 
-    public Task<PsicologoDto> BuscarPsicologoPorId(string idPsicologo)
+    public Task<Result<IEnumerable<PsicologoDto>>> BuscarPsicologoPorNomeOuCRP(string nomeOuCRP)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<PsicologoDto>> BuscarPsicologoPorNomeOuCRP(string nomeOuCRP)
+    public Task<Result<IEnumerable<FichaUsuarioDto>>> BuscarTodosPsicologos()
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<FichaUsuarioDto>> BuscarTodosPsicologos()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> DesativarPerfilPsicologo(string idPsicologo)
+    public Task<Result<AuthPsicologoDto>> CriarUsuarioPsicologo(RegisterPsicologoUsuarioDto registerPsicologoUsuarioDto)
     {
         throw new NotImplementedException();
     }
@@ -112,16 +102,9 @@ public class PsicologoService(
         };
     }
 
-    private static AuthResponseDto MapearAuthDto(UserDto userDto, string token, TipoPerfilEnum tipoPerfil)
+    public Task<Result> DesativarPerfilPsicologo(string idPsicologo)
     {
-
-        return new AuthResponseDto
-        {
-            Token = token,
-            Expiration = DateTime.UtcNow.AddMinutes(60),
-            User = userDto,
-            TipoPerfil = tipoPerfil.ToString()
-        };
+        throw new NotImplementedException();
     }
 }
 
